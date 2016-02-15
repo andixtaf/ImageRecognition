@@ -1,21 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 
-class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
-{
+public class MRImageCellRendererSorted extends JLabel implements ListCellRenderer {
 
-	public MRImageCellRendererSorted()
-	{
+	public MRImageCellRendererSorted() {
 		setOpaque(true);
 	}
 
 	public Component getListCellRendererComponent(JList list, Object value,
-	                                              int index, boolean isSelected, boolean cellHasFocus)
-	{
+	                                              int index, boolean isSelected, boolean cellHasFocus) {
 
+		String text = "";
 		float similarity = 1.0f;
 
-		if(value instanceof MRImage) {
+		if (value instanceof MRImage) {
 			MRImage img = (MRImage) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 			similarity = img.getSimilarity();
@@ -29,21 +27,25 @@ class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
 
 		// check if this cell represents the current DnD drop location
 		JList.DropLocation dropLocation = list.getDropLocation();
-		if(dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index) {
+		if (dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index) {
 
 			background = Color.BLUE;
 			foreground = Color.WHITE;
 
 			// check if this cell is selected
-		} else if(isSelected) {
+		} else if (isSelected) {
 			background = new Color(33, 83, 134);
 			foreground = Color.WHITE;
 
 			// unselected, and not the DnD drop location
 		} else {
+			if (similarity > 1) {
+				similarity = 1;
+			}
 			background = new Color(similarity, similarity, similarity);
 			foreground = new Color(33, 83, 134);
 		}
+		;
 
 		setBackground(background);
 		setForeground(foreground);

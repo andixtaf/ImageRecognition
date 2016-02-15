@@ -1,42 +1,32 @@
-import java.util.Arrays;
+public class DominantColors implements Comparable<DominantColors>{
 
-class DominantColors implements Comparable<DominantColors>
-{
-
-	private float[] hsicolor;
+	private float [] hsicolor;
 	private float count;
 
-	public DominantColors(float[] hsicolor, float count)
-	{
+	public DominantColors(float [] hsicolor, float count) {
 		this.hsicolor = hsicolor;
 		this.count = count;
 	}
 
-	public int compareTo(DominantColors value)
-	{
-		if(count > value.count) {
+	public int compareTo(DominantColors value ) {
+		if( count > value.count )
 			return -1;
-		}
-		if(count < value.count) {
+		if( count < value.count )
 			return 1;
-		}
 
 		return 0;
 	}
 
 	@Override
-	public String toString()
-	{
-		return Arrays.toString(hsicolor) + "   Count:  " + count;
+	public String toString() {
+		return hsicolor + "   Count:  " + count;
 	}
 
-	public float getCount()
-	{
+	public float getCount(){
 		return count;
 	}
 
-	public float[] getHSIColor()
-	{
+	public float [] getHSIColor(){
 		return hsicolor;
 	}
 
