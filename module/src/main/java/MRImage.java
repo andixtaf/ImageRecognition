@@ -386,8 +386,6 @@ public class MRImage
 			histogram[i] = histogram[i] / total;
 			//sum += histogram[i];
 		}
-
-		//System.out.println(sum);
 	}
 
 	//Graustufen Histogramm in Text-Datei speichern
