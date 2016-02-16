@@ -8,11 +8,12 @@ public class Seg_Intersection implements SimilarityAlgorithm
 
 	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int segstep)
 	{
-		float intersectionseg1;
+		float intersectionSequence1;
 		float intersection = 0;
-		float minsumseg1 = 0;
-		float hist1sumseg1 = 0;
-		Vector<Float> intersectionseg = new Vector<>();
+		float minimumSumSequence1 = 0;
+		float historySumSequence1 = 0;
+		Vector<Float> intersectionSequence = new Vector<>();
+
 		//Falls Image ein Graustufenbild ist
 		if(query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY) {
 			String name = query.toString();
@@ -54,25 +55,24 @@ public class Seg_Intersection implements SimilarityAlgorithm
 					h1seg = (float[]) (hist1.get(k));
 					h2seg = (float[]) (hist2.get(k));
 					for(int l = 0; l < 256; l++) {
-						minsumseg1 += Math.min(h1seg[l], h2seg[l]);
-						hist1sumseg1 += h1seg[l];
+						minimumSumSequence1 += Math.min(h1seg[l], h2seg[l]);
+						historySumSequence1 += h1seg[l];
 					}
 
-					intersectionseg1 = minsumseg1 / hist1sumseg1;
-					intersectionseg.add(intersectionseg1);
-					intersectionseg1 = 0;
-					minsumseg1 = 0;
-					hist1sumseg1 = 0;
+					intersectionSequence1 = minimumSumSequence1 / historySumSequence1;
+					intersectionSequence.add(intersectionSequence1);
+					minimumSumSequence1 = 0;
+					historySumSequence1 = 0;
 				}
 
-				for(Float anIntersectionseg : intersectionseg) {
+				for(Float anIntersectionseg : intersectionSequence) {
 					intersection += anIntersectionseg;
 				}
 
 				list[i] = new SortIntersection(img, intersection / segstep);
 
 				intersection = 0;
-				intersectionseg.removeAllElements();
+				intersectionSequence.removeAllElements();
 				hist2.removeAllElements();
 				segmenthist2.removeAllElements();
 			}
@@ -128,26 +128,25 @@ public class Seg_Intersection implements SimilarityAlgorithm
 					for(int l = 0; l < 8; l++) {
 						for(int m = 0; m < 8; m++) {
 							for(int n = 0; n < 8; n++) {
-								minsumseg1 += Math.min(h1seg[l][m][n], h2seg[l][m][n]);
-								hist1sumseg1 += h1seg[l][m][n];
+								minimumSumSequence1 += Math.min(h1seg[l][m][n], h2seg[l][m][n]);
+								historySumSequence1 += h1seg[l][m][n];
 							}
 						}
 					}
 
-					intersectionseg1 = minsumseg1 / hist1sumseg1;
-					intersectionseg.add(intersectionseg1);
-					intersectionseg1 = 0;
-					minsumseg1 = 0;
-					hist1sumseg1 = 0;
+					intersectionSequence1 = minimumSumSequence1 / historySumSequence1;
+					intersectionSequence.add(intersectionSequence1);
+					minimumSumSequence1 = 0;
+					historySumSequence1 = 0;
 				}
 
-				for(Float anIntersectionseg : intersectionseg) {
+				for(Float anIntersectionseg : intersectionSequence) {
 					intersection += anIntersectionseg;
 				}
 				list[i] = new SortIntersection(img, intersection / segstep);
 
 				intersection = 0;
-				intersectionseg.removeAllElements();
+				intersectionSequence.removeAllElements();
 				hist2.removeAllElements();
 				segmenthist2.removeAllElements();
 			}
@@ -157,6 +156,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			for(SortIntersection aList : list) {
 				float intersect = aList.getIntersection();
 				MRImage image = aList.getMRImage();
+
 				//neues Repository erstellt welches sortierte Elemente enthält
 				sortedlist.add(image);
 				image.setSimilarity(intersect, image);

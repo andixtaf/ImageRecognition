@@ -1,7 +1,7 @@
 public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 {
-	private int index;
-	private float distance;
+	private final int index;
+	private final float distance;
 
 	//Tupel in dem Img und dazugehörige Distance gespeichert wird
 	public NRA_Algorithm_Sort(int index, float distance)

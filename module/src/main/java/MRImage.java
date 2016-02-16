@@ -28,12 +28,6 @@ public class MRImage
 		raster = image.getRaster();
 	}
 
-	public MRImage(File file)
-	{
-		filePath = file;
-	}
-
-	//Image in 4 Teile zerlegen
 	public Vector<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
 	{
 		Vector<BufferedImage> segment = new Vector<>();
@@ -43,7 +37,7 @@ public class MRImage
 
 		int sqrtOfOriginalSize = getSqrtOfOriginalSize(segmentationStep, bitLength);
 
-		Integer x = 0;
+		int x = 0;
 		int y = 0;
 		int z = 0;
 
@@ -390,7 +384,6 @@ public class MRImage
 		//System.out.println(sum);
 	}
 
-	//Graustufen Histogramm in Text-Datei speichern
 	private void saveHistogramGray(float[] histogram, String name)
 	{
 

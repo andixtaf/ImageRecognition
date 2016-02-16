@@ -12,7 +12,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		float distance = 0;
 		Vector<Float> distanceseg = new Vector<>();
 		String name = query.toString();
-		int totalhist1 = query.getHeight() * query.getWidth();
+
 		Vector<BufferedImage> segment;
 		Vector hist1 = new Vector();
 		segment = query.generateRasterInGivenSteps(segstep);
@@ -25,6 +25,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		float[][][] hist2seg;
 		float[][][] h1seg;
 		float[][][] h2seg;
+
 		//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for(int i = 0; i < repository.size(); i++) {

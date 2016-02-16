@@ -17,17 +17,16 @@ class MainFrame extends JFrame implements ActionListener
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesSorted;
 	private Vector<MRImage> imagesList = null;
-	private String imagePath1 = "";
-	private Intersection intersection = new Intersection();
-	private L1Distance l1distance = new L1Distance();
-	private Seg_Intersection segmentationIntersection = new Seg_Intersection();
-	private Seg_L1Distance segmentationL1Distance = new Seg_L1Distance();
-	private HSI_Intersection hsiIntersection = new HSI_Intersection();
-	private HSI_L1Distance hsiL1Distance = new HSI_L1Distance();
-	private HSISeg_L1Distance hsiSegmentationL1Distance = new HSISeg_L1Distance();
-	private HSI_Euclidean_Distance hsiEuclidDistance = new HSI_Euclidean_Distance();
-	private Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
-	private NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
+	private final Intersection intersection = new Intersection();
+	private final L1Distance l1distance = new L1Distance();
+	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
+	private final Seg_L1Distance segmentationL1Distance = new Seg_L1Distance();
+	private final HSI_Intersection hsiIntersection = new HSI_Intersection();
+	private final HSI_L1Distance hsiL1Distance = new HSI_L1Distance();
+	private final HSISeg_L1Distance hsiSegmentationL1Distance = new HSISeg_L1Distance();
+	private final HSI_Euclidean_Distance hsiEuclidDistance = new HSI_Euclidean_Distance();
+	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
+	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
 	private JFrame frame, frame1;
 	private int segmentationStep = 0;
 	private JTextField jTextField, jTextField1;
@@ -449,6 +448,7 @@ class MainFrame extends JFrame implements ActionListener
 		if(currentImg != null)
 		{
 			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
+			String imagePath1 = "";
 			if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 			{
 				if(rgb)

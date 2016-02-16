@@ -1,7 +1,7 @@
 class Search
 {
 
-	private float index;
+	private final float index;
 	private float lb_agg;
 	private float ub_agg;
 
@@ -22,19 +22,8 @@ class Search
 		return lb_agg;
 	}
 
-	public void setLb_agg(float new_lb_agg)
-	{
-		this.lb_agg = new_lb_agg;
-	}
-
 	public float getUb_agg()
 	{
 		return ub_agg;
 	}
-
-	public void setUb_agg(float new_ub_agg)
-	{
-		this.ub_agg = new_ub_agg;
-	}
-
 }

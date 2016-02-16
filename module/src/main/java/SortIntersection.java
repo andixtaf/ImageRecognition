@@ -1,8 +1,8 @@
 //Klasse die für das sortieren der Intersection Werte verantwortlich ist
 class SortIntersection implements Comparable<SortIntersection>
 {
-	private float intersection;
-	private MRImage img;
+	private final float intersection;
+	private final MRImage img;
 
 	//Tupel in dem Img und dazugehörige Intersection gespeichert wird
 	public SortIntersection(MRImage img, float intersection)

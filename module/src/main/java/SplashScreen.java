@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class SplashScreen extends JWindow implements Runnable {
+class SplashScreen extends JWindow implements Runnable {
 
 	private String message = "Loading...";
 	private BufferedImage image = null;
@@ -31,9 +31,5 @@ public class SplashScreen extends JWindow implements Runnable {
 	public void setMessage(String msg) {
 		message = msg;
 		repaint();
-	}
-
-	public void setImage(BufferedImage img) {
-		image = img;
 	}
 }

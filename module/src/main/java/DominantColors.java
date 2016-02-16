@@ -3,12 +3,12 @@ import java.util.Arrays;
 class DominantColors implements Comparable<DominantColors>
 {
 
-	private float[] hsicolor;
-	private float count;
+	private final float[] colorHSI;
+	private final float count;
 
-	public DominantColors(float[] hsicolor, float count)
+	public DominantColors(float[] colorHSI, float count)
 	{
-		this.hsicolor = hsicolor;
+		this.colorHSI = colorHSI;
 		this.count = count;
 	}
 
@@ -27,17 +27,12 @@ class DominantColors implements Comparable<DominantColors>
 	@Override
 	public String toString()
 	{
-		return Arrays.toString(hsicolor) + "   Count:  " + count;
-	}
-
-	public float getCount()
-	{
-		return count;
+		return Arrays.toString(colorHSI) + "   Count:  " + count;
 	}
 
 	public float[] getHSIColor()
 	{
-		return hsicolor;
+		return colorHSI;
 	}
 
 }

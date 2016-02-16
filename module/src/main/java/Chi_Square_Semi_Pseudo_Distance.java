@@ -28,8 +28,6 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		float[][][] hist1 = query.getHistogramHSI(name);
 		float[][][] hist2;
 
-		int totalhist1 = query.getHeight() * query.getWidth();
-
 		SortIntersection[] list = new SortIntersection[repository.size()];
 		nra_values = new NRA_Algorithm_Sort[repository.size()];
 
@@ -94,14 +92,6 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 									((hist2[j][k][l] - expectedValueHistory2) * (hist2[j][k][l] - expectedValueHistory2)) /
 											expectedValueHistory2;
 						}
-
-                        /*System.out.println("SumHist1");
-                        System.out.println(sumhist1);
-                        System.out.println("SumHist2");
-                        System.out.println(sumhist2);*/
-
-						expectedValueHistory1 = 0;
-						expectedValueHistory2 = 0;
 					}
 				}
 
@@ -110,11 +100,6 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 			distance = sumHistory1 + sumHistory2;
 
 			scaledDistance = scale(distance);
-			//System.out.println("Similarityvalue");
-			//System.out.println(similaritydistance);
-
-			//System.out.println("Distance");
-			//System.out.println(distance);
 
 			list[i] = new SortIntersection(img, scaledDistance);
 			nra_values[i] = new NRA_Algorithm_Sort(i, scaledDistance);
@@ -149,11 +134,6 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		float s = 2000f;
 
 		return 1 / (1 + (dist / s));
-	}
-
-	public float[] getValue()
-	{
-		return value;
 	}
 
 	public NRA_Algorithm_Sort[] getNRA_Values()

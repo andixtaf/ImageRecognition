@@ -302,17 +302,4 @@ class NRA_Algorithm
 		return index;
 	}
 
-	public void displayNRAValues(NRA_Algorithm_Sort[] nra)
-	{
-		for(NRA_Algorithm_Sort aNra : nra) {
-			setValues(aNra.getIndex(), aNra.getDistance());
-		}
-
-	}
-
-	private void setValues(int index, float distance)
-	{
-		this.distance = distance;
-		this.index = index;
-	}
 }
