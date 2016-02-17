@@ -36,6 +36,7 @@ class MainFrame extends JFrame implements ActionListener
 		super("Multimedia Image Recognition");
 
 		File pathToImage = openDirectoryChooser();
+
 		imagesList = loadTestData(pathToImage);
 
 		if(imagesList != null)
@@ -813,7 +814,7 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		Vector<MRImage> imageVector = null;
 		// load all imgList and create their histograms if the directory exists
-		if(pathToImage.exists())
+		if(pathToImage != null && pathToImage.exists())
 		{
 			File[] fileList = pathToImage.listFiles();
 
@@ -853,14 +854,8 @@ class MainFrame extends JFrame implements ActionListener
 			} else {
 				JOptionPane.showMessageDialog(null,"No images in path:\n" + pathToImage.getAbsolutePath(),"Error", JOptionPane.ERROR_MESSAGE);
 			}
-		} else
-		{
-
-			JOptionPane.showMessageDialog(null,
-			                              "Could not open sample image path:\n" + pathToImage.getAbsolutePath() +
-					                              "\n\nThe application will exit.",
-			                              "Error", JOptionPane.ERROR_MESSAGE);
 		}
+
 		return imageVector;
 	}
 
