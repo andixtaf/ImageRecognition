@@ -1,5 +1,5 @@
 //Klasse die für das sortieren der Distance Werte verantwortlich ist
-class SortL1Distance implements Comparable<SortL1Distance>
+public class SortL1Distance implements Comparable<SortL1Distance>
 {
 	private final float distance;
 	private final MRImage img;
