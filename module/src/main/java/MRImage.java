@@ -2,21 +2,23 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
 public class MRImage
 {
 
-	File filePath = null;
-	private BufferedImage image = null;
-	private Image thumbnail = null;
-	private Vector colors;
-	private Vector<Float> hsiColorCount;
+	public static final float MAX_COLOUR_VALUE = 255f;
+	File filePath;
+	private BufferedImage image;
+	private Image thumbnail;
+	private java.util.List<float[]> colors;
+	private java.util.List<Float> hsiColorCount;
 	private int total;
 	private float similarity;
 	private MRImage queryImage;
-	private WritableRaster raster = null;
+	private WritableRaster raster;
 
 	public MRImage(File file, BufferedImage img)
 	{
@@ -91,7 +93,7 @@ public class MRImage
 
 		float[][][] histHSI = new float[18][3][3];
 
-		colors = new Vector();
+		colors = new ArrayList<>();
 
 		hsiColorCount = new Vector<>();
 
@@ -108,9 +110,9 @@ public class MRImage
 
 					float HSIColors[] = new float[3];
 
-					float redValue = RGB.getRed() / 255f;
-					float greenValue = RGB.getBlue() / 255f;
-					float blueValue = RGB.getGreen() / 255f;
+					float redValue = RGB.getRed() / MAX_COLOUR_VALUE;
+					float greenValue = RGB.getBlue() / MAX_COLOUR_VALUE;
+					float blueValue = RGB.getGreen() / MAX_COLOUR_VALUE;
 
 					//Berechnung Hue
 					float x = ((redValue - greenValue) + (redValue - blueValue)) / 2;
@@ -127,13 +129,9 @@ public class MRImage
 					{
 						if(blueValue <= greenValue)
 						{
-							//System.out.println("B < G");
-							//System.out.println((float)((Math.acos(x / y))));
 							Hue = (float) ((Math.acos(x / y)));
 						} else if(blueValue > greenValue)
 						{
-							//System.out.println("B > G");
-							//System.out.println(360 - (float)((Math.acos(x / y))));
 							Hue = 360 - ((float) ((Math.acos(x / y))));
 						}
 					}
@@ -282,9 +280,9 @@ public class MRImage
 					int Iq;
 					Color RGB = new Color(image.getRGB(i, j));
 
-					float R = RGB.getRed() / 255f;
-					float G = RGB.getBlue() / 255f;
-					float B = RGB.getGreen() / 255f;
+					float R = RGB.getRed() / MAX_COLOUR_VALUE;
+					float G = RGB.getBlue() / MAX_COLOUR_VALUE;
+					float B = RGB.getGreen() / MAX_COLOUR_VALUE;
 
 					//Berechnung Hue
 					float x = ((R - G) + (R - B)) / 2;
@@ -299,20 +297,14 @@ public class MRImage
 					{
 						H = 360f - ((float) ((Math.acos(x / y))));
 					}
-					//System.out.println("H");
-					//System.out.println(H);
 
 					//Berechnung Saturation
 					float minRGB = Math.min(Math.min(R, G), B);
 
 					float S = 1 - ((3 * minRGB) / (R + G + B));
-					//System.out.println("S");
-					//System.out.println(S);
 
 					//Berechnung Intensity
 					float I = ((R + G + B) / 3);
-					//System.out.println("I");
-					//System.out.println(I);
 
 					int Hq = (int) ((H) / 20f);
 
@@ -338,15 +330,6 @@ public class MRImage
 						Iq = 2;
 					}
 
-					//System.out.println("Hq");
-					//System.out.println(Hq);
-
-					//System.out.println("Sq");
-					//System.out.println(Sq);
-
-					//System.out.println("Iq");
-					//System.out.println(Iq);
-
 					histogramHSI[Hq][Sq][Iq]++;
 
 					//Histogramm in Text-Datei speichern
@@ -354,18 +337,6 @@ public class MRImage
 			}
 			saveHistogramHSI(histogramHSI, name);
 
-        /*float [] test = getDominantHSIColors(4);
-
-        for (int i = 0; i < test.length; i++) {
-            System.out.println(test[i]);
-        }*/
-        /*for (int i = 0; i < 18; i++) {
-                                    for (int j = 0; j < 3; j++) {
-                                        for (int k = 0; k < 3; k++) {
-                                            System.out.println(histogramHSI[i][j][k]);
-                                        }
-                                    }
-                                }*/
 		}
 	}
 
@@ -548,22 +519,24 @@ public class MRImage
 			colors.add(addcontent);
 		}
 
-		DominantColors[] list = new DominantColors[hsiColorCount.size()];
+		DominantColors[] lidominantColorList = new DominantColors[hsiColorCount.size()];
+
 
 		for(int i = 0; i < hsiColorCount.size(); i++)
 		{
-			color = (float[]) colors.get(i);
-			list[i] = new DominantColors(color, hsiColorCount.get(i));
+			color = colors.get(i);
+			lidominantColorList[i] = new DominantColors(color, hsiColorCount.get(i));
 		}
 
-		Arrays.sort(list);
+		Arrays.sort(lidominantColorList);
 
 		for(int i = 0; i < count; i++)
 		{
-			dominantcolor.add(list[(count - 1) - i].getHSIColor());
+			dominantcolor.add(lidominantColorList[(count - 1) - i].getHSIColor());
 		}
-		colors.removeAllElements();
-		hsiColorCount.removeAllElements();
+
+
+		hsiColorCount.clear();
 		return dominantcolor;
 	}
 

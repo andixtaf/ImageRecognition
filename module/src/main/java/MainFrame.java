@@ -1,6 +1,5 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,7 @@ class MainFrame extends JFrame implements ActionListener
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesSorted;
-	private Vector<MRImage> imagesList = null;
+	private Vector<MRImage> imagesList;
 	private final Intersection intersection = new Intersection();
 	private final L1Distance l1distance = new L1Distance();
 	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
@@ -28,7 +27,7 @@ class MainFrame extends JFrame implements ActionListener
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
 	private JFrame frame, frame1;
-	private int segmentationStep = 0;
+	private int segmentationStep;
 	private JTextField jTextField, jTextField1;
 	private Boolean seg, simi, l1dist, intersec, hsidist, hsiintersec, rgb, hsi, gray, eucl, nra;
 
@@ -36,7 +35,7 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		super("Multimedia Image Recognition");
 
-		File pathToImage = openFileChooser();
+		File pathToImage = openDirectoryChooser();
 		imagesList = loadTestData(pathToImage);
 
 		if(imagesList != null)
@@ -190,9 +189,8 @@ class MainFrame extends JFrame implements ActionListener
 		setJMenuBar(menuBar);
 		add(splitter);
 
-		pack();
 		// just in case the frame should start maximized
-		//setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 
 	/**
@@ -201,7 +199,7 @@ class MainFrame extends JFrame implements ActionListener
 	private void refreshGUI()
 	{
 		//loadTestData() um Images im ausgewählter Ordner zu laden
-		imagesList = loadTestData(openFileChooser());
+		imagesList = loadTestData(openDirectoryChooser());
 		jListFiles = new JList(imagesList);
 		jListFiles.setCellRenderer(new MRImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -880,15 +878,12 @@ class MainFrame extends JFrame implements ActionListener
 		return img;
 	}
 
-	private File openFileChooser()
+	private File openDirectoryChooser()
 	{
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Choose Folder");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setVisible(true);
-
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Only Images", "jpg", "png");
-		fileChooser.setFileFilter(filter);
 
 		int returnVal = fileChooser.showDialog(this, "Select Path");
 

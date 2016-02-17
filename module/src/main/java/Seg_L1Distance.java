@@ -36,7 +36,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
-				String imgname = img.toString();
+				String imageName = img.toString();
 				Vector<BufferedImage> segmentHistory2;
 				Vector hist2 = new Vector();
 
@@ -44,8 +44,8 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 
 				for(int j = 0; j < segmentHistory2.size(); j++) {
 					MRImage seghist2 = new MRImage(img.filePath, segmentHistory2.get(j));
-					seghist2.generateHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
-					hist2seg = seghist2.getHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
+					seghist2.generateHistogramGray(segstep + "Seg" + j + "RGB" + imageName);
+					hist2seg = seghist2.getHistogramGray(segstep + "Seg" + j + "RGB" + imageName);
 					hist2.add(hist2seg);
 				}
 
@@ -55,21 +55,16 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 					for(int l = 0; l < 256; l++) {
 						distanceseg1 += Math.abs(h1seg[l] - h2seg[l]);
 					}
-					//System.out.println("Teil-Distance");
-					//System.out.println(distanceseg1);
+
 					distanceseg.add(distanceseg1);
 					distanceseg1 = 0;
 				}
 
 				for(Float aDistanceseg : distanceseg) {
 					distance += aDistanceseg;
-
 				}
 
 				list[i] = new SortL1Distance(img, distance / segstep);
-
-				//System.out.println("Distance");
-				//System.out.println(distance);
 
 				//distanceseg1 = 0;
 				distance = 0;
@@ -107,6 +102,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[][][] hist2seg;
 			float[][][] h1seg;
 			float[][][] h2seg;
+
 			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
