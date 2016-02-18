@@ -55,16 +55,13 @@ class MainFrame extends JFrame implements ActionListener
 			splash.setMessage("Initializing GUI...");
 
 			createGUI();
-			splash.dispose();
-			splashThread.interrupt();
-
 		} else
 		{
 			JOptionPane.showMessageDialog(null, "Could not load files", "Error", JOptionPane.ERROR_MESSAGE);
-			splash.dispose();
-			splashThread.interrupt();
-			System.exit(1);
 		}
+		splash.dispose();
+		splashThread.interrupt();
+		System.exit(1);
 	}
 
 	private void createGUI()
@@ -199,15 +196,16 @@ class MainFrame extends JFrame implements ActionListener
 	 */
 	private void refreshGUI()
 	{
-		//loadTestData() um Images im ausgewählter Ordner zu laden
 		imagesList = loadTestData(openDirectoryChooser());
 		jListFiles = new JList(imagesList);
 		jListFiles.setCellRenderer(new MRImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 		//Aktualisierung des ScrollPanels mit den neuen Images
 		leftScrollPanel.getViewport().setView(jListFiles);
 		//TODO: Refresh der GUI kommt hier, werfen Sie einen Blick auf
 		// createGUI() für die interessanten Widgets
+		System.out.println("refreshGUI ---------");
 	}
 
 	/**
@@ -444,55 +442,49 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
 
-		if(currentImg != null)
+		JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
+		String imagePath1 = "";
+
+		if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
-			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
-			String imagePath1 = "";
-			if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
+			if(rgb || hsi)
 			{
-				if(rgb)
-				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
-					rgb = false;
-				} else if(hsi)
-				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
-					hsi = false;
-				} else
-				{
-					MRHistogramLabel h =
-							new MRHistogramLabel(currentImg.getHistogramGray(imagePath1 + "/" + currentImg.toString()));
-					d.add(h);
-					d.setSize(256, 480);
-					d.setResizable(false);
-					d.setVisible(true);
-				}
-			} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
+				JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+				rgb = false;
+			} else
 			{
-				if(rgb)
-				{
-					MRHistogramLabel h =
-							new MRHistogramLabel(currentImg.getHistogramRGB(imagePath1 + "/" + currentImg.toString()));
-					d.add(h);
-					d.setSize(512, 480);
-					d.setResizable(false);
-					d.setVisible(true);
-					rgb = false;
-				} else if(hsi)
-				{
-					String name = currentImg.toString();
-					currentImg.generateHistogramHSI(name);
-					MRHistogramLabel h = new MRHistogramLabel(currentImg.getHistogramHSI(name));
-					d.add(h);
-					d.setSize(162, 480);
-					d.setResizable(false);
-					d.setVisible(true);
-					hsi = false;
-				} else if(gray)
-				{
-					JOptionPane.showMessageDialog(null, "no GrayScale Image ", "Error", JOptionPane.ERROR_MESSAGE);
-					gray = false;
-				}
+				MRHistogramLabel h =
+						new MRHistogramLabel(currentImg.getHistogramGray(imagePath1 + "/" + currentImg.toString()));
+				d.add(h);
+				d.setSize(256, 480);
+				d.setResizable(false);
+				d.setVisible(true);
+			}
+		} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
+		{
+			if(rgb)
+			{
+				MRHistogramLabel h =
+						new MRHistogramLabel(currentImg.getHistogramRGB(imagePath1 + "/" + currentImg.toString()));
+				d.add(h);
+				d.setSize(512, 480);
+				d.setResizable(false);
+				d.setVisible(true);
+				rgb = false;
+			} else if(hsi)
+			{
+				String name = currentImg.toString();
+				currentImg.generateHistogramHSI(name);
+				MRHistogramLabel h = new MRHistogramLabel(currentImg.getHistogramHSI(name));
+				d.add(h);
+				d.setSize(162, 480);
+				d.setResizable(false);
+				d.setVisible(true);
+				hsi = false;
+			} else if(gray)
+			{
+				JOptionPane.showMessageDialog(null, "no GrayScale Image ", "Error", JOptionPane.ERROR_MESSAGE);
+				gray = false;
 			}
 		}
 	}
@@ -532,21 +524,21 @@ class MainFrame extends JFrame implements ActionListener
 
 			for(int i = 0; i < segment.size(); i++)
 			{
-				MRImage seg = new MRImage(currentImg.filePath, segment.get(i));
+				MRImage segmentImage = new MRImage(currentImg.filePath, segment.get(i));
 				if(rgb)
 				{
-					seg.generateHistogramRGB(segstep + "Seg" + i + "RGB" + name);
-					float[][][] hist1seg = seg.getHistogramRGB(segstep + "Seg" + i + "RGB" + name);
+					segmentImage.generateHistogramRGB(segstep + "Seg" + i + "RGB" + name);
+					float[][][] hist1seg = segmentImage.getHistogramRGB(segstep + "Seg" + i + "RGB" + name);
 					hist.add(hist1seg);
 				} else if(hsi)
 				{
-					seg.generateHistogramHSI(segstep + "Seg" + i + "HSI" + name);
-					float[][][] hist1seg = seg.getHistogramHSI(segstep + "Seg" + i + "HSI" + name);
+					segmentImage.generateHistogramHSI(segstep + "Seg" + i + "HSI" + name);
+					float[][][] hist1seg = segmentImage.getHistogramHSI(segstep + "Seg" + i + "HSI" + name);
 					hist.add(hist1seg);
 				} else if(gray)
 				{
-					seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
-					float[] hist1seg = seg.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
+					segmentImage.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
+					float[] hist1seg = segmentImage.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
 					hist.add(hist1seg);
 				}
 			}
@@ -833,12 +825,12 @@ class MainFrame extends JFrame implements ActionListener
 						{
 							if(image.getType() == BufferedImage.TYPE_BYTE_GRAY)
 							{
-								MRImage mrImage = new MRImage(file.getAbsoluteFile(),image);
+								MRImage mrImage = new MRImage(file.getAbsoluteFile(), image);
 								mrImage.generateHistogramGray(file.toString());
 								imageVector.add(mrImage);
 							} else if(image.getType() == BufferedImage.TYPE_3BYTE_BGR)
 							{
-								MRImage mrImage = new MRImage(file.getAbsoluteFile(),image);
+								MRImage mrImage = new MRImage(file.getAbsoluteFile(), image);
 								mrImage.generateHistogramRGB(file.toString());
 								imageVector.add(mrImage);
 							} else
@@ -851,8 +843,10 @@ class MainFrame extends JFrame implements ActionListener
 
 				System.out.println("Total number of loaded imagesList: " + imageVector.size());
 
-			} else {
-				JOptionPane.showMessageDialog(null,"No images in path:\n" + pathToImage.getAbsolutePath(),"Error", JOptionPane.ERROR_MESSAGE);
+			} else
+			{
+				JOptionPane.showMessageDialog(null, "No images in path:\n" + pathToImage.getAbsolutePath(), "Error",
+				                              JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
