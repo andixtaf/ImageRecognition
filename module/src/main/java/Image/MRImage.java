@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,15 +9,14 @@ public class MRImage
 {
 
 	public static final float MAX_COLOUR_VALUE = 255f;
-	File filePath;
+	protected File filePath;
 	private BufferedImage image;
 	private Image thumbnail;
 	private java.util.List<float[]> colors;
 	private java.util.List<Float> hsiColorCount;
-	private int total;
 	private float similarity;
 	private MRImage queryImage;
-	private WritableRaster raster;
+	private Histogram histogram = new Histogram();
 
 	public MRImage(File file, BufferedImage img)
 	{
@@ -27,7 +25,6 @@ public class MRImage
 		similarity = 1.0f;
 		queryImage = this;
 		thumbnail = image.getScaledInstance(-1, 60, Image.SCALE_FAST);
-		raster = image.getRaster();
 	}
 
 	public Vector<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
@@ -204,33 +201,11 @@ public class MRImage
 		}
 	}
 
-	//Graustufen Histogramm erzeugen
 	public void generateHistogramGray(String name)
 	{
-		if(image != null)
-		{
-			//TODO: normalisiertes Histogramm erzeugen
-			float[] histogramGray = new float[256];
-
-			for(int x = 0; x < image.getWidth(); x++)
-			{
-				for(int y = 0; y < image.getHeight(); y++)
-				{
-					int[] pixel = null;
-					pixel = raster.getPixel(x, y, pixel);
-					//Anzahl der vorkommenden Pixel an der Stelle i
-					histogramGray[pixel[0]]++;
-					//Anzahl der Pixel des gesamten Bildes
-					total++;
-				}
-			}
-
-			normalize(histogramGray);
-			//Histogramm in Text-Datei speichern
-			saveHistogramGray(histogramGray, name);
-
-		}
+		histogram.generateHistogramGray(image, name);
 	}
+
 
 	//RGB Histogramm erzeugen
 	public void generateHistogramRGB(String name)
@@ -332,7 +307,6 @@ public class MRImage
 
 					histogramHSI[Hq][Sq][Iq]++;
 
-					//Histogramm in Text-Datei speichern
 				}
 			}
 			saveHistogramHSI(histogramHSI, name);
@@ -340,40 +314,7 @@ public class MRImage
 		}
 	}
 
-	//TODO Graustufen Histogramm normalisieren
-	private void normalize(float[] histogram)
-	{
 
-		float sum = 0;
-		for(int i = 0; i < 256; i++)
-		{
-
-			histogram[i] = histogram[i] / total;
-			//sum += histogram[i];
-		}
-
-		//System.out.println(sum);
-	}
-
-	private void saveHistogramGray(float[] histogram, String name)
-	{
-
-		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
-		if(!file.exists())
-		{
-			try
-			{
-				//von ImageName.jpg den .jpg abschneiden und mit -Gray.txt ersetzen
-				ObjectOutputStream output = new ObjectOutputStream(
-						new FileOutputStream(name.substring(0, name.length() - 4) + "-Gray.txt"));
-				output.writeObject(histogram);
-				output.close();
-			} catch(IOException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-	}
 
 	//RGB Histogramm in Text-Datei speichern
 	private void saveHistogramRGB(float[][][] histogram, String name)
