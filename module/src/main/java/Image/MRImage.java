@@ -9,6 +9,7 @@ public class MRImage
 {
 
 	public static final float MAX_COLOUR_VALUE = 255f;
+
 	protected File filePath;
 	private BufferedImage image;
 	private Image thumbnail;
