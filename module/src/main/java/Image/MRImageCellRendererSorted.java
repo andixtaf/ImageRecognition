@@ -19,7 +19,6 @@ class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
 			MRImage img = (MRImage) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 			similarity = img.getSimilarity();
-
 		}
 
 		setText(value.toString() + " Similarity: " + similarity);

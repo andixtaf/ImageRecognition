@@ -1,5 +1,8 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +33,7 @@ class MainFrame extends JFrame implements ActionListener
 	private int segmentationStep;
 	private JTextField jTextField, jTextField1;
 	private Boolean seg, simi, l1dist, intersec, hsidist, hsiintersec, rgb, hsi, gray, eucl, nra;
+	private JLabel statusBarLabel;
 
 	public MainFrame(SplashScreen splash, Thread splashThread) throws HeadlessException
 	{
@@ -55,18 +59,89 @@ class MainFrame extends JFrame implements ActionListener
 			splash.setMessage("Initializing GUI...");
 
 			createGUI();
+			statusBarLabel.setText("Total number of loaded imagesList: " + imagesList.size());
+
+			splash.dispose();
+			splashThread.interrupt();
 		} else
 		{
 			JOptionPane.showMessageDialog(null, "Could not load files", "Error", JOptionPane.ERROR_MESSAGE);
+			splash.dispose();
+			splashThread.interrupt();
+			System.exit(1);
 		}
-		splash.dispose();
-		splashThread.interrupt();
-		System.exit(1);
+
 	}
 
 	private void createGUI()
 	{
+		setLayout(new BorderLayout());
 
+
+		// create widgets
+		JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+		JSplitPane leftSplitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+
+		JPanel leftCmdPanel = new JPanel();
+		leftCmdPanel.setLayout(new BoxLayout(leftCmdPanel, BoxLayout.X_AXIS));
+
+		JButton btnPreview = new JButton("Preview");
+		btnPreview.addActionListener(this);
+		btnPreview.setToolTipText("Displays a full-sized preview of the currently selected image");
+		btnPreview.setMnemonic(KeyEvent.VK_P);
+
+		JButton segmentButton = new JButton("Segmentation");
+		segmentButton.addActionListener(this);
+		segmentButton.setMnemonic(KeyEvent.VK_P);
+
+		leftCmdPanel.add(btnPreview);
+		leftCmdPanel.add(segmentButton);
+
+		// list for displaying the test data imgList
+		jListFiles = new JList(imagesList);
+		jListFiles.setCellRenderer(new MRImageCellRenderer());
+		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		leftScrollPanel = new JScrollPane(jListFiles);
+		leftSplitter.add(leftCmdPanel);
+		leftSplitter.add(leftScrollPanel);
+
+		// list for displaying the sorted list of imgList
+		jListFilesSorted = new JList();
+		jListFilesSorted.setCellRenderer(new MRImageCellRendererSorted());
+		jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		rightPanel = new JScrollPane(jListFilesSorted);
+		rightPanel.setBackground(Color.BLACK);
+		rightPanel.setForeground(Color.WHITE);
+		rightPanel.setPreferredSize(new Dimension(1700, 800));
+
+		splitter.add(leftSplitter);
+		splitter.add(rightPanel);
+
+		// finally add everything to the main frame
+		setJMenuBar(createJMenuBar());
+		add(splitter);
+
+		// create the status bar panel and shove it down the bottom of the frame
+		JPanel statusBar = new JPanel();
+		statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		add(statusBar, BorderLayout.SOUTH);
+//		statusBar.setPreferredSize(new Dimension(frame.getWidth(), 16));
+		statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
+		statusBarLabel = new JLabel("status");
+		statusBarLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		statusBar.add(statusBarLabel);
+		add(statusBar, BorderLayout.SOUTH);
+
+		// just in case the frame should start maximized
+		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+	}
+
+	@NotNull
+	private JMenuBar createJMenuBar()
+	{
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu menuFile = new JMenu("File");
@@ -140,55 +215,7 @@ class MainFrame extends JFrame implements ActionListener
 		menuBar.add(menuFile);
 		menuBar.add(histogram);
 		menuBar.add(menuAlgorithms);
-
-		// create widgets
-		JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
-		JSplitPane leftSplitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-
-		JPanel leftCmdPanel = new JPanel();
-		leftCmdPanel.setLayout(new BoxLayout(leftCmdPanel, BoxLayout.X_AXIS));
-
-		JButton btnPreview = new JButton("Preview");
-		btnPreview.addActionListener(this);
-		btnPreview.setToolTipText("Displays a full-sized preview of the currently selected image");
-		btnPreview.setMnemonic(KeyEvent.VK_P);
-
-		JButton segmentButton = new JButton("Segmentation");
-		segmentButton.addActionListener(this);
-		segmentButton.setMnemonic(KeyEvent.VK_P);
-
-		leftCmdPanel.add(btnPreview);
-		leftCmdPanel.add(segmentButton);
-
-		// list for displaying the test data imgList
-		jListFiles = new JList(imagesList);
-		jListFiles.setCellRenderer(new MRImageCellRenderer());
-		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		leftScrollPanel = new JScrollPane(jListFiles);
-		leftSplitter.add(leftCmdPanel);
-		leftSplitter.add(leftScrollPanel);
-
-		// list for displaying the sorted list of imgList
-		jListFilesSorted = new JList();
-		jListFilesSorted.setCellRenderer(new MRImageCellRendererSorted());
-		jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		rightPanel = new JScrollPane(jListFilesSorted);
-		rightPanel.setBackground(Color.BLACK);
-		rightPanel.setForeground(Color.WHITE);
-		rightPanel.setPreferredSize(new Dimension(1900, 1000));
-
-		splitter.add(leftSplitter);
-		splitter.add(rightPanel);
-
-		// finally add everything to the main frame
-		setJMenuBar(menuBar);
-		add(splitter);
-
-		// just in case the frame should start maximized
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		return menuBar;
 	}
 
 	/**

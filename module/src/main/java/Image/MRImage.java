@@ -95,111 +95,107 @@ public class MRImage
 
 		hsiColorCount = new Vector<>();
 
-		if(image != null)
+		for(int i = 0; i < image.getWidth(); i++)
 		{
-
-			for(int i = 0; i < image.getWidth(); i++)
+			for(int j = 0; j < image.getHeight(); j++)
 			{
-				for(int j = 0; j < image.getHeight(); j++)
+				int Sq;
+				int Iq;
+				Color RGB = new Color(image.getRGB(i, j));
+
+				float HSIColors[] = new float[3];
+
+				float redValue = RGB.getRed() / MAX_COLOUR_VALUE;
+				float greenValue = RGB.getBlue() / MAX_COLOUR_VALUE;
+				float blueValue = RGB.getGreen() / MAX_COLOUR_VALUE;
+
+				//Berechnung Hue
+				float x = ((redValue - greenValue) + (redValue - blueValue)) / 2;
+				float y = (float) (Math.sqrt(((redValue - greenValue) * (redValue - greenValue)) +
+						                             ((redValue - blueValue) * (greenValue - blueValue))));
+
+				float Hue = 0;
+				float Saturation;
+
+				if(y == 0)
 				{
-					int Sq;
-					int Iq;
-					Color RGB = new Color(image.getRGB(i, j));
-
-					float HSIColors[] = new float[3];
-
-					float redValue = RGB.getRed() / MAX_COLOUR_VALUE;
-					float greenValue = RGB.getBlue() / MAX_COLOUR_VALUE;
-					float blueValue = RGB.getGreen() / MAX_COLOUR_VALUE;
-
-					//Berechnung Hue
-					float x = ((redValue - greenValue) + (redValue - blueValue)) / 2;
-					float y = (float) (Math.sqrt(((redValue - greenValue) * (redValue - greenValue)) +
-							                             ((redValue - blueValue) * (greenValue - blueValue))));
-
-					float Hue = 0;
-					float Saturation;
-
-					if(y == 0)
-					{
-						Hue = 0;
-					} else
-					{
-						if(blueValue <= greenValue)
-						{
-							Hue = (float) ((Math.acos(x / y)));
-						} else if(blueValue > greenValue)
-						{
-							Hue = 360 - ((float) ((Math.acos(x / y))));
-						}
-					}
-
-					//Berechnung Saturation
-					float minRGB = Math.min(Math.min(redValue, greenValue), blueValue);
-
-					if((redValue + greenValue + blueValue) == 0)
-					{
-						Saturation = 1;
-					} else
-					{
-						Saturation = 1 - ((3 * minRGB) / (redValue + greenValue + blueValue));
-					}
-
-					//Berechnung Intensity
-					float I = ((redValue + greenValue + blueValue) / 3);
-
-					int Hq = (int) ((Hue) / 20f);
-
-					if(Saturation * 3 < (1 / 3f))
-					{
-						Sq = 0;
-					} else if(Saturation * 3 < (2 / 3f))
-					{
-						Sq = 1;
-					} else
-					{
-						Sq = 2;
-					}
-
-					if(I * 3 < 85)
-					{
-						Iq = 0;
-					} else if(I * 3 < 170)
-					{
-						Iq = 1;
-					} else
-					{
-						Iq = 2;
-					}
-
-					float Sat = Saturation * 100;
-
-					float Int = I * 255;
-
-					histHSI[Hq][Sq][Iq]++;
-
-					if(histHSI[Hq][Sq][Iq] == 1.0)
-					{
-						HSIColors[0] = Hue;
-						HSIColors[1] = Sat;
-						HSIColors[2] = Int;
-					}
-					colors.add(HSIColors);
-				}
-			}
-
-			for(int i = 0; i < 18; i++)
-			{
-				for(int j = 0; j < 3; j++)
+					Hue = 0;
+				} else
 				{
-					for(int k = 0; k < 3; k++)
+					if(blueValue <= greenValue)
 					{
-						hsiColorCount.add(histHSI[i][j][k]);
+						Hue = (float) ((Math.acos(x / y)));
+					} else if(blueValue > greenValue)
+					{
+						Hue = 360 - ((float) ((Math.acos(x / y))));
 					}
 				}
-			}
 
+				//Berechnung Saturation
+				float minRGB = Math.min(Math.min(redValue, greenValue), blueValue);
+
+				if((redValue + greenValue + blueValue) == 0)
+				{
+					Saturation = 1;
+				} else
+				{
+					Saturation = 1 - ((3 * minRGB) / (redValue + greenValue + blueValue));
+				}
+
+				//Berechnung Intensity
+				float I = ((redValue + greenValue + blueValue) / 3);
+
+				int Hq = (int) ((Hue) / 20f);
+
+				if(Saturation * 3 < (1 / 3f))
+				{
+					Sq = 0;
+				} else if(Saturation * 3 < (2 / 3f))
+				{
+					Sq = 1;
+				} else
+				{
+					Sq = 2;
+				}
+
+				if(I * 3 < 85)
+				{
+					Iq = 0;
+				} else if(I * 3 < 170)
+				{
+					Iq = 1;
+				} else
+				{
+					Iq = 2;
+				}
+
+				float Sat = Saturation * 100;
+
+				float Int = I * 255;
+
+				histHSI[Hq][Sq][Iq]++;
+
+				if(histHSI[Hq][Sq][Iq] == 1.0)
+				{
+					HSIColors[0] = Hue;
+					HSIColors[1] = Sat;
+					HSIColors[2] = Int;
+				}
+				colors.add(HSIColors);
+			}
 		}
+
+		for(int i = 0; i < 18; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				for(int k = 0; k < 3; k++)
+				{
+					hsiColorCount.add(histHSI[i][j][k]);
+				}
+			}
+		}
+
 	}
 
 	public void generateHistogramGray(String name)
@@ -207,35 +203,30 @@ public class MRImage
 		histogram.generateHistogramGray(image, name);
 	}
 
-
 	//RGB Histogramm erzeugen
 	public void generateHistogramRGB(String name)
 	{
-		if(image != null)
+		float[][][] histogramRGB = new float[8][8][8];
+
+		for(int x = 0; x < image.getWidth(); x++)
 		{
-
-			float[][][] histogramRGB = new float[8][8][8];
-
-			for(int x = 0; x < image.getWidth(); x++)
+			for(int y = 0; y < image.getHeight(); y++)
 			{
-				for(int y = 0; y < image.getHeight(); y++)
-				{
 
-					Color rgb = new Color(image.getRGB(x, y));
+				Color rgb = new Color(image.getRGB(x, y));
 
-					//jeweils Rot, Grün und Blau Farbwerte aus rgb erzeugen
-					int r = (rgb.getRed()) / 32;
-					int g = (rgb.getGreen()) / 32;
-					int b = (rgb.getBlue()) / 32;
+				//jeweils Rot, Grün und Blau Farbwerte aus rgb erzeugen
+				int r = (rgb.getRed()) / 32;
+				int g = (rgb.getGreen()) / 32;
+				int b = (rgb.getBlue()) / 32;
 
-					//Werte in Histogramm eintragen und gleiche Werte hochzählen
-					histogramRGB[r][g][b]++;
-				}
+				//Werte in Histogramm eintragen und gleiche Werte hochzählen
+				histogramRGB[r][g][b]++;
 			}
-
-			//Histogramm in Text-Datei speichern
-			saveHistogramRGB(histogramRGB, name);
 		}
+
+		//Histogramm in Text-Datei speichern
+		saveHistogramRGB(histogramRGB, name);
 
 	}
 
@@ -314,8 +305,6 @@ public class MRImage
 
 		}
 	}
-
-
 
 	//RGB Histogramm in Text-Datei speichern
 	private void saveHistogramRGB(float[][][] histogram, String name)
@@ -463,7 +452,6 @@ public class MRImage
 
 		DominantColors[] lidominantColorList = new DominantColors[hsiColorCount.size()];
 
-
 		for(int i = 0; i < hsiColorCount.size(); i++)
 		{
 			color = colors.get(i);
@@ -476,7 +464,6 @@ public class MRImage
 		{
 			dominantcolor.add(lidominantColorList[(count - 1) - i].getHSIColor());
 		}
-
 
 		hsiColorCount.clear();
 		return dominantcolor;
