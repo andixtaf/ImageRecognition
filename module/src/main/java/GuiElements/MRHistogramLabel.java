@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 class MRHistogramLabel extends JLabel
 {
@@ -66,20 +66,23 @@ class MRHistogramLabel extends JLabel
 
 	private float getMaxHSI()
 	{
-		//System.out.println(histogram.length);
-		Vector<Float> maximum = new Vector<>();
+		java.util.List<Float> maximum = new ArrayList<>();
 		float max = 0;
 
-		for(int i = 0; i < 18; i++) {
-			for(int j = 0; j < 3; j++) {
-				for(int k = 0; k < 3; k++) {
+		for(int i = 0; i < 18; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				for(int k = 0; k < 3; k++)
+				{
 					//System.out.println(histogram[i][j][k]);
 					maximum.add(histogram[i][j][k]);
 				}
 			}
 		}
 
-		for(Float aMaximum : maximum) {
+		for(Float aMaximum : maximum)
+		{
 			max = Math.max(aMaximum, max);
 		}
 

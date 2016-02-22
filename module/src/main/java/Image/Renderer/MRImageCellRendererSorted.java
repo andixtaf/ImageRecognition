@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
+public class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
 {
 
 	public MRImageCellRendererSorted()

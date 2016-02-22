@@ -5,7 +5,6 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 {
 
 	private NRA_Algorithm_Sort[] nra_values;
-	private float[] value;
 
 	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int number)
 	{
@@ -22,9 +21,8 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		int x = 0;
 
 		String name = query.toString();
-		//HSI Histogramm generieren
 		query.generateHistogramHSI(name);
-		//Histogramm laden
+
 		float[][][] hist1 = query.getHistogramHSI(name);
 		float[][][] hist2;
 
@@ -56,25 +54,9 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 							x = 1;
 						}
 
-                        /*System.out.println("Sum1Sum2");
-                        System.out.println(sum1sum2);
-                        System.out.println("Sum1");
-                        System.out.println(sum1);
-                        System.out.println("Sum2");
-                        System.out.println(sum2);
-                        System.out.println("CurrentHistValue1");
-                        System.out.println(hist1 [j][k][l]);
-                        System.out.println("CurrentHistValue2");
-                        System.out.println(hist2 [j][k][l]);*/
-
 						//erwartete Werte der Histogramme bestimmen
 						expectedValueHistory1 = ((hist1[j][k][l] + hist2[j][k][l]) * sum1) / sum1sum2;
 						expectedValueHistory2 = ((hist1[j][k][l] + hist2[j][k][l]) * sum2) / sum1sum2;
-
-                        /*System.out.println("ExpectedValue1");
-                        System.out.println(expectedvaluehist1);
-                        System.out.println("ExpectedValue2");
-                        System.out.println(expectedvaluehist2);*/
 
 						if(expectedValueHistory1 == 0) {
 							sumHistory1 += 0;
@@ -115,12 +97,10 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
 		Vector<MRImage> sortedlist = new Vector<>();
-		value = new float[list.length];
 		for(int i = 0; i < list.length; i++) {
 			float dist = list[i].getIntersection();
-			value[i] = list[i].getIntersection();
 			MRImage image = list[i].getMRImage();
-			//neues Repository erstellt welches sortierte Elemente enthält
+
 			sortedlist.add(image);
 			image.setSimilarity(dist, image);
 		}

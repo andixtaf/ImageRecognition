@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.Vector;
 
-//Klasse zur Berechnung der Intersection
 public class HSI_Intersection implements SimilarityAlgorithm
 {
 

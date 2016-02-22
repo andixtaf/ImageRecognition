@@ -2,7 +2,6 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
 
-//Klasse zur Berechnung der Intersection
 public class Intersection implements SimilarityAlgorithm
 {
 

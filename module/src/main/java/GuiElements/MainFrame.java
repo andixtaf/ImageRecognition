@@ -77,8 +77,6 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		setLayout(new BorderLayout());
 
-
-		// create widgets
 		JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 		JSplitPane leftSplitter = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -379,19 +377,12 @@ class MainFrame extends JFrame implements ActionListener
 				l1dist = true;
 				chooseSegmentationStep();
 
-			} else if(m.getText().equals("HSI-Intersection-Segmentation"))
+			} else if(m.getText().equals("HSI-Intersection-Segmentation") || m.getText().equals("HSI-L1Distance-Segmentation"))
 			{
 
 				simi = true;
 				hsiintersec = true;
-				check();
-
-			} else if(m.getText().equals("HSI-L1Distance-Segmentation"))
-			{
-
-				simi = true;
-				hsidist = true;
-				check();
+				check((MRImage) jListFiles.getSelectedValue());
 
 			} else if(m.getText().equals("HSI-Intersection"))
 			{
@@ -516,21 +507,18 @@ class MainFrame extends JFrame implements ActionListener
 		}
 	}
 
-	private void check()
+	private void check(MRImage image)
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
-		if(currentImg != null)
+		if(image.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
-			if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
-			{
-				JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
-				hsiintersec = false;
-				hsidist = false;
-			} else
-			{
-				chooseSegmentationStep();
-			}
+			JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+			hsiintersec = false;
+			hsidist = false;
+		} else
+		{
+			chooseSegmentationStep();
 		}
+
 	}
 
 	private void displayHistogramSegment(Vector<BufferedImage> segment)
@@ -888,6 +876,7 @@ class MainFrame extends JFrame implements ActionListener
 			img = ImageIO.read(file);
 		} catch(IOException e)
 		{
+			statusBarLabel.setText("Could not read files!!!");
 			System.err.println("Could not read file: " + file);
 			e.printStackTrace();
 		}

@@ -1,11 +1,10 @@
 import java.util.Arrays;
 import java.util.Vector;
 
-class HSI_Euclidean_Distance
+public class HSI_Euclidean_Distance
 {
 
 	private NRA_Algorithm_Sort[] nra_values;
-	private Float[] value;
 
 	public Vector<MRImage> applySimilarity(MRImage query, Vector<MRImage> repository, int number, int similarity)
 	{
@@ -48,12 +47,11 @@ class HSI_Euclidean_Distance
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
 		Vector<MRImage> sortedlist = new Vector<>();
-		value = new Float[list.length];
 
-		for(int i = 0; i < list.length; i++) {
-			Float dist = list[i].getDistance();
-			value[i] = list[i].getDistance();
-			MRImage image = list[i].getMRImage();
+		for(SortL1Distance aList : list)
+		{
+			Float dist = aList.getDistance();
+			MRImage image = aList.getMRImage();
 			sortedlist.add(image);
 			image.setSimilarity(dist, image);
 		}
@@ -63,7 +61,7 @@ class HSI_Euclidean_Distance
 
 	private Float scale(Float dist)
 	{
-		Float s = 2000F;
+		Float s = 2_000F;
 
 		return 1 / (1 + (dist / s));
 	}

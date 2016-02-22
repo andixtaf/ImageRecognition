@@ -3,18 +3,13 @@ import java.util.Vector;
 
 class NRA_Algorithm
 {
-
-	private float distance = 1.0f;
-	private int index = 0;
-
 	public NRA_Algorithm_Sort[] calculate(NRA_Algorithm_Sort[] euclidean, NRA_Algorithm_Sort[] chisquare, int k)
 	{
 
 		NRA_Algorithm_Sort[] nra = new NRA_Algorithm_Sort[euclidean.length];
 		Vector<Float> ub_agg_list = new Vector<>();
-		//keine Ahnung warum wir die Klasse Search genannt haben
-		//im Nachhinein betrachtet, wäre Write eigentlich wesentlich
-		//passender gewesen
+
+
 		Vector<Search> read = new Vector<>();
 		Vector<Integer> remindexl = new Vector<>();
 		Vector<Integer> remindexr = new Vector<>();
@@ -34,17 +29,8 @@ class NRA_Algorithm
 		boolean check = false;
 
 		for(int i = 0; i < euclidean.length; i++) {
-			//System.out.println(i);
-			//System.out.println("remindexl");
-			//System.out.println(remindexl.size());
-			//System.out.println("remindexr");
-			//System.out.println(remindexr.size());
-			//System.out.println("Distance eucl");
 			ol = euclidean[i].getDistance();
-			//System.out.println(ol);
-			//System.out.println("Distance chi");
 			or = chisquare[i].getDistance();
-			//System.out.println(or);
 
 			if(read.size() > 1) {
 				//prüfen ob momentaner Index der beiden Listen sich in der Liste read befindet
@@ -55,25 +41,19 @@ class NRA_Algorithm
 			//Das passiert nur bei ersten lesen und einfügen der Indexwerte
 			//von beiden Listen, da die read - Liste noch leer ist
 			else {
-				//System.out.println("read > 2");
-				//System.out.println("Index eucl");
 				oleft = euclidean[i].getIndex();
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
 				remindexl.add(euclidean[i].getIndex());
-				//System.out.println(oleft);
-				//System.out.println("Index chi");
+
 				oright = chisquare[i].getIndex();
 				read.add(new Search(chisquare[i].getIndex(), or / 2, (ol + or) / 2));
 				remindexr.add(chisquare[i].getIndex());
-				//System.out.println(oright);
 			}
 
 			//prüfen der linken Liste ob Index noch nicht vorhanden
 			if(checkl == -1.0f) {
 				oleft = euclidean[i].getIndex();
-				//System.out.println("Neu left");
-				//System.out.println("Index eucl");
-				//neues Element in Liste einfügen
+
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
 				//System.out.println(oleft);
 				//Index ebenfalls in seperate Liste einfügen
@@ -283,23 +263,6 @@ class NRA_Algorithm
 			}
 		}
 		return 0;
-	}
-
-	//die nächsten Funktionen sind eigentlich unnötig
-	//das Einfügen der einzelnen Werte sollte wie bei MRImage auch
-	//über einen CellRenderer funktionen, aber das hat einfach nicht
-	//funktioniert
-	//vielleicht hast du ja einen Tipp wie man das doch noch funktionsfähig
-	//machen kann
-	//die zugehörige CellRenderer Klasse heißt NRACellRenderer
-	public float getDistance()
-	{
-		return distance;
-	}
-
-	public int getIndex()
-	{
-		return index;
 	}
 
 }

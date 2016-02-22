@@ -1,10 +1,8 @@
-//Klasse die für das sortieren der Distance Werte verantwortlich ist
 public class SortL1Distance implements Comparable<SortL1Distance>
 {
 	private final float distance;
 	private final MRImage img;
 
-	//Tupel in dem Img und dazugehörige Distance gespeichert wird
 	public SortL1Distance(MRImage img, float distance)
 	{
 		this.img = img;
