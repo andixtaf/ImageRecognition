@@ -1,8 +1,5 @@
 package GuiElements;
 
-import image.MRImage;
-import image.Renderer.MRImageCellRenderer;
-import image.Renderer.MRImageCellRendererSorted;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -23,7 +20,7 @@ public class MainFrame extends JFrame implements ActionListener
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesSorted;
-	private Vector<MRImage> imagesList;
+	private Vector<image.MRImage> imagesList;
 	private final Intersection intersection = new Intersection();
 	private final L1Distance l1distance = new L1Distance();
 	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
@@ -103,7 +100,7 @@ public class MainFrame extends JFrame implements ActionListener
 
 		// list for displaying the test data imgList
 		jListFiles = new JList(imagesList);
-		jListFiles.setCellRenderer(new MRImageCellRenderer());
+		jListFiles.setCellRenderer(new image.Renderer.MRImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		leftScrollPanel = new JScrollPane(jListFiles);
@@ -112,7 +109,7 @@ public class MainFrame extends JFrame implements ActionListener
 
 		// list for displaying the sorted list of imgList
 		jListFilesSorted = new JList();
-		jListFilesSorted.setCellRenderer(new MRImageCellRendererSorted());
+		jListFilesSorted.setCellRenderer(new image.Renderer.MRImageCellRendererSorted());
 		jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		rightPanel = new JScrollPane(jListFilesSorted);
@@ -228,7 +225,7 @@ public class MainFrame extends JFrame implements ActionListener
 	{
 		imagesList = loadTestData(openDirectoryChooser());
 		jListFiles = new JList(imagesList);
-		jListFiles.setCellRenderer(new MRImageCellRenderer());
+		jListFiles.setCellRenderer(new image.Renderer.MRImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		//Aktualisierung des ScrollPanels mit den neuen Images
@@ -324,7 +321,7 @@ public class MainFrame extends JFrame implements ActionListener
 		{
 			JMenuItem m = (JMenuItem) src;
 			jListFilesSorted = new JList();
-			jListFilesSorted.setCellRenderer(new MRImageCellRendererSorted());
+			jListFilesSorted.setCellRenderer(new image.Renderer.MRImageCellRendererSorted());
 			jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			rightPanel.getViewport().setView(jListFilesSorted);
 			if(m.getText().equals("Exit"))

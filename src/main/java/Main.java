@@ -1,3 +1,5 @@
+import GuiElements.MainFrame;
+
 import javax.swing.*;
 
 class Main

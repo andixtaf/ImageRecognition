@@ -1,3 +1,4 @@
+
 import image.MRImage;
 
 import java.awt.image.BufferedImage;
@@ -7,7 +8,7 @@ import java.util.Vector;
 public class Intersection implements SimilarityAlgorithm
 {
 
-	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int segstep)
+	public Vector<MRImage> apply(image.MRImage query, Vector<image.MRImage> repository, int segstep)
 	{
 		float intersection;
 		float minsum = 0;
@@ -21,7 +22,7 @@ public class Intersection implements SimilarityAlgorithm
 			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
-				MRImage img = repository.get(i);
+				image.MRImage img = repository.get(i);
 				String imgname = img.filePath.getAbsolutePath();
 
 				hist2 = img.getHistogramGray(imgname);
@@ -40,10 +41,10 @@ public class Intersection implements SimilarityAlgorithm
 			}
 			//Liste absteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<image.MRImage> sortedlist = new Vector<>();
 			for(SortIntersection aList : list) {
 				float intersect = aList.getIntersection();
-				MRImage image = aList.getMRImage();
+				image.MRImage image = aList.getMRImage();
 
 				sortedlist.add(image);
 				image.setSimilarity(intersect, image);
@@ -59,7 +60,7 @@ public class Intersection implements SimilarityAlgorithm
 			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
-				MRImage img = repository.get(i);
+				image.MRImage img = repository.get(i);
 				String imgname = img.filePath.getAbsolutePath();
 				System.out.println(imgname);
 
@@ -83,10 +84,10 @@ public class Intersection implements SimilarityAlgorithm
 			}
 			//Liste absteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<image.MRImage> sortedlist = new Vector<>();
 			for(SortIntersection aList : list) {
 				float intersect = aList.getIntersection();
-				MRImage image = aList.getMRImage();
+				image.MRImage image = aList.getMRImage();
 				//neues Repository erstellt welches sortierte Elemente enth�lt
 				sortedlist.add(image);
 				image.setSimilarity(intersect, image);
