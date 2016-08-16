@@ -1,3 +1,8 @@
+package GuiElements;
+
+import image.MRImage;
+import image.Renderer.MRImageCellRenderer;
+import image.Renderer.MRImageCellRendererSorted;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -12,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-class MainFrame extends JFrame implements ActionListener
+public class MainFrame extends JFrame implements ActionListener
 {
 
 	private JScrollPane leftScrollPanel;
@@ -37,7 +42,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	public MainFrame(SplashScreen splash, Thread splashThread) throws HeadlessException
 	{
-		super("Multimedia Image Recognition");
+		super("Multimedia image Recognition");
 
 		File pathToImage = openDirectoryChooser();
 
@@ -229,7 +234,7 @@ class MainFrame extends JFrame implements ActionListener
 		//Aktualisierung des ScrollPanels mit den neuen Images
 		leftScrollPanel.getViewport().setView(jListFiles);
 		//TODO: Refresh der GUI kommt hier, werfen Sie einen Blick auf
-		// createGUI() für die interessanten Widgets
+		// createGUI() fï¿½r die interessanten Widgets
 		System.out.println("refreshGUI ---------");
 	}
 
@@ -248,7 +253,7 @@ class MainFrame extends JFrame implements ActionListener
 			if(btn.getText().equals("Preview"))
 			{
 				// display a full-sized preview
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg != null)
 				{
 					JDialog d = new JDialog(this, currentImg.toString());
@@ -290,7 +295,7 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(btn.getText().equals("Confirm"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				String num = jTextField1.getText();
 				int snumber = Integer.parseInt(num);
 				frame1.dispose();
@@ -329,9 +334,9 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(m.getText().equals("Intersection"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				jListFilesSorted.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
-				//Imagepfad ändern und Images laden
+				//Imagepfad ï¿½ndern und Images laden
 			} else if(m.getText().equals("Load Testdata"))
 			{
 
@@ -340,7 +345,7 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(m.getText().equals("L1-Distance"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				jListFilesSorted.setListData(l1distance.apply(currentImg, imagesList, segmentationStep));
 			} else if(m.getText().equals("GrayScale"))
 			{
@@ -382,15 +387,15 @@ class MainFrame extends JFrame implements ActionListener
 
 				simi = true;
 				hsiintersec = true;
-				check((MRImage) jListFiles.getSelectedValue());
+				check((Image.MRImage) jListFiles.getSelectedValue());
 
 			} else if(m.getText().equals("HSI-Intersection"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					jListFilesSorted.setListData(hsiIntersection.apply(currentImg, imagesList, segmentationStep));
@@ -399,10 +404,10 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(m.getText().equals("HSI-L1Distance"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					jListFilesSorted.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep));
@@ -420,10 +425,10 @@ class MainFrame extends JFrame implements ActionListener
 				checkImage();
 			} else if(m.getText().equals("HSI-Euclidean-Distance"))
 			{
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					eucl = true;
@@ -432,10 +437,10 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(m.getText().equals("HSI-Chi-Square-Semi-Pseudo-Distance"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					jListFilesSorted.setListData(chiSquare.apply(currentImg, imagesList, similarity));
@@ -443,10 +448,10 @@ class MainFrame extends JFrame implements ActionListener
 			} else if(m.getText().equals("NRA-Algorithm"))
 			{
 
-				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+				Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
 					nra = true;
@@ -458,7 +463,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void displayHistogram()
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 
 		JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
 		String imagePath1 = "";
@@ -467,7 +472,7 @@ class MainFrame extends JFrame implements ActionListener
 		{
 			if(rgb || hsi)
 			{
-				JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				rgb = false;
 			} else
 			{
@@ -501,17 +506,17 @@ class MainFrame extends JFrame implements ActionListener
 				hsi = false;
 			} else if(gray)
 			{
-				JOptionPane.showMessageDialog(null, "no GrayScale Image ", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "no GrayScale image ", "Error", JOptionPane.ERROR_MESSAGE);
 				gray = false;
 			}
 		}
 	}
 
-	private void check(MRImage image)
+	private void check(Image.MRImage image)
 	{
 		if(image.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
-			JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 			hsiintersec = false;
 			hsidist = false;
 		} else
@@ -523,7 +528,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void displayHistogramSegment(Vector<BufferedImage> segment)
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
 			int segstep = 4;
@@ -539,7 +544,7 @@ class MainFrame extends JFrame implements ActionListener
 
 			for(int i = 0; i < segment.size(); i++)
 			{
-				MRImage segmentImage = new MRImage(currentImg.filePath, segment.get(i));
+				Image.MRImage segmentImage = new Image.MRImage(currentImg.filePath, segment.get(i));
 				if(rgb)
 				{
 					segmentImage.generateHistogramRGB(segstep + "Seg" + i + "RGB" + name);
@@ -631,18 +636,18 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		Vector<BufferedImage> segment;
 		int segstep = 4;
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
 			if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 			{
 				if(rgb)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 					rgb = false;
 				} else if(hsi)
 				{
-					JOptionPane.showMessageDialog(null, "no RGB Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 					hsi = false;
 				} else
 				{
@@ -654,7 +659,7 @@ class MainFrame extends JFrame implements ActionListener
 			{
 				if(gray)
 				{
-					JOptionPane.showMessageDialog(null, "no GrayScale Image ", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "no GrayScale image ", "Error", JOptionPane.ERROR_MESSAGE);
 					gray = false;
 				} else
 				{
@@ -669,7 +674,7 @@ class MainFrame extends JFrame implements ActionListener
 	private void chooseSegmentationStep()
 	{
 
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
 
@@ -689,7 +694,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void createSegmentationView()
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
 
@@ -773,7 +778,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void similaritySeg()
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(intersec)
 		{
 			jListFilesSorted.setListData(segmentationIntersection.apply(currentImg, imagesList, segmentationStep));
@@ -793,7 +798,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void chooseDominantColorsOrK()
 	{
-		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
+		Image.MRImage currentImg = (Image.MRImage) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
 
@@ -817,9 +822,9 @@ class MainFrame extends JFrame implements ActionListener
 		}
 	}
 
-	private Vector<MRImage> loadTestData(File pathToImage)
+	private Vector<Image.MRImage> loadTestData(File pathToImage)
 	{
-		Vector<MRImage> imageVector = null;
+		Vector<Image.MRImage> imageVector = null;
 		// load all imgList and create their histograms if the directory exists
 		if(pathToImage != null && pathToImage.exists())
 		{
@@ -840,12 +845,12 @@ class MainFrame extends JFrame implements ActionListener
 						{
 							if(image.getType() == BufferedImage.TYPE_BYTE_GRAY)
 							{
-								MRImage mrImage = new MRImage(file.getAbsoluteFile(), image);
+								Image.MRImage mrImage = new Image.MRImage(file.getAbsoluteFile(), image);
 								mrImage.generateHistogramGray(file.toString());
 								imageVector.add(mrImage);
 							} else if(image.getType() == BufferedImage.TYPE_3BYTE_BGR)
 							{
-								MRImage mrImage = new MRImage(file.getAbsoluteFile(), image);
+								Image.MRImage mrImage = new Image.MRImage(file.getAbsoluteFile(), image);
 								mrImage.generateHistogramRGB(file.toString());
 								imageVector.add(mrImage);
 							} else

@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-class DominantColors implements Comparable<DominantColors>
+public class DominantColors implements Comparable<DominantColors>
 {
 
 	private final float[] colorHSI;

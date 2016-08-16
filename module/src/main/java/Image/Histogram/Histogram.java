@@ -1,3 +1,5 @@
+package image.Histogram;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;

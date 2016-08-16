@@ -1,3 +1,5 @@
+import image.MRImage;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
@@ -16,7 +18,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			float[] hist2;
 
-			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehï¿½rige Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -54,7 +56,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			float[][][] hist2;
 
-			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehï¿½rige Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -85,7 +87,7 @@ public class Intersection implements SimilarityAlgorithm
 			for(SortIntersection aList : list) {
 				float intersect = aList.getIntersection();
 				MRImage image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enthält
+				//neues Repository erstellt welches sortierte Elemente enthï¿½lt
 				sortedlist.add(image);
 				image.setSimilarity(intersect, image);
 			}

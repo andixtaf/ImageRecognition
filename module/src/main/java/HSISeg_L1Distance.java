@@ -1,3 +1,5 @@
+import image.MRImage;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
@@ -26,7 +28,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		float[][][] h1seg;
 		float[][][] h2seg;
 
-		//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugehï¿½rige Intersection als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for(int i = 0; i < repository.size(); i++) {
 			MRImage img = repository.get(i);
@@ -75,7 +77,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		for(SortL1Distance aList : list) {
 			float dist = aList.getDistance();
 			MRImage image = aList.getMRImage();
-			//neues Repository erstellt welches sortierte Elemente enthält
+			//neues Repository erstellt welches sortierte Elemente enthï¿½lt
 			sortedlist.add(image);
 			image.setSimilarity(dist, image);
 		}

@@ -1,3 +1,5 @@
+import image.MRImage;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
@@ -10,16 +12,16 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 	{
 		float distanceseg1 = 0;
 		float distance = 0;
-		//Falls Image ein Graustufenbild ist
+		//Falls image ein Graustufenbild ist
 		Vector<Float> distanceseg = new Vector<>();
-		//Falls Image ein Graustufenbild ist
+		//Falls image ein Graustufenbild ist
 		if(query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY) {
 			String name = query.toString();
 			Vector<BufferedImage> segment;
 			Vector hist1 = new Vector();
-			//Image in 4 Teile zerlegen
+			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segstep);
-			//neues MRImage für jedes Teilbild erzeugen
+			//neues MRImage fï¿½r jedes Teilbild erzeugen
 			for(int i = 0; i < segment.size(); i++) {
 				MRImage seg = new MRImage(query.filePath, segment.get(i));
 				seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
@@ -32,7 +34,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[] hist2seg;
 			float[] h1seg;
 			float[] h2seg;
-			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehï¿½rige Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -78,14 +80,14 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			for(SortL1Distance aList : list) {
 				float dist = aList.getDistance();
 				MRImage image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enthält
+				//neues Repository erstellt welches sortierte Elemente enthï¿½lt
 				sortedlist.add(image);
 				image.setSimilarity(dist, image);
 			}
 
 			return sortedlist;
 		}
-		//Falls Image RGB Bild ist
+		//Falls image RGB Bild ist
 		else {
 			String name = query.toString();
 			int totalhist1 = query.getHeight() * query.getWidth();
@@ -103,7 +105,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[][][] h1seg;
 			float[][][] h2seg;
 
-			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehï¿½rige Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -153,7 +155,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			for(SortL1Distance aList : list) {
 				float dist = aList.getDistance();
 				MRImage image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enthält
+				//neues Repository erstellt welches sortierte Elemente enthï¿½lt
 				sortedlist.add(image);
 				image.setSimilarity(dist, image);
 			}

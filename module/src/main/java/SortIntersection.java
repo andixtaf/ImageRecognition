@@ -1,3 +1,5 @@
+import image.MRImage;
+
 public class SortIntersection implements Comparable<SortIntersection>
 {
 	private final float intersection;

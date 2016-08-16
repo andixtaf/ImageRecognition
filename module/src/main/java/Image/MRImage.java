@@ -1,3 +1,7 @@
+package image;
+
+import image.Histogram.Histogram;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -8,7 +12,7 @@ import java.util.Vector;
 public class MRImage
 {
 
-	public static final float MAX_COLOUR_VALUE = 255f;
+	private static final float MAX_COLOUR_VALUE = 255f;
 
 	protected File filePath;
 	private BufferedImage image;
@@ -215,12 +219,12 @@ public class MRImage
 
 				Color rgb = new Color(image.getRGB(x, y));
 
-				//jeweils Rot, Grün und Blau Farbwerte aus rgb erzeugen
+				//jeweils Rot, Grï¿½n und Blau Farbwerte aus rgb erzeugen
 				int r = (rgb.getRed()) / 32;
 				int g = (rgb.getGreen()) / 32;
 				int b = (rgb.getBlue()) / 32;
 
-				//Werte in Histogramm eintragen und gleiche Werte hochzählen
+				//Werte in Histogramm eintragen und gleiche Werte hochzï¿½hlen
 				histogramRGB[r][g][b]++;
 			}
 		}

@@ -1,3 +1,5 @@
+import image.MRImage;
+
 public class SortL1Distance implements Comparable<SortL1Distance>
 {
 	private final float distance;

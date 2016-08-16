@@ -1,3 +1,5 @@
+package image.Renderer;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,8 +15,8 @@ public class MRImageCellRenderer extends JLabel implements ListCellRenderer
 	                                              int index, boolean isSelected, boolean cellHasFocus)
 	{
 
-		if(value instanceof MRImage) {
-			MRImage img = (MRImage) value;
+		if(value instanceof Image.MRImage) {
+			Image.MRImage img = (Image.MRImage) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 		}
 

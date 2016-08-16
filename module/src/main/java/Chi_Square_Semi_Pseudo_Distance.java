@@ -1,3 +1,5 @@
+import image.MRImage;
+
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -40,7 +42,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 				for(int k = 0; k < 3; k++) {
 					for(int l = 0; l < 3; l++) {
 
-						//Bestimmung der Gesamtsumme und der Einzelsummen beiden Histogramme für den erwarteten Wert
+						//Bestimmung der Gesamtsumme und der Einzelsummen beiden Histogramme fï¿½r den erwarteten Wert
 						if(x == 0) {
 							for(int m = 0; m < 18; m++) {
 								for(int n = 0; n < 3; n++) {
@@ -108,7 +110,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		return sortedlist;
 	}
 
-	//Funktion zur Skalierung der übergroßen Werte der Distanzfunktion um Ähnlichkeitswerte zu erhalten
+	//Funktion zur Skalierung der ï¿½bergroï¿½en Werte der Distanzfunktion um ï¿½hnlichkeitswerte zu erhalten
 	private float scale(float dist)
 	{
 		float s = 2000f;

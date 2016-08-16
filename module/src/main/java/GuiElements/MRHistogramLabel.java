@@ -1,8 +1,10 @@
+package GuiElements;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-class MRHistogramLabel extends JLabel
+public class MRHistogramLabel extends JLabel
 {
 
 	private float[][][] histogram;
@@ -99,7 +101,7 @@ class MRHistogramLabel extends JLabel
 				float max = getMaximumGray();
 				double yScale;
 
-				//Für Skalierung Höhe des Bildes / Maximalwert des Histogramms
+				//Fï¿½r Skalierung Hï¿½he des Bildes / Maximalwert des Histogramms
 				yScale = getHeight() / max;
 				//System.out.println(getHeight());
 				int sx;
@@ -107,7 +109,7 @@ class MRHistogramLabel extends JLabel
 				int ex;
 				double ey;
 
-				//Farbgradient von Schwarz nach Weiß
+				//Farbgradient von Schwarz nach Weiï¿½
 				for(int i = 0; i < 256; i++) {
 					g.setColor(new Color(i, i, i));
 					g.drawLine(i, getHeight() - 20, i, getHeight());
@@ -135,7 +137,7 @@ class MRHistogramLabel extends JLabel
 				double[] maximum = getMaximum();
 				double yScale;
 
-				//Für Skalierung Höhe des Bildes / Maximalwert des Histogramms
+				//Fï¿½r Skalierung Hï¿½he des Bildes / Maximalwert des Histogramms
 				yScale = getHeight() / Math.max(maximum[0],
 						Math.max(maximum[1], Math.max(maximum[2], Math.max(maximum[3],
 								Math.max(maximum[4], Math.max(maximum[5], Math.max(maximum[6], maximum[7])))))));
