@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class SplashScreen extends JWindow implements Runnable {
+public class MRSplashScreen extends JWindow implements Runnable {
 
 	private String message = "Loading...";
 

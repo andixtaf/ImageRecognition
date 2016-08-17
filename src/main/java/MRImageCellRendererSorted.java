@@ -1,5 +1,3 @@
-package image.Renderer;
-
 import javax.swing.*;
 import java.awt.*;
 

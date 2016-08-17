@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Vector;
 
-class NRA_Algorithm
+public class NRA_Algorithm
 {
 	public NRA_Algorithm_Sort[] calculate(NRA_Algorithm_Sort[] euclidean, NRA_Algorithm_Sort[] chisquare, int k)
 	{
@@ -33,12 +33,12 @@ class NRA_Algorithm
 			or = chisquare[i].getDistance();
 
 			if(read.size() > 1) {
-				//prüfen ob momentaner Index der beiden Listen sich in der Liste read befindet
+				//prï¿½fen ob momentaner Index der beiden Listen sich in der Liste read befindet
 				checkl = search(read, euclidean[i].getIndex());
 				checkr = search(read, chisquare[i].getIndex());
 			}
 
-			//Das passiert nur bei ersten lesen und einfügen der Indexwerte
+			//Das passiert nur bei ersten lesen und einfï¿½gen der Indexwerte
 			//von beiden Listen, da die read - Liste noch leer ist
 			else {
 				oleft = euclidean[i].getIndex();
@@ -50,14 +50,14 @@ class NRA_Algorithm
 				remindexr.add(chisquare[i].getIndex());
 			}
 
-			//prüfen der linken Liste ob Index noch nicht vorhanden
+			//prï¿½fen der linken Liste ob Index noch nicht vorhanden
 			if(checkl == -1.0f) {
 				oleft = euclidean[i].getIndex();
 
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
 				//System.out.println(oleft);
-				//Index ebenfalls in seperate Liste einfügen
-				//dient zur späteren Aktualisierung der ub_agg - Werte
+				//Index ebenfalls in seperate Liste einfï¿½gen
+				//dient zur spï¿½teren Aktualisierung der ub_agg - Werte
 				remindexl.add(euclidean[i].getIndex());
 			}
 
@@ -68,15 +68,15 @@ class NRA_Algorithm
 				oleft2 = 1;
 			}
 
-			//prüfen der rechten Liste ob Index noch nicht vorhanden
+			//prï¿½fen der rechten Liste ob Index noch nicht vorhanden
 			if(checkr == -1.0f) {
 				oright = chisquare[i].getIndex();
 				//System.out.println("Neu right");
 				//System.out.println("Index chi");
 				read.add(new Search(chisquare[i].getIndex(), or / 2, (ol + or) / 2));
 				//System.out.println(oright);
-				//Index ebenfalls in seperate Liste einfügen
-				//dient zur späteren Aktualisierung der ub_agg - Werte
+				//Index ebenfalls in seperate Liste einfï¿½gen
+				//dient zur spï¿½teren Aktualisierung der ub_agg - Werte
 				remindexr.add(chisquare[i].getIndex());
 			}
 
@@ -104,11 +104,11 @@ class NRA_Algorithm
 					//Index Werte aus Liste entfernen da er nicht mehr gebraucht wird
 					int removeindexr = removeIndex(remindexr, oleft);
 					remindexr.remove(removeindexr);
-					//Index + lb_agg in nra eintragen (steht hier für die top-k Liste)
+					//Index + lb_agg in nra eintragen (steht hier fï¿½r die top-k Liste)
 					nra[x] = new NRA_Algorithm_Sort((int) oleft, lb_agg);
 					//System.out.println("Current nra-size");
 					//System.out.println(nra.length);
-					//x erhöhen um nächste Position in der Liste zu setzen
+					//x erhï¿½hen um nï¿½chste Position in der Liste zu setzen
 					x++;
 					check = true;
 					oleft = 0;
@@ -165,7 +165,7 @@ class NRA_Algorithm
 			//System.out.println(nra.length);
 
 			//Abfragen der ersten Bedingung ob lb_agg Werte von top-k >= tau sind
-			//wenn condition1 = k dann ist 1. Abbruchbedingung erfüllt
+			//wenn condition1 = k dann ist 1. Abbruchbedingung erfï¿½llt
 			if(check) {
 				for(int j = 0; j < x; j++) {
 					if(condition1 < k) {
@@ -188,9 +188,9 @@ class NRA_Algorithm
 					}
 				}
 
-				//Abfragen der 2. Bedingung ob ub_agg Werte von top-k größer gleich
+				//Abfragen der 2. Bedingung ob ub_agg Werte von top-k grï¿½ï¿½er gleich
 				//der ub_agg Werte der im vorigen Schritt gespeicherten Liste sind
-				//wenn condition2 = k dann ist 2. Abbruchbedingung erfüllt
+				//wenn condition2 = k dann ist 2. Abbruchbedingung erfï¿½llt
 				for(Float anUb_agg_list : ub_agg_list) {
 					for(int l = 0; l < x; l++) {
 						if(condition2 < k) {
@@ -203,22 +203,22 @@ class NRA_Algorithm
 				check = false;
 			}
 
-			//Falls beide Abbruchbedingungen erfüllt sind wird Schleife verlassen
+			//Falls beide Abbruchbedingungen erfï¿½llt sind wird Schleife verlassen
 			if(condition1 == k && condition2 == k) {
 				//System.out.println("Abbruch");
 				//System.out.println(x);
 				break;
 			}
 
-			//andernfalls condition1 und condition2 auf 0 zurücksetzen und die Liste
-			//der gespeicherten ub_agg Werte löschen
+			//andernfalls condition1 und condition2 auf 0 zurï¿½cksetzen und die Liste
+			//der gespeicherten ub_agg Werte lï¿½schen
 			else {
 				condition2 = 0;
 				condition1 = 0;
 				ub_agg_list.removeAllElements();
 			}
 		}
-		//aus irgendeinen Grund wollte der Compiler mit dem urprünglichen Array
+		//aus irgendeinen Grund wollte der Compiler mit dem urprï¿½nglichen Array
 		//nra nicht arbeiten also hab ich den Inahlt von nra in ein zweites
 		//Array gespeichert
 		NRA_Algorithm_Sort[] nrasort = new NRA_Algorithm_Sort[x];
