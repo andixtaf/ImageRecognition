@@ -1,3 +1,5 @@
+package com.and1;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
@@ -21,7 +23,7 @@ public class L1Distance implements SimilarityAlgorithm
 			float[] hist1 = query.getHistogramGray(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[] hist2;
-			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -29,7 +31,7 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(i);
 				hist2 = img.getHistogramGray(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);
-				//System.out.println("Histogramm2 :" + img.filePath);
+				//System.out.println("Histogramm2 :" + com.and1.img.filePath);
 				for(int j = 0; j < hist1.length; j++) {
 					distance += Math.abs(hist1[j] - hist2[j]);
 				}
@@ -56,7 +58,7 @@ public class L1Distance implements SimilarityAlgorithm
 			float[][][] hist1 = query.getHistogramRGB(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[][][] hist2;
-			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -65,7 +67,7 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(i);
 				hist2 = img.getHistogramRGB(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);
-				//System.out.println("Histogramm2 :" + img.filePath);
+				//System.out.println("Histogramm2 :" + com.and1.img.filePath);
 				for(int j = 0; j < 8; j++) {
 					for(int k = 0; k < 8; k++) {
 						for(int l = 0; l < 8; l++) {

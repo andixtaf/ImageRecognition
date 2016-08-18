@@ -1,8 +1,10 @@
+package com.and1;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
 
-//Klasse zur Berechnung der Intersection
+//Klasse zur Berechnung der com.and1.Intersection
 public class Seg_L1Distance implements SimilarityAlgorithm
 {
 
@@ -19,7 +21,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			Vector hist1 = new Vector();
 			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segstep);
-			//neues MRImage f�r jedes Teilbild erzeugen
+			//neues com.and1.img.and1.MRImage f�r jedes Teilbild erzeugen
 			for(int i = 0; i < segment.size(); i++) {
 				MRImage seg = new MRImage(query.filePath, segment.get(i));
 				seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
@@ -32,7 +34,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[] hist2seg;
 			float[] h1seg;
 			float[] h2seg;
-			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
@@ -103,7 +105,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[][][] h1seg;
 			float[][][] h2seg;
 
-			//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);

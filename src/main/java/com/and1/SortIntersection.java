@@ -1,3 +1,5 @@
+package com.and1;
+
 public class SortIntersection implements Comparable<SortIntersection>
 {
 	private final float intersection;
@@ -24,7 +26,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 	@Override
 	public String toString()
 	{
-		return img + "   Intersection:  " + intersection;
+		return img + "   com.and1.Intersection:  " + intersection;
 	}
 
 	public float getIntersection()

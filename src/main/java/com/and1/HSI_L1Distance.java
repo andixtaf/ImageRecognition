@@ -1,3 +1,5 @@
+package com.and1;
+
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -22,7 +24,7 @@ public class HSI_L1Distance implements SimilarityAlgorithm
 		float[][][] hist2;
 
 		int totalhist1 = query.getHeight() * query.getWidth();
-		//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for(int i = 0; i < repository.size(); i++) {
 			MRImage img = repository.get(i);

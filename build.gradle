@@ -1,7 +1,12 @@
-group 'ImageRecognition'
+description "Image Recognition - project"
+
 version '1.0'
 
 apply plugin: 'java'
+
+// code coverage
+apply plugin: 'jacoco'
+
 
 sourceCompatibility = 1.8
 
@@ -9,6 +14,32 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+task getHomeDir << {
+    println gradle.gradleHomeDir
+}
+
+tasks.withType(Test) {
+    scanForTestClasses = false
+    include "**/*Test.class" // whatever Ant pattern matches your test class files
+}
+
+test.testLogging.showStandardStreams = true

@@ -1,3 +1,5 @@
+package com.and1;
+
 public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 {
 	private final int index;

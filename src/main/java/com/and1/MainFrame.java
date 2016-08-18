@@ -1,3 +1,5 @@
+package com.and1;
+
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -156,28 +158,28 @@ public class MainFrame extends JFrame implements ActionListener
 
 		JMenu menuAlgorithms = new JMenu("Similarity Algorithms");
 		menuAlgorithms.setMnemonic(KeyEvent.VK_S);
-		JMenuItem intersect = new JMenuItem("Intersection");
+		JMenuItem intersect = new JMenuItem("com.and1.Intersection");
 		intersect.addActionListener(this);
 		menuAlgorithms.add(intersect);
 		JMenuItem l1Distance = new JMenuItem("L1-Distance");
 		l1Distance.addActionListener(this);
 		menuAlgorithms.add(l1Distance);
-		JMenuItem hsiintersect = new JMenuItem("HSI-Intersection");
+		JMenuItem hsiintersect = new JMenuItem("HSI-com.and1.Intersection");
 		hsiintersect.addActionListener(this);
 		menuAlgorithms.add(hsiintersect);
-		JMenuItem hsil1dist = new JMenuItem("HSI-L1Distance");
+		JMenuItem hsil1dist = new JMenuItem("HSI-com.and1.L1Distance");
 		hsil1dist.addActionListener(this);
 		menuAlgorithms.add(hsil1dist);
-		JMenuItem segintersect = new JMenuItem("Intersection-Segmentation");
+		JMenuItem segintersect = new JMenuItem("com.and1.Intersection-Segmentation");
 		segintersect.addActionListener(this);
 		menuAlgorithms.add(segintersect);
-		JMenuItem segl1dist = new JMenuItem("L1Distance-Segmentation");
+		JMenuItem segl1dist = new JMenuItem("com.and1.L1Distance-Segmentation");
 		segl1dist.addActionListener(this);
 		menuAlgorithms.add(segl1dist);
-		JMenuItem hsisegintersect = new JMenuItem("HSI-Intersection-Segmentation");
+		JMenuItem hsisegintersect = new JMenuItem("HSI-com.and1.Intersection-Segmentation");
 		hsisegintersect.addActionListener(this);
 		menuAlgorithms.add(hsisegintersect);
-		JMenuItem hsisegl1dist = new JMenuItem("HSI-L1Distance-Segmentation");
+		JMenuItem hsisegl1dist = new JMenuItem("HSI-com.and1.L1Distance-Segmentation");
 		hsisegl1dist.addActionListener(this);
 		menuAlgorithms.add(hsisegl1dist);
 		JMenuItem hsieucdist = new JMenuItem("HSI-Euclidean-Distance");
@@ -190,7 +192,7 @@ public class MainFrame extends JFrame implements ActionListener
 		nra_algo.addActionListener(this);
 		menuAlgorithms.add(nra_algo);
 
-		JMenu histogram = new JMenu("Histogram");
+		JMenu histogram = new JMenu("com.and1.Histogram");
 		histogram.setMnemonic(KeyEvent.VK_S);
 		JMenuItem histGray = new JMenuItem("GrayScale");
 		histGray.addActionListener(this);
@@ -327,7 +329,7 @@ public class MainFrame extends JFrame implements ActionListener
 			{
 
 				System.exit(0);
-			} else if(m.getText().equals("Intersection"))
+			} else if(m.getText().equals("com.and1.Intersection"))
 			{
 
 				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
@@ -364,28 +366,28 @@ public class MainFrame extends JFrame implements ActionListener
 
 				rgb = true;
 				checkImage();
-			} else if(m.getText().equals("Intersection-Segmentation"))
+			} else if(m.getText().equals("com.and1.Intersection-Segmentation"))
 			{
 
 				simi = true;
 				intersec = true;
 				chooseSegmentationStep();
 
-			} else if(m.getText().equals("L1Distance-Segmentation"))
+			} else if(m.getText().equals("com.and1.L1Distance-Segmentation"))
 			{
 
 				simi = true;
 				l1dist = true;
 				chooseSegmentationStep();
 
-			} else if(m.getText().equals("HSI-Intersection-Segmentation") || m.getText().equals("HSI-L1Distance-Segmentation"))
+			} else if(m.getText().equals("HSI-com.and1.Intersection-Segmentation") || m.getText().equals("HSI-com.and1.L1Distance-Segmentation"))
 			{
 
 				simi = true;
 				hsiintersec = true;
 				check((MRImage) jListFiles.getSelectedValue());
 
-			} else if(m.getText().equals("HSI-Intersection"))
+			} else if(m.getText().equals("HSI-com.and1.Intersection"))
 			{
 
 				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
@@ -397,7 +399,7 @@ public class MainFrame extends JFrame implements ActionListener
 					jListFilesSorted.setListData(hsiIntersection.apply(currentImg, imagesList, segmentationStep));
 				}
 
-			} else if(m.getText().equals("HSI-L1Distance"))
+			} else if(m.getText().equals("HSI-com.and1.L1Distance"))
 			{
 
 				MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
@@ -461,7 +463,7 @@ public class MainFrame extends JFrame implements ActionListener
 	{
 		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
 
-		JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
+		JDialog d = new JDialog(this, "com.and1.Histogram: " + currentImg.toString());
 		String imagePath1 = "";
 
 		if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
@@ -531,7 +533,7 @@ public class MainFrame extends JFrame implements ActionListener
 			String name = currentImg.toString();
 			Vector hist = new Vector();
 			JLabel help = new JLabel();
-			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
+			JDialog d = new JDialog(this, "com.and1.Histogram: " + currentImg.toString());
 			float[] hseg;
 			float[][][] h1seg;
 			int x = 0;

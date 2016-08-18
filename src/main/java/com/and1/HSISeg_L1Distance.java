@@ -1,8 +1,10 @@
+package com.and1;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;
 
-//Klasse zur Berechnung der Intersection
+//Klasse zur Berechnung der com.and1.Intersection
 public class HSISeg_L1Distance implements SimilarityAlgorithm
 {
 
@@ -26,7 +28,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		float[][][] h1seg;
 		float[][][] h2seg;
 
-		//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for(int i = 0; i < repository.size(); i++) {
 			MRImage img = repository.get(i);

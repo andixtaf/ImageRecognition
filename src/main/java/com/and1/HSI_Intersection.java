@@ -1,3 +1,5 @@
+package com.and1;
+
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -14,7 +16,7 @@ public class HSI_Intersection implements SimilarityAlgorithm
 		query.generateHistogramHSI(name);
 		float[][][] hist1 = query.getHistogramHSI(name);
 		float[][][] hist2;
-		//Liste in die die das Img und die dazugeh�rige Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugeh�rige com.and1.Intersection als Tupel gespeichert werden
 		SortIntersection[] list = new SortIntersection[repository.size()];
 		for(int i = 0; i < repository.size(); i++) {
 			MRImage img = repository.get(i);

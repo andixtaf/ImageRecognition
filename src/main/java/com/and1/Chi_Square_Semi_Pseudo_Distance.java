@@ -1,3 +1,5 @@
+package com.and1;
+
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -31,7 +33,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 		for(int i = 0; i < repository.size(); i++) {
 			MRImage img = repository.get(i);
-			//int totalhist2 = img.getHeight() * img.getWidth();
+			//int totalhist2 = com.and1.img.getHeight() * com.and1.img.getWidth();
 			String imgname = img.toString();
 			img.generateHistogramHSI(imgname);
 			hist2 = img.getHistogramHSI(imgname);

@@ -1,3 +1,5 @@
+package com.and1;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -503,7 +505,7 @@ public class MRImage
 	 */
 	public float getSimilarity()
 	{
-		if(this.queryImage != null)
+		if(queryImage != null)
 		{
 			return similarity;
 		} else
@@ -521,6 +523,6 @@ public class MRImage
 	public void setSimilarity(float similarity, MRImage q)
 	{
 		this.similarity = similarity;
-		this.queryImage = q;
+		queryImage = q;
 	}
 }
