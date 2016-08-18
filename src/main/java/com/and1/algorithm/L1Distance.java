@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
 import com.and1.SortL1Distance;
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ public class L1Distance implements SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
 	{
 
 		float distance = 0;
@@ -31,7 +31,7 @@ public class L1Distance implements SimilarityAlgorithm
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
-				MRImage img = repository.get(i);
+				Image img = repository.get(i);
 				String imgname = img.getFilePath().getAbsolutePath();
 				//System.out.println(i);
 				hist2 = img.getHistogramGray(imgname);
@@ -49,11 +49,11 @@ public class L1Distance implements SimilarityAlgorithm
 			}
 			//Liste aufsteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<Image> sortedlist = new Vector<>();
 			for (SortL1Distance aList : list)
 			{
 				float dist = aList.getDistance();
-				MRImage image = aList.getMRImage();
+				Image image = aList.getMRImage();
 				//neues Repository erstellt welches sortierte Elemente enth�lt
 				sortedlist.add(image);
 				image.setSimilarity(dist, image);
@@ -71,7 +71,7 @@ public class L1Distance implements SimilarityAlgorithm
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
-				MRImage img = repository.get(i);
+				Image img = repository.get(i);
 				int totalhist2 = img.getHeight() * img.getWidth();
 				String imgname = img.getFilePath().getAbsolutePath();
 				//System.out.println(i);
@@ -96,11 +96,11 @@ public class L1Distance implements SimilarityAlgorithm
 			}
 			//Liste aufsteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<Image> sortedlist = new Vector<>();
 			for (SortL1Distance aList : list)
 			{
 				float dist = aList.getDistance();
-				MRImage image = aList.getMRImage();
+				Image image = aList.getMRImage();
 				//neues Repository erstellt welches sortierte Elemente enth�lt
 				sortedlist.add(image);
 				image.setSimilarity(dist, image);

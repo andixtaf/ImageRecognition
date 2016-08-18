@@ -1,14 +1,14 @@
-package com.and1.gui.Renderer;
+package com.and1.gui.renderer;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
+public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
 {
 
-	public MRImageCellRendererSorted()
+	public ImageCellRendererSorted()
 	{
 		setOpaque(true);
 	}
@@ -19,9 +19,9 @@ public class MRImageCellRendererSorted extends JLabel implements ListCellRendere
 
 		float similarity = 1.0f;
 
-		if (value instanceof MRImage)
+		if (value instanceof Image)
 		{
-			MRImage img = (MRImage) value;
+			Image img = (Image) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 			similarity = img.getSimilarity();
 		}

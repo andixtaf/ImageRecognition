@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
-public class MRImage
+public class Image
 {
 
 	private static final float MAX_COLOUR_VALUE = 255f;
 
-	private File filePath;
+	private final File filePath;
 
-	private BufferedImage image;
+	private final BufferedImage image;
 
-	private Image thumbnail;
+	private final java.awt.Image thumbnail;
 
 	private java.util.List<float[]> colors;
 
@@ -26,17 +26,17 @@ public class MRImage
 
 	private float similarity;
 
-	private MRImage queryImage;
+	private Image queryImage;
 
-	private Histogram histogram = new Histogram();
+	private final Histogram histogram = new Histogram();
 
-	public MRImage(File file, BufferedImage img)
+	public Image(File file, BufferedImage img)
 	{
 		filePath = file;
 		image = img;
 		similarity = 1.0f;
 		queryImage = this;
-		thumbnail = image.getScaledInstance(-1, 60, Image.SCALE_FAST);
+		thumbnail = image.getScaledInstance(-1, 60, java.awt.Image.SCALE_FAST);
 	}
 
 	public Vector<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
@@ -380,7 +380,7 @@ public class MRImage
 		return image;
 	}
 
-	public Image getThumbnail()
+	public java.awt.Image getThumbnail()
 	{
 		return this.thumbnail;
 	}
@@ -552,7 +552,7 @@ public class MRImage
 	 * @param similarity the similarity value to the query image
 	 * @param q          the query image
 	 */
-	public void setSimilarity(float similarity, MRImage q)
+	public void setSimilarity(float similarity, Image q)
 	{
 		this.similarity = similarity;
 		queryImage = q;

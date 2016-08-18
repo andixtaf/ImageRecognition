@@ -3,7 +3,7 @@ package com.and1.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class MRSplashScreen extends JWindow implements Runnable
+public class ImageSplashScreen extends JWindow implements Runnable
 {
 
 	private String message = "Loading...";

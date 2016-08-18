@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 
 public class Histogram
 {
-	public static final int INT_8_BIT = 256;
+	private static final int INT_8_BIT = 256;
 
 	public void generateHistogramGray(BufferedImage image, String name)
 	{

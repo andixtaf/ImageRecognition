@@ -2,7 +2,7 @@ package com.and1.algorithm;
 
 import com.and1.NRA_Algorithm_Sort;
 import com.and1.SortIntersection;
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -12,7 +12,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 	private NRA_Algorithm_Sort[] nra_values;
 
-	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int number)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int number)
 	{
 
 		Float distance;
@@ -37,7 +37,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 		for (int i = 0; i < repository.size(); i++)
 		{
-			MRImage img = repository.get(i);
+			Image img = repository.get(i);
 			//int totalhist2 = com.and1.img.getHeight() * com.and1.img.getWidth();
 			String imgname = img.toString();
 			img.generateHistogramHSI(imgname);
@@ -118,11 +118,11 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
-		Vector<MRImage> sortedlist = new Vector<>();
+		Vector<Image> sortedlist = new Vector<>();
 		for (int i = 0; i < list.length; i++)
 		{
 			float dist = list[i].getIntersection();
-			MRImage image = list[i].getMRImage();
+			Image image = list[i].getMRImage();
 
 			sortedlist.add(image);
 			image.setSimilarity(dist, image);

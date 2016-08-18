@@ -1,14 +1,14 @@
-package com.and1.gui.Renderer;
+package com.and1.gui.renderer;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MRImageCellRenderer extends JLabel implements ListCellRenderer
+public class ImageCellRenderer extends JLabel implements ListCellRenderer
 {
 
-	public MRImageCellRenderer()
+	public ImageCellRenderer()
 	{
 		setOpaque(true);
 	}
@@ -17,9 +17,9 @@ public class MRImageCellRenderer extends JLabel implements ListCellRenderer
 												  int index, boolean isSelected, boolean cellHasFocus)
 	{
 
-		if (value instanceof MRImage)
+		if (value instanceof Image)
 		{
-			MRImage img = (MRImage) value;
+			com.and1.img.Image img = (Image) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 		}
 

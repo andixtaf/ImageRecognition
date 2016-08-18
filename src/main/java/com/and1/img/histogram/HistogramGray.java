@@ -40,7 +40,7 @@ public class HistogramGray
 		{
 
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
-			//sum += histogram[i];
+
 		}
 
 		//System.out.println(sum);

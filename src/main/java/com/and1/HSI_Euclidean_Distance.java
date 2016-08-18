@@ -1,6 +1,6 @@
 package com.and1;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -10,7 +10,7 @@ public class HSI_Euclidean_Distance
 
 	private NRA_Algorithm_Sort[] nra_values;
 
-	public Vector<MRImage> applySimilarity(MRImage query, Vector<MRImage> repository, int number, int similarity)
+	public Vector<Image> applySimilarity(Image query, Vector<Image> repository, int number, int similarity)
 	{
 
 		Float distance = 0F;
@@ -29,7 +29,7 @@ public class HSI_Euclidean_Distance
 		for (int i = 0; i < repository.size(); i++)
 		{
 			//System.out.println(i);
-			MRImage img = repository.get(i);
+			Image img = repository.get(i);
 			img.generateHSIColors();
 			colorHSI2 = img.getColors(number);
 
@@ -53,12 +53,12 @@ public class HSI_Euclidean_Distance
 		}
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
-		Vector<MRImage> sortedlist = new Vector<>();
+		Vector<Image> sortedlist = new Vector<>();
 
 		for (SortL1Distance aList : list)
 		{
 			Float dist = aList.getDistance();
-			MRImage image = aList.getMRImage();
+			Image image = aList.getMRImage();
 			sortedlist.add(image);
 			image.setSimilarity(dist, image);
 		}

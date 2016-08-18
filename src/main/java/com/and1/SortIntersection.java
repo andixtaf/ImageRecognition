@@ -1,14 +1,14 @@
 package com.and1;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 public class SortIntersection implements Comparable<SortIntersection>
 {
 	private final float intersection;
 
-	private final MRImage img;
+	private final Image img;
 
-	public SortIntersection(MRImage img, float intersection)
+	public SortIntersection(Image img, float intersection)
 	{
 		this.img = img;
 		this.intersection = intersection;
@@ -39,7 +39,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 		return intersection;
 	}
 
-	public MRImage getMRImage()
+	public Image getMRImage()
 	{
 		return img;
 	}

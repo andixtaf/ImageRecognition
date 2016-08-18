@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import java.util.Vector;
 
@@ -19,6 +19,6 @@ public interface SimilarityAlgorithm
 	 * @param repository The repository of all available images
 	 * @return A list excluding the query image ordered descending by their similarity
 	 */
-	Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int segstep);
+	Vector<Image> apply(Image query, Vector<Image> repository, int segstep);
 
 }

@@ -1,14 +1,14 @@
 package com.and1;
 
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 public class SortL1Distance implements Comparable<SortL1Distance>
 {
 	private final float distance;
 
-	private final MRImage img;
+	private final Image img;
 
-	public SortL1Distance(MRImage img, float distance)
+	public SortL1Distance(Image img, float distance)
 	{
 		this.img = img;
 		this.distance = distance;
@@ -41,7 +41,7 @@ public class SortL1Distance implements Comparable<SortL1Distance>
 		return distance;
 	}
 
-	public MRImage getMRImage()
+	public Image getMRImage()
 	{
 		return img;
 	}

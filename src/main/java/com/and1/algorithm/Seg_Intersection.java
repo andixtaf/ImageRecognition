@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
 import com.and1.SortIntersection;
-import com.and1.img.MRImage;
+import com.and1.img.Image;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.Vector;
 public class Seg_Intersection implements SimilarityAlgorithm
 {
 
-	public Vector<MRImage> apply(MRImage query, Vector<MRImage> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
 	{
 		float intersectionSequence1;
 		float intersection = 0;
@@ -27,10 +27,10 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			Vector hist1 = new Vector();
 			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segstep);
-			//neues com.and1.img.and1.MRImage f�r jedes Teilbild erzeugen
+			//neues com.and1.img.and1.Image f�r jedes Teilbild erzeugen
 			for (int i = 0; i < segment.size(); i++)
 			{
-				MRImage seg = new MRImage(query.getFilePath(), segment.get(i));
+				Image seg = new Image(query.getFilePath(), segment.get(i));
 				seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
 				float[] hist1seg = seg.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
 				hist1.add(hist1seg);
@@ -45,7 +45,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
-				MRImage img = repository.get(i);
+				Image img = repository.get(i);
 				String imgname = img.toString();
 				Vector<BufferedImage> segmenthist2;
 				Vector hist2 = new Vector();
@@ -54,7 +54,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 
 				for (int j = 0; j < segmenthist2.size(); j++)
 				{
-					MRImage seghist2 = new MRImage(img.getFilePath(), segmenthist2.get(j));
+					Image seghist2 = new Image(img.getFilePath(), segmenthist2.get(j));
 					seghist2.generateHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
 					hist2seg = seghist2.getHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
 					hist2.add(hist2seg);
@@ -90,11 +90,11 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			}
 			//Liste absteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<Image> sortedlist = new Vector<>();
 			for (SortIntersection aList : list)
 			{
 				float intersect = aList.getIntersection();
-				MRImage image = aList.getMRImage();
+				Image image = aList.getMRImage();
 				//neues Repository erstellt welches sortierte Elemente enth�lt
 				sortedlist.add(image);
 				image.setSimilarity(intersect, image);
@@ -111,7 +111,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			segment = query.generateRasterInGivenSteps(segstep);
 			for (int i = 0; i < segment.size(); i++)
 			{
-				MRImage seg = new MRImage(query.getFilePath(), segment.get(i));
+				Image seg = new Image(query.getFilePath(), segment.get(i));
 				seg.generateHistogramRGB(segstep + "Seg" + i + name);
 				float[][][] hist1seg = seg.getHistogramRGB(segstep + "Seg" + i + name);
 				hist1.add(hist1seg);
@@ -124,7 +124,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
-				MRImage img = repository.get(i);
+				Image img = repository.get(i);
 				String imgname = img.toString();
 				Vector<BufferedImage> segmenthist2;
 				Vector hist2 = new Vector();
@@ -133,7 +133,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 
 				for (int j = 0; j < segmenthist2.size(); j++)
 				{
-					MRImage seghist2 = new MRImage(img.getFilePath(), segmenthist2.get(j));
+					Image seghist2 = new Image(img.getFilePath(), segmenthist2.get(j));
 					seghist2.generateHistogramRGB(segstep + "Seg" + j + imgname);
 					hist2seg = seghist2.getHistogramRGB(segstep + "Seg" + j + imgname);
 					hist2.add(hist2seg);
@@ -174,11 +174,11 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			}
 			//Liste absteigend sortieren
 			Arrays.sort(list);
-			Vector<MRImage> sortedlist = new Vector<>();
+			Vector<Image> sortedlist = new Vector<>();
 			for (SortIntersection aList : list)
 			{
 				float intersect = aList.getIntersection();
-				MRImage image = aList.getMRImage();
+				Image image = aList.getMRImage();
 
 				//neues Repository erstellt welches sortierte Elemente enth�lt
 				sortedlist.add(image);

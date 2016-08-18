@@ -11,13 +11,13 @@ class Main
 
 	public static void main(String[] args)
 	{
-		MRSplashScreen MRSplashScreen = new MRSplashScreen();
-		MRSplashScreen.setVisible(true);
+		ImageSplashScreen ImageSplashScreen = new ImageSplashScreen();
+		ImageSplashScreen.setVisible(true);
 
-		Thread splashThread = new Thread(MRSplashScreen);
+		Thread splashThread = new Thread(ImageSplashScreen);
 		splashThread.start();
 
-		MainFrame frame = new MainFrame(MRSplashScreen, splashThread);
+		MainFrame frame = new MainFrame(ImageSplashScreen, splashThread);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
