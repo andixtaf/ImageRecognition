@@ -22,7 +22,7 @@ public class ImageSplashScreen extends JWindow implements Runnable
 
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-		g.drawString("Multimedia Retrieval BTU Base", 15, getHeight() / 2);
+		g.drawString("Image Recognition", 15, getHeight() / 2);
 		g.drawString(message, 15, this.getHeight() - 15);
 	}
 

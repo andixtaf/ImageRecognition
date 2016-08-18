@@ -31,7 +31,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 	@Override
 	public String toString()
 	{
-		return img + "   com.and1.algorithm.Intersection:  " + intersection;
+		return img + "  Intersection:  " + intersection;
 	}
 
 	public float getIntersection()
