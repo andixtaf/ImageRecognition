@@ -14,7 +14,7 @@ public class MRImage
 
 	private static final float MAX_COLOUR_VALUE = 255f;
 
-	public File filePath;
+	private File filePath;
 	private BufferedImage image;
 	private Image thumbnail;
 	private java.util.List<float[]> colors;
@@ -526,5 +526,10 @@ public class MRImage
 	{
 		this.similarity = similarity;
 		queryImage = q;
+	}
+
+	public File getFilePath()
+	{
+		return filePath;
 	}
 }

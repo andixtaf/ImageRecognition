@@ -21,7 +21,7 @@ public class L1Distance implements SimilarityAlgorithm
 		float distance = 0;
 		int totalhist1 = query.getHeight() * query.getWidth();
 		if(query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY) {
-			String name = query.filePath.getAbsolutePath();
+			String name = query.getFilePath().getAbsolutePath();
 			float[] hist1 = query.getHistogramGray(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[] hist2;
@@ -29,7 +29,7 @@ public class L1Distance implements SimilarityAlgorithm
 			SortL1Distance[] list = new SortL1Distance[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
-				String imgname = img.filePath.getAbsolutePath();
+				String imgname = img.getFilePath().getAbsolutePath();
 				//System.out.println(i);
 				hist2 = img.getHistogramGray(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);
@@ -56,7 +56,7 @@ public class L1Distance implements SimilarityAlgorithm
 
 			return sortedlist;
 		} else {
-			String name = query.filePath.getAbsolutePath();
+			String name = query.getFilePath().getAbsolutePath();
 			float[][][] hist1 = query.getHistogramRGB(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[][][] hist2;
@@ -65,7 +65,7 @@ public class L1Distance implements SimilarityAlgorithm
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
 				int totalhist2 = img.getHeight() * img.getWidth();
-				String imgname = img.filePath.getAbsolutePath();
+				String imgname = img.getFilePath().getAbsolutePath();
 				//System.out.println(i);
 				hist2 = img.getHistogramRGB(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);

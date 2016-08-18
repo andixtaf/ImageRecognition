@@ -15,7 +15,7 @@ public class Intersection implements SimilarityAlgorithm
 		float minsum = 0;
 		float hist1sum = 0;
 		if(query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY) {
-			String name = query.filePath.getAbsolutePath();
+			String name = query.getFilePath().getAbsolutePath();
 			float[] hist1 = query.getHistogramGray(name);
 
 			float[] hist2;
@@ -24,7 +24,7 @@ public class Intersection implements SimilarityAlgorithm
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
-				String imgname = img.filePath.getAbsolutePath();
+				String imgname = img.getFilePath().getAbsolutePath();
 
 				hist2 = img.getHistogramGray(imgname);
 
@@ -53,7 +53,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			return sortedlist;
 		} else {
-			String name = query.filePath.getAbsolutePath();
+			String name = query.getFilePath().getAbsolutePath();
 			float[][][] hist1 = query.getHistogramRGB(name);
 
 			float[][][] hist2;
@@ -62,7 +62,7 @@ public class Intersection implements SimilarityAlgorithm
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for(int i = 0; i < repository.size(); i++) {
 				MRImage img = repository.get(i);
-				String imgname = img.filePath.getAbsolutePath();
+				String imgname = img.getFilePath().getAbsolutePath();
 				System.out.println(imgname);
 
 				hist2 = img.getHistogramRGB(imgname);

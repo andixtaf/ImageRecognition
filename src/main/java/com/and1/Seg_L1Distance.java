@@ -25,7 +25,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			segment = query.generateRasterInGivenSteps(segstep);
 			//neues com.and1.img.and1.MRImage f�r jedes Teilbild erzeugen
 			for(int i = 0; i < segment.size(); i++) {
-				MRImage seg = new MRImage(query.filePath, segment.get(i));
+				MRImage seg = new MRImage(query.getFilePath(), segment.get(i));
 				seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
 				float[] hist1seg = seg.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
 				hist1.add(hist1seg);
@@ -47,7 +47,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 				segmentHistory2 = img.generateRasterInGivenSteps(segstep);
 
 				for(int j = 0; j < segmentHistory2.size(); j++) {
-					MRImage seghist2 = new MRImage(img.filePath, segmentHistory2.get(j));
+					MRImage seghist2 = new MRImage(img.getFilePath(), segmentHistory2.get(j));
 					seghist2.generateHistogramGray(segstep + "Seg" + j + "RGB" + imageName);
 					hist2seg = seghist2.getHistogramGray(segstep + "Seg" + j + "RGB" + imageName);
 					hist2.add(hist2seg);
@@ -97,7 +97,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			Vector hist1 = new Vector();
 			segment = query.generateRasterInGivenSteps(segstep);
 			for(int i = 0; i < segment.size(); i++) {
-				MRImage seg = new MRImage(query.filePath, segment.get(i));
+				MRImage seg = new MRImage(query.getFilePath(), segment.get(i));
 				seg.generateHistogramRGB(segstep + "Seg" + i + name);
 				float[][][] hist1seg = seg.getHistogramRGB(segstep + "Seg" + i + name);
 				hist1.add(hist1seg);
@@ -120,7 +120,7 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 				int totalhist2 = img.getHeight() * img.getWidth();
 
 				for(int j = 0; j < segmenthist2.size(); j++) {
-					MRImage seghist2 = new MRImage(img.filePath, segmenthist2.get(j));
+					MRImage seghist2 = new MRImage(img.getFilePath(), segmenthist2.get(j));
 					seghist2.generateHistogramRGB(segstep + "Seg" + j + imgname);
 					hist2seg = seghist2.getHistogramRGB(segstep + "Seg" + j + imgname);
 					hist2.add(hist2seg);

@@ -1,14 +1,14 @@
-package com.and1.gui;
+package com.and1.gui.Renderer;
 
 import com.and1.img.MRImage;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MRImageCellRendererSorted extends JLabel implements ListCellRenderer
+public class MRImageCellRenderer extends JLabel implements ListCellRenderer
 {
 
-	public MRImageCellRendererSorted()
+	public MRImageCellRenderer()
 	{
 		setOpaque(true);
 	}
@@ -17,15 +17,12 @@ public class MRImageCellRendererSorted extends JLabel implements ListCellRendere
 	                                              int index, boolean isSelected, boolean cellHasFocus)
 	{
 
-		float similarity = 1.0f;
-
 		if(value instanceof MRImage) {
 			MRImage img = (MRImage) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
-			similarity = img.getSimilarity();
 		}
 
-		setText(value.toString() + " Similarity: " + similarity);
+		setText(value.toString());
 
 		Color background;
 		Color foreground;
@@ -44,8 +41,8 @@ public class MRImageCellRendererSorted extends JLabel implements ListCellRendere
 
 			// unselected, and not the DnD drop location
 		} else {
-			background = new Color(similarity, similarity, similarity);
-			foreground = new Color(33, 83, 134);
+			background = Color.WHITE;
+			foreground = Color.BLACK;
 		}
 
 		setBackground(background);

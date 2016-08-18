@@ -21,7 +21,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		Vector hist1 = new Vector();
 		segment = query.generateRasterInGivenSteps(segstep);
 		for(int i = 0; i < segment.size(); i++) {
-			MRImage seg = new MRImage(query.filePath, segment.get(i));
+			MRImage seg = new MRImage(query.getFilePath(), segment.get(i));
 			seg.generateHistogramHSI(segstep + "Seg" + i + name);
 			float[][][] hist1seg = seg.getHistogramHSI(segstep + "Seg" + i + name);
 			hist1.add(hist1seg);
@@ -43,7 +43,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 			int totalhist2 = img.getHeight() * img.getWidth();
 
 			for(int j = 0; j < segmenthist2.size(); j++) {
-				MRImage seghist2 = new MRImage(img.filePath, segmenthist2.get(j));
+				MRImage seghist2 = new MRImage(img.getFilePath(), segmenthist2.get(j));
 				seghist2.generateHistogramHSI(segstep + "Seg" + j + imgname);
 				hist2seg = seghist2.getHistogramHSI(segstep + "Seg" + j + imgname);
 				hist2.add(hist2seg);

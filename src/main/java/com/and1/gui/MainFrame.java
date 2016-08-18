@@ -1,6 +1,8 @@
 package com.and1.gui;
 
 import com.and1.*;
+import com.and1.gui.Renderer.MRImageCellRenderer;
+import com.and1.gui.Renderer.MRImageCellRendererSorted;
 import com.and1.img.MRImage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -547,7 +549,7 @@ public class MainFrame extends JFrame implements ActionListener
 
 			for(int i = 0; i < segment.size(); i++)
 			{
-				MRImage segmentImage = new MRImage(currentImg.filePath, segment.get(i));
+				MRImage segmentImage = new MRImage(currentImg.getFilePath(), segment.get(i));
 				if(rgb)
 				{
 					segmentImage.generateHistogramRGB(segstep + "Seg" + i + "RGB" + name);
