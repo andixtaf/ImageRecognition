@@ -1,5 +1,7 @@
 package com.and1;
 
+import com.and1.img.MRImage;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Vector;

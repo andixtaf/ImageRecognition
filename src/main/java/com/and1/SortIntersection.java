@@ -1,5 +1,7 @@
 package com.and1;
 
+import com.and1.img.MRImage;
+
 public class SortIntersection implements Comparable<SortIntersection>
 {
 	private final float intersection;

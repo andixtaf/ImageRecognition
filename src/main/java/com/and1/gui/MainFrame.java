@@ -1,6 +1,9 @@
-package com.and1;
+package com.and1.gui;
 
-import org.jetbrains.annotations.NotNull;
+import com.and1.*;
+import com.and1.img.MRImage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +19,7 @@ import java.util.Vector;
 
 public class MainFrame extends JFrame implements ActionListener
 {
+	private static final Logger logger = LogManager.getLogger(MainFrame.class);
 
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
@@ -63,6 +67,8 @@ public class MainFrame extends JFrame implements ActionListener
 
 			createGUI();
 			statusBarLabel.setText("Total number of loaded imagesList: " + imagesList.size());
+
+			logger.info("Total number of loaded imagesList: " + imagesList.size());
 
 			splash.dispose();
 			splashThread.interrupt();
@@ -140,7 +146,6 @@ public class MainFrame extends JFrame implements ActionListener
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 
-	@NotNull
 	private JMenuBar createJMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
@@ -192,7 +197,7 @@ public class MainFrame extends JFrame implements ActionListener
 		nra_algo.addActionListener(this);
 		menuAlgorithms.add(nra_algo);
 
-		JMenu histogram = new JMenu("com.and1.Histogram");
+		JMenu histogram = new JMenu("com.and1.img.histogram.Histogram");
 		histogram.setMnemonic(KeyEvent.VK_S);
 		JMenuItem histGray = new JMenuItem("GrayScale");
 		histGray.addActionListener(this);
@@ -463,7 +468,7 @@ public class MainFrame extends JFrame implements ActionListener
 	{
 		MRImage currentImg = (MRImage) jListFiles.getSelectedValue();
 
-		JDialog d = new JDialog(this, "com.and1.Histogram: " + currentImg.toString());
+		JDialog d = new JDialog(this, "com.and1.img.histogram.Histogram: " + currentImg.toString());
 		String imagePath1 = "";
 
 		if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
@@ -533,7 +538,7 @@ public class MainFrame extends JFrame implements ActionListener
 			String name = currentImg.toString();
 			Vector hist = new Vector();
 			JLabel help = new JLabel();
-			JDialog d = new JDialog(this, "com.and1.Histogram: " + currentImg.toString());
+			JDialog d = new JDialog(this, "com.and1.img.histogram.Histogram: " + currentImg.toString());
 			float[] hseg;
 			float[][][] h1seg;
 			int x = 0;

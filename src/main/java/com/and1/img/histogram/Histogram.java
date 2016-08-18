@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.img.histogram;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class HistogramGray
+public class Histogram
 {
 	public static final int INT_8_BIT = 256;
 
@@ -23,7 +23,6 @@ public class HistogramGray
 				pixel = image.getRaster().getPixel(x, y, pixel);
 
 				histogramGray[pixel[0]]++;
-				//Anzahl der Pixel des gesamten Bildes
 				countOfTotalPixel++;
 			}
 		}
@@ -35,20 +34,17 @@ public class HistogramGray
 
 	private void normalize(float[] histogram, int countOfTotalPixel)
 	{
+		//TODO why sum in original code??
 		float sum = 0;
 		for(int i = 0; i < INT_8_BIT; i++)
 		{
-
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
 			//sum += histogram[i];
 		}
-
-		//System.out.println(sum);
 	}
 
 	private void saveHistogramGray(float[] histogram, String name)
 	{
-
 		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
 		if(!file.exists())
 		{
@@ -66,3 +62,4 @@ public class HistogramGray
 		}
 	}
 }
+

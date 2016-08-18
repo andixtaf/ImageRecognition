@@ -1,9 +1,14 @@
-package com.and1;
+package com.and1.gui;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 
 class Main
 {
+	private static final Logger logger = LogManager.getRootLogger();
+
 	public static void main(String[] args)
 	{
 		MRSplashScreen MRSplashScreen = new MRSplashScreen();

@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.img.histogram;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
