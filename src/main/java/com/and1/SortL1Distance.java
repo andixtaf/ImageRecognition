@@ -5,6 +5,7 @@ import com.and1.img.MRImage;
 public class SortL1Distance implements Comparable<SortL1Distance>
 {
 	private final float distance;
+
 	private final MRImage img;
 
 	public SortL1Distance(MRImage img, float distance)
@@ -17,9 +18,12 @@ public class SortL1Distance implements Comparable<SortL1Distance>
 	{
 		int result = 0;
 
-		if(distance < value.distance) {
+		if (distance < value.distance)
+		{
 			result = -1;
-		} else if(distance > value.distance) {
+		}
+		else if (distance > value.distance)
+		{
 			result = 1;
 		}
 

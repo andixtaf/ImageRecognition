@@ -3,9 +3,11 @@ package com.and1;
 class Search
 {
 
-	private final float index;
 	private float lb_agg;
+
 	private float ub_agg;
+
+	private final float index;
 
 	public Search(float index, float lb_agg, float ub_agg)
 	{

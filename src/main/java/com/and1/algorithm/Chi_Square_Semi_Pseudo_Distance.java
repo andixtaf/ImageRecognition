@@ -1,5 +1,7 @@
-package com.and1;
+package com.and1.algorithm;
 
+import com.and1.NRA_Algorithm_Sort;
+import com.and1.SortIntersection;
 import com.and1.img.MRImage;
 
 import java.util.Arrays;
@@ -33,22 +35,30 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		SortIntersection[] list = new SortIntersection[repository.size()];
 		nra_values = new NRA_Algorithm_Sort[repository.size()];
 
-		for(int i = 0; i < repository.size(); i++) {
+		for (int i = 0; i < repository.size(); i++)
+		{
 			MRImage img = repository.get(i);
 			//int totalhist2 = com.and1.img.getHeight() * com.and1.img.getWidth();
 			String imgname = img.toString();
 			img.generateHistogramHSI(imgname);
 			hist2 = img.getHistogramHSI(imgname);
 
-			for(int j = 0; j < 18; j++) {
-				for(int k = 0; k < 3; k++) {
-					for(int l = 0; l < 3; l++) {
+			for (int j = 0; j < 18; j++)
+			{
+				for (int k = 0; k < 3; k++)
+				{
+					for (int l = 0; l < 3; l++)
+					{
 
 						//Bestimmung der Gesamtsumme und der Einzelsummen beiden Histogramme f�r den erwarteten Wert
-						if(x == 0) {
-							for(int m = 0; m < 18; m++) {
-								for(int n = 0; n < 3; n++) {
-									for(int o = 0; o < 3; o++) {
+						if (x == 0)
+						{
+							for (int m = 0; m < 18; m++)
+							{
+								for (int n = 0; n < 3; n++)
+								{
+									for (int o = 0; o < 3; o++)
+									{
 										sum1sum2 += (hist1[m][n][o] + hist2[m][n][o]);
 										sum1 += hist1[m][n][o];
 										sum2 += hist2[m][n][o];
@@ -62,20 +72,28 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 						expectedValueHistory1 = ((hist1[j][k][l] + hist2[j][k][l]) * sum1) / sum1sum2;
 						expectedValueHistory2 = ((hist1[j][k][l] + hist2[j][k][l]) * sum2) / sum1sum2;
 
-						if(expectedValueHistory1 == 0) {
+						if (expectedValueHistory1 == 0)
+						{
 							sumHistory1 += 0;
-						} else {
+						}
+						else
+						{
 							//Bestimmung der beiden Teilsummen zur Berechnung der Distanz
 							sumHistory1 +=
-									((hist1[j][k][l] - expectedValueHistory1) * (hist1[j][k][l] - expectedValueHistory1)) /
+									((hist1[j][k][l] - expectedValueHistory1) *
+											(hist1[j][k][l] - expectedValueHistory1)) /
 											expectedValueHistory1;
 						}
 
-						if(expectedValueHistory2 == 0) {
+						if (expectedValueHistory2 == 0)
+						{
 							sumHistory2 += 0;
-						} else {
+						}
+						else
+						{
 							sumHistory2 +=
-									((hist2[j][k][l] - expectedValueHistory2) * (hist2[j][k][l] - expectedValueHistory2)) /
+									((hist2[j][k][l] - expectedValueHistory2) *
+											(hist2[j][k][l] - expectedValueHistory2)) /
 											expectedValueHistory2;
 						}
 					}
@@ -101,7 +119,8 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
 		Vector<MRImage> sortedlist = new Vector<>();
-		for(int i = 0; i < list.length; i++) {
+		for (int i = 0; i < list.length; i++)
+		{
 			float dist = list[i].getIntersection();
 			MRImage image = list[i].getMRImage();
 

@@ -11,12 +11,11 @@ public class NRA_Algorithm
 		NRA_Algorithm_Sort[] nra = new NRA_Algorithm_Sort[euclidean.length];
 		Vector<Float> ub_agg_list = new Vector<>();
 
-
 		Vector<Search> read = new Vector<>();
 		Vector<Integer> remindexl = new Vector<>();
 		Vector<Integer> remindexr = new Vector<>();
 
-		float tau ;
+		float tau;
 		float ol;
 		float or;
 		float oleft = 0;
@@ -30,11 +29,13 @@ public class NRA_Algorithm
 		int condition2 = 0;
 		boolean check = false;
 
-		for(int i = 0; i < euclidean.length; i++) {
+		for (int i = 0; i < euclidean.length; i++)
+		{
 			ol = euclidean[i].getDistance();
 			or = chisquare[i].getDistance();
 
-			if(read.size() > 1) {
+			if (read.size() > 1)
+			{
 				//pr�fen ob momentaner Index der beiden Listen sich in der Liste read befindet
 				checkl = search(read, euclidean[i].getIndex());
 				checkr = search(read, chisquare[i].getIndex());
@@ -42,7 +43,8 @@ public class NRA_Algorithm
 
 			//Das passiert nur bei ersten lesen und einf�gen der Indexwerte
 			//von beiden Listen, da die read - Liste noch leer ist
-			else {
+			else
+			{
 				oleft = euclidean[i].getIndex();
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
 				remindexl.add(euclidean[i].getIndex());
@@ -53,7 +55,8 @@ public class NRA_Algorithm
 			}
 
 			//pr�fen der linken Liste ob Index noch nicht vorhanden
-			if(checkl == -1.0f) {
+			if (checkl == -1.0f)
+			{
 				oleft = euclidean[i].getIndex();
 
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
@@ -64,14 +67,16 @@ public class NRA_Algorithm
 			}
 
 			//falls Index bereits vorhanden ist
-			else if(checkl == 1.0f) {
+			else if (checkl == 1.0f)
+			{
 				//System.out.println("Index schon vorhanden");
 				oleft = euclidean[i].getIndex();
 				oleft2 = 1;
 			}
 
 			//pr�fen der rechten Liste ob Index noch nicht vorhanden
-			if(checkr == -1.0f) {
+			if (checkr == -1.0f)
+			{
 				oright = chisquare[i].getIndex();
 				//System.out.println("Neu right");
 				//System.out.println("Index chi");
@@ -83,15 +88,18 @@ public class NRA_Algorithm
 			}
 
 			//falls Index bereits vorhanden ist
-			else if(checkr == 1.0f) {
+			else if (checkr == 1.0f)
+			{
 				//System.out.println("Index schon vorhanden");
 				oright = chisquare[i].getIndex();
 				oright2 = 1;
 			}
 
-			if(remindexl.size() > 1) {
+			if (remindexl.size() > 1)
+			{
 				//wenn Index bereits in beiden Listen aufgetaucht ist
-				if(oleft2 == 1) {
+				if (oleft2 == 1)
+				{
 					//System.out.println("gleicher Index oleft");
 					//System.out.println("Indexsuchen");
 					//bestimmen an welcher Position sich der Index Wert in der
@@ -115,12 +123,15 @@ public class NRA_Algorithm
 					check = true;
 					oleft = 0;
 					oleft2 = 0;
-				} else {
+				}
+				else
+				{
 					//System.out.println("Werte anpassen left");
 					//Falls Index noch nicht in beiden Listen gefunden
 					//den Aktualisierungspart der ub_agg Werte fand ich
 					//recht knifflig
-					for(Integer aRemindexl : remindexl) {
+					for (Integer aRemindexl : remindexl)
+					{
 						int newindexl = getIndex(read, aRemindexl);
 						float index = aRemindexl;
 						float lb_agg = read.get(newindexl).getLb_agg();
@@ -133,8 +144,10 @@ public class NRA_Algorithm
 			}
 
 			//analog zur linken Liste
-			if(remindexr.size() > 1) {
-				if(oright2 == 1) {
+			if (remindexr.size() > 1)
+			{
+				if (oright2 == 1)
+				{
 					//System.out.println("gleicher Index oright");
 					//System.out.println("Indexsuchen");
 					int newindex = getIndex(read, oright);
@@ -151,9 +164,12 @@ public class NRA_Algorithm
 					x++;
 					oright = 0;
 					oright2 = 0;
-				} else {
+				}
+				else
+				{
 					//System.out.println("Werte anpassen right");
-					for(Integer aRemindexr : remindexr) {
+					for (Integer aRemindexr : remindexr)
+					{
 						int newindexr = getIndex(read, aRemindexr);
 						float index = aRemindexr;
 						float lb_agg = read.get(newindexr).getLb_agg();
@@ -168,12 +184,16 @@ public class NRA_Algorithm
 
 			//Abfragen der ersten Bedingung ob lb_agg Werte von top-k >= tau sind
 			//wenn condition1 = k dann ist 1. Abbruchbedingung erf�llt
-			if(check) {
-				for(int j = 0; j < x; j++) {
-					if(condition1 < k) {
+			if (check)
+			{
+				for (int j = 0; j < x; j++)
+				{
+					if (condition1 < k)
+					{
 						//System.out.println("lb_agg");
 						//System.out.println(nra[j].getDistance());
-						if(nra[j].getDistance() >= tau) {
+						if (nra[j].getDistance() >= tau)
+						{
 							condition1++;
 						}
 					}
@@ -182,9 +202,12 @@ public class NRA_Algorithm
 
 				//alle ub_agg der Indices die in read aber nicht in top-k sind ermitteln
 				//und in neue Liste speichern
-				for(Search aRead : read) {
-					for(int l = 0; l < x; l++) {
-						if(aRead.getIndex() != nra[l].getIndex()) {
+				for (Search aRead : read)
+				{
+					for (int l = 0; l < x; l++)
+					{
+						if (aRead.getIndex() != nra[l].getIndex())
+						{
 							ub_agg_list.add(aRead.getUb_agg());
 						}
 					}
@@ -193,10 +216,14 @@ public class NRA_Algorithm
 				//Abfragen der 2. Bedingung ob ub_agg Werte von top-k gr��er gleich
 				//der ub_agg Werte der im vorigen Schritt gespeicherten Liste sind
 				//wenn condition2 = k dann ist 2. Abbruchbedingung erf�llt
-				for(Float anUb_agg_list : ub_agg_list) {
-					for(int l = 0; l < x; l++) {
-						if(condition2 < k) {
-							if(nra[l].getDistance() >= anUb_agg_list) {
+				for (Float anUb_agg_list : ub_agg_list)
+				{
+					for (int l = 0; l < x; l++)
+					{
+						if (condition2 < k)
+						{
+							if (nra[l].getDistance() >= anUb_agg_list)
+							{
 								condition2++;
 							}
 						}
@@ -206,7 +233,8 @@ public class NRA_Algorithm
 			}
 
 			//Falls beide Abbruchbedingungen erf�llt sind wird Schleife verlassen
-			if(condition1 == k && condition2 == k) {
+			if (condition1 == k && condition2 == k)
+			{
 				//System.out.println("Abbruch");
 				//System.out.println(x);
 				break;
@@ -214,7 +242,8 @@ public class NRA_Algorithm
 
 			//andernfalls condition1 und condition2 auf 0 zur�cksetzen und die Liste
 			//der gespeicherten ub_agg Werte l�schen
-			else {
+			else
+			{
 				condition2 = 0;
 				condition1 = 0;
 				ub_agg_list.removeAllElements();
@@ -227,7 +256,8 @@ public class NRA_Algorithm
 		System.arraycopy(nra, 0, nrasort, 0, x);
 		//Array absteigend sortieren
 		Arrays.sort(nrasort);
-		for(NRA_Algorithm_Sort aNrasort : nrasort) {
+		for (NRA_Algorithm_Sort aNrasort : nrasort)
+		{
 			System.out.println(aNrasort.getIndex());
 			System.out.println(aNrasort.getDistance());
 			//setValues((int)nrasort[i].getIndex(), nrasort[i].getDistance());
@@ -238,8 +268,10 @@ public class NRA_Algorithm
 	private float search(Vector<Search> read, float value)
 	{
 
-		for(Search aRead : read) {
-			if(aRead.getIndex() == value) {
+		for (Search aRead : read)
+		{
+			if (aRead.getIndex() == value)
+			{
 				return 1.0f;
 			}
 		}
@@ -249,8 +281,10 @@ public class NRA_Algorithm
 	private int getIndex(Vector<Search> read, float search)
 	{
 
-		for(int i = 0; i < read.size(); i++) {
-			if(read.get(i).getIndex() == search) {
+		for (int i = 0; i < read.size(); i++)
+		{
+			if (read.get(i).getIndex() == search)
+			{
 				return i;
 			}
 		}
@@ -259,8 +293,10 @@ public class NRA_Algorithm
 
 	private int removeIndex(Vector<Integer> list, float index)
 	{
-		for(int i = 0; i < list.size(); i++) {
-			if(list.get(i) == (int) index) {
+		for (int i = 0; i < list.size(); i++)
+		{
+			if (list.get(i) == (int) index)
+			{
 				return i;
 			}
 		}

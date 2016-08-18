@@ -3,6 +3,7 @@ package com.and1;
 public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 {
 	private final int index;
+
 	private final float distance;
 
 	public NRA_Algorithm_Sort(int index, float distance)
@@ -13,10 +14,12 @@ public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 
 	public int compareTo(NRA_Algorithm_Sort value)
 	{
-		if(distance > value.distance) {
+		if (distance > value.distance)
+		{
 			return -1;
 		}
-		if(distance < value.distance) {
+		if (distance < value.distance)
+		{
 			return 1;
 		}
 

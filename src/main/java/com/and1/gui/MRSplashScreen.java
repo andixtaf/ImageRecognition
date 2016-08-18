@@ -3,17 +3,20 @@ package com.and1.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class MRSplashScreen extends JWindow implements Runnable {
+public class MRSplashScreen extends JWindow implements Runnable
+{
 
 	private String message = "Loading...";
 
-	public void run() {
+	public void run()
+	{
 		setSize(400, 400);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
-	public void paint(Graphics g) {
+	public void paint(Graphics g)
+	{
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -23,7 +26,8 @@ public class MRSplashScreen extends JWindow implements Runnable {
 		g.drawString(message, 15, this.getHeight() - 15);
 	}
 
-	public void setMessage(String msg) {
+	public void setMessage(String msg)
+	{
 		message = msg;
 		repaint();
 	}

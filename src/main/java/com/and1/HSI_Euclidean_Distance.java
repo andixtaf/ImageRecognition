@@ -26,19 +26,22 @@ public class HSI_Euclidean_Distance
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		nra_values = new NRA_Algorithm_Sort[repository.size()];
 
-		for(int i = 0; i < repository.size(); i++) {
+		for (int i = 0; i < repository.size(); i++)
+		{
 			//System.out.println(i);
 			MRImage img = repository.get(i);
 			img.generateHSIColors();
 			colorHSI2 = img.getColors(number);
 
-			for(int j = 0; j < number; j++) {
+			for (int j = 0; j < number; j++)
+			{
 				h1 = (Float[]) colorHSI.get(j);
-				for(int k = 0; k < number; k++) {
+				for (int k = 0; k < number; k++)
+				{
 					h2 = (Float[]) colorHSI2.get(k);
-					distance += (float)Math.sqrt((h1[0] - h2[0]) * (h1[0] - h2[0]) +
-							(h1[1] - h2[1]) * (h1[1] - h2[1]) +
-							(h1[2] - h2[2]) * (h1[2] - h2[2]));
+					distance += (float) Math.sqrt((h1[0] - h2[0]) * (h1[0] - h2[0]) +
+														  (h1[1] - h2[1]) * (h1[1] - h2[1]) +
+														  (h1[2] - h2[2]) * (h1[2] - h2[2]));
 				}
 			}
 			scaledDistance = scale(distance);
@@ -52,7 +55,7 @@ public class HSI_Euclidean_Distance
 		Arrays.sort(nra_values);
 		Vector<MRImage> sortedlist = new Vector<>();
 
-		for(SortL1Distance aList : list)
+		for (SortL1Distance aList : list)
 		{
 			Float dist = aList.getDistance();
 			MRImage image = aList.getMRImage();

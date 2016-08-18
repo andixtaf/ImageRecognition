@@ -5,6 +5,7 @@ import com.and1.img.MRImage;
 public class SortIntersection implements Comparable<SortIntersection>
 {
 	private final float intersection;
+
 	private final MRImage img;
 
 	public SortIntersection(MRImage img, float intersection)
@@ -15,10 +16,12 @@ public class SortIntersection implements Comparable<SortIntersection>
 
 	public int compareTo(SortIntersection value)
 	{
-		if(intersection > value.intersection) {
+		if (intersection > value.intersection)
+		{
 			return -1;
 		}
-		if(intersection < value.intersection) {
+		if (intersection < value.intersection)
+		{
 			return 1;
 		}
 
@@ -28,7 +31,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 	@Override
 	public String toString()
 	{
-		return img + "   com.and1.Intersection:  " + intersection;
+		return img + "   com.and1.algorithm.Intersection:  " + intersection;
 	}
 
 	public float getIntersection()

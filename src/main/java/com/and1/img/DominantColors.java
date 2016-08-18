@@ -6,6 +6,7 @@ public class DominantColors implements Comparable<DominantColors>
 {
 
 	private final float[] colorHSI;
+
 	private final float count;
 
 	public DominantColors(float[] colorHSI, float count)
@@ -16,10 +17,12 @@ public class DominantColors implements Comparable<DominantColors>
 
 	public int compareTo(DominantColors value)
 	{
-		if(count > value.count) {
+		if (count > value.count)
+		{
 			return -1;
 		}
-		if(count < value.count) {
+		if (count < value.count)
+		{
 			return 1;
 		}
 

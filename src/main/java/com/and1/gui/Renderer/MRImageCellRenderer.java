@@ -14,10 +14,11 @@ public class MRImageCellRenderer extends JLabel implements ListCellRenderer
 	}
 
 	public Component getListCellRendererComponent(JList list, Object value,
-	                                              int index, boolean isSelected, boolean cellHasFocus)
+												  int index, boolean isSelected, boolean cellHasFocus)
 	{
 
-		if(value instanceof MRImage) {
+		if (value instanceof MRImage)
+		{
 			MRImage img = (MRImage) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 		}
@@ -29,18 +30,24 @@ public class MRImageCellRenderer extends JLabel implements ListCellRenderer
 
 		// check if this cell represents the current DnD drop location
 		JList.DropLocation dropLocation = list.getDropLocation();
-		if(dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index) {
+
+		if (dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index)
+		{
 
 			background = Color.BLUE;
 			foreground = Color.WHITE;
 
 			// check if this cell is selected
-		} else if(isSelected) {
+		}
+		else if (isSelected)
+		{
 			background = new Color(33, 83, 134);
 			foreground = Color.WHITE;
 
 			// unselected, and not the DnD drop location
-		} else {
+		}
+		else
+		{
 			background = Color.WHITE;
 			foreground = Color.BLACK;
 		}

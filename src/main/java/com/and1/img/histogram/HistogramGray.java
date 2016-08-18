@@ -16,9 +16,9 @@ public class HistogramGray
 		int[] pixel = null;
 
 		int countOfTotalPixel = 0;
-		for(int x = 0; x < image.getWidth(); x++)
+		for (int x = 0; x < image.getWidth(); x++)
 		{
-			for(int y = 0; y < image.getHeight(); y++)
+			for (int y = 0; y < image.getHeight(); y++)
 			{
 				pixel = image.getRaster().getPixel(x, y, pixel);
 
@@ -36,7 +36,7 @@ public class HistogramGray
 	private void normalize(float[] histogram, int countOfTotalPixel)
 	{
 		float sum = 0;
-		for(int i = 0; i < INT_8_BIT; i++)
+		for (int i = 0; i < INT_8_BIT; i++)
 		{
 
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
@@ -50,7 +50,7 @@ public class HistogramGray
 	{
 
 		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
-		if(!file.exists())
+		if (!file.exists())
 		{
 			try
 			{
@@ -59,7 +59,8 @@ public class HistogramGray
 						new FileOutputStream(name.substring(0, name.length() - 4) + "-Gray.txt"));
 				output.writeObject(histogram);
 				output.close();
-			} catch(IOException ex)
+			}
+			catch (IOException ex)
 			{
 				ex.printStackTrace();
 			}

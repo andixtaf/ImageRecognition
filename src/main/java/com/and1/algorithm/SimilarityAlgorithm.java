@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.algorithm;
 
 import com.and1.img.MRImage;
 
@@ -9,7 +9,7 @@ import java.util.Vector;
  *
  * @author David Zellhoefer
  */
-interface SimilarityAlgorithm
+public interface SimilarityAlgorithm
 {
 
 	/**

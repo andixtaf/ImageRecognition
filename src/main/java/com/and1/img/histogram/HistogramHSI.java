@@ -15,12 +15,12 @@ public class HistogramHSI
 	{
 		float[][][] histogramHSI = new float[18][3][3];
 
-		if(image != null)
+		if (image != null)
 		{
 
-			for(int i = 0; i < image.getWidth(); i++)
+			for (int i = 0; i < image.getWidth(); i++)
 			{
-				for(int j = 0; j < image.getHeight(); j++)
+				for (int j = 0; j < image.getHeight(); j++)
 				{
 					int Sq;
 					int Iq;
@@ -36,10 +36,11 @@ public class HistogramHSI
 
 					float H = 0;
 
-					if(B <= G)
+					if (B <= G)
 					{
 						H = (float) ((Math.acos(x / y)));
-					} else if(B > G)
+					}
+					else if (B > G)
 					{
 						H = 360f - ((float) ((Math.acos(x / y))));
 					}
@@ -54,24 +55,28 @@ public class HistogramHSI
 
 					int Hq = (int) ((H) / 20f);
 
-					if(S * 3 < (1 / 3f))
+					if (S * 3 < (1 / 3f))
 					{
 						Sq = 0;
-					} else if(S * 3 < (2 / 3f))
+					}
+					else if (S * 3 < (2 / 3f))
 					{
 						Sq = 1;
-					} else
+					}
+					else
 					{
 						Sq = 2;
 					}
 
-					if(I * 3 < 85)
+					if (I * 3 < 85)
 					{
 						Iq = 0;
-					} else if(I * 3 < 170)
+					}
+					else if (I * 3 < 170)
 					{
 						Iq = 1;
-					} else
+					}
+					else
 					{
 						Iq = 2;
 					}
@@ -85,20 +90,20 @@ public class HistogramHSI
 		}
 	}
 
-
 	private void saveHistogramHSI(float[][][] histogram, String name)
 	{
 
 		String filename = name.substring(0, name.length() - 4) + "-HSI.txt";
 		File file = new File(filename);
-		if(!file.exists())
+		if (!file.exists())
 		{
 			try
 			{
 				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
 				output.writeObject(histogram);
 				output.close();
-			} catch(IOException ex)
+			}
+			catch (IOException ex)
 			{
 				ex.printStackTrace();
 			}

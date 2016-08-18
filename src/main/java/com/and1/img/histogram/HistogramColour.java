@@ -11,14 +11,14 @@ public class HistogramColour
 {
 	public void generateHistogramRGB(BufferedImage image, String name)
 	{
-		if(image != null)
+		if (image != null)
 		{
 
 			float[][][] histogramRGB = new float[8][8][8];
 
-			for(int x = 0; x < image.getWidth(); x++)
+			for (int x = 0; x < image.getWidth(); x++)
 			{
-				for(int y = 0; y < image.getHeight(); y++)
+				for (int y = 0; y < image.getHeight(); y++)
 				{
 
 					Color rgb = new Color(image.getRGB(x, y));
@@ -39,16 +39,16 @@ public class HistogramColour
 	private void saveHistogramRGB(float[][][] histogram, String name)
 	{
 		//von ImageName.jpg den .jpg abschneiden und mit -RGB.txt ersetzen
-		String filename = name.substring(0, name.length() - 4) + "-RGB.txt";
-		File file = new File(filename);
-		if(!file.exists())
+		File file = new File(name.substring(0, name.length() - 4) + "-RGB.txt");
+		if (!file.exists())
 		{
 			try
 			{
-				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
 				output.writeObject(histogram);
 				output.close();
-			} catch(IOException ex)
+			}
+			catch (IOException ex)
 			{
 				ex.printStackTrace();
 			}

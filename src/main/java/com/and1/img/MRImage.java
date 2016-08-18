@@ -15,12 +15,19 @@ public class MRImage
 	private static final float MAX_COLOUR_VALUE = 255f;
 
 	private File filePath;
+
 	private BufferedImage image;
+
 	private Image thumbnail;
+
 	private java.util.List<float[]> colors;
+
 	private java.util.List<Float> hsiColorCount;
+
 	private float similarity;
+
 	private MRImage queryImage;
+
 	private Histogram histogram = new Histogram();
 
 	public MRImage(File file, BufferedImage img)
@@ -48,26 +55,28 @@ public class MRImage
 		Integer wide;
 
 		Integer height;
-		if(bitLength % 2 == 0)
+		if (bitLength % 2 == 0)
 		{
 			height = image.getHeight() / (sqrtOfOriginalSize / 2);
 			wide = image.getWidth() / (sqrtOfOriginalSize / 2);
-		} else
+		}
+		else
 		{
 			height = image.getHeight() / (sqrtOfOriginalSize);
 			wide = image.getWidth() / sqrtOfOriginalSize;
 		}
 
-		for(int i = 0; i < segmentationStep; i++)
+		for (int i = 0; i < segmentationStep; i++)
 		{
 			segment.add(image.getSubimage(x, y, wide, height));
 
-			if(z >= sqrtOfOriginalSize - 1)
+			if (z >= sqrtOfOriginalSize - 1)
 			{
 				x = 0;
 				y += height;
 				z = 0;
-			} else
+			}
+			else
 			{
 				x += height;
 				z++;
@@ -80,10 +89,11 @@ public class MRImage
 	private int getSqrtOfOriginalSize(int segmentationStep, Integer bitLength)
 	{
 		Double imageSize;
-		if(bitLength % 2 == 0)
+		if (bitLength % 2 == 0)
 		{
 			imageSize = Math.sqrt(segmentationStep * 2);
-		} else
+		}
+		else
 		{
 			imageSize = Math.sqrt(segmentationStep);
 		}
@@ -99,9 +109,9 @@ public class MRImage
 
 		hsiColorCount = new Vector<>();
 
-		for(int i = 0; i < image.getWidth(); i++)
+		for (int i = 0; i < image.getWidth(); i++)
 		{
-			for(int j = 0; j < image.getHeight(); j++)
+			for (int j = 0; j < image.getHeight(); j++)
 			{
 				int Sq;
 				int Iq;
@@ -121,15 +131,17 @@ public class MRImage
 				float Hue = 0;
 				float Saturation;
 
-				if(y == 0)
+				if (y == 0)
 				{
 					Hue = 0;
-				} else
+				}
+				else
 				{
-					if(blueValue <= greenValue)
+					if (blueValue <= greenValue)
 					{
 						Hue = (float) ((Math.acos(x / y)));
-					} else if(blueValue > greenValue)
+					}
+					else if (blueValue > greenValue)
 					{
 						Hue = 360 - ((float) ((Math.acos(x / y))));
 					}
@@ -138,10 +150,11 @@ public class MRImage
 				//Berechnung Saturation
 				float minRGB = Math.min(Math.min(redValue, greenValue), blueValue);
 
-				if((redValue + greenValue + blueValue) == 0)
+				if ((redValue + greenValue + blueValue) == 0)
 				{
 					Saturation = 1;
-				} else
+				}
+				else
 				{
 					Saturation = 1 - ((3 * minRGB) / (redValue + greenValue + blueValue));
 				}
@@ -151,24 +164,28 @@ public class MRImage
 
 				int Hq = (int) ((Hue) / 20f);
 
-				if(Saturation * 3 < (1 / 3f))
+				if (Saturation * 3 < (1 / 3f))
 				{
 					Sq = 0;
-				} else if(Saturation * 3 < (2 / 3f))
+				}
+				else if (Saturation * 3 < (2 / 3f))
 				{
 					Sq = 1;
-				} else
+				}
+				else
 				{
 					Sq = 2;
 				}
 
-				if(I * 3 < 85)
+				if (I * 3 < 85)
 				{
 					Iq = 0;
-				} else if(I * 3 < 170)
+				}
+				else if (I * 3 < 170)
 				{
 					Iq = 1;
-				} else
+				}
+				else
 				{
 					Iq = 2;
 				}
@@ -179,7 +196,7 @@ public class MRImage
 
 				histHSI[Hq][Sq][Iq]++;
 
-				if(histHSI[Hq][Sq][Iq] == 1.0)
+				if (histHSI[Hq][Sq][Iq] == 1.0)
 				{
 					HSIColors[0] = Hue;
 					HSIColors[1] = Sat;
@@ -189,11 +206,11 @@ public class MRImage
 			}
 		}
 
-		for(int i = 0; i < 18; i++)
+		for (int i = 0; i < 18; i++)
 		{
-			for(int j = 0; j < 3; j++)
+			for (int j = 0; j < 3; j++)
 			{
-				for(int k = 0; k < 3; k++)
+				for (int k = 0; k < 3; k++)
 				{
 					hsiColorCount.add(histHSI[i][j][k]);
 				}
@@ -212,9 +229,9 @@ public class MRImage
 	{
 		float[][][] histogramRGB = new float[8][8][8];
 
-		for(int x = 0; x < image.getWidth(); x++)
+		for (int x = 0; x < image.getWidth(); x++)
 		{
-			for(int y = 0; y < image.getHeight(); y++)
+			for (int y = 0; y < image.getHeight(); y++)
 			{
 
 				Color rgb = new Color(image.getRGB(x, y));
@@ -234,18 +251,39 @@ public class MRImage
 
 	}
 
+	//RGB Histogramm in Text-Datei speichern
+	private void saveHistogramRGB(float[][][] histogram, String name)
+	{
+		//von ImageName.jpg den .jpg abschneiden und mit -RGB.txt ersetzen
+		String filename = name.substring(0, name.length() - 4) + "-RGB.txt";
+		File file = new File(filename);
+		if (!file.exists())
+		{
+			try
+			{
+				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
+				output.writeObject(histogram);
+				output.close();
+			}
+			catch (IOException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+	}
+
 	//HSI Histogramm generieren
 	public void generateHistogramHSI(String name)
 	{
 
 		float[][][] histogramHSI = new float[18][3][3];
 
-		if(image != null)
+		if (image != null)
 		{
 
-			for(int i = 0; i < image.getWidth(); i++)
+			for (int i = 0; i < image.getWidth(); i++)
 			{
-				for(int j = 0; j < image.getHeight(); j++)
+				for (int j = 0; j < image.getHeight(); j++)
 				{
 					int Sq;
 					int Iq;
@@ -261,10 +299,11 @@ public class MRImage
 
 					float H = 0;
 
-					if(B <= G)
+					if (B <= G)
 					{
 						H = (float) ((Math.acos(x / y)));
-					} else if(B > G)
+					}
+					else if (B > G)
 					{
 						H = 360f - ((float) ((Math.acos(x / y))));
 					}
@@ -279,24 +318,28 @@ public class MRImage
 
 					int Hq = (int) ((H) / 20f);
 
-					if(S * 3 < (1 / 3f))
+					if (S * 3 < (1 / 3f))
 					{
 						Sq = 0;
-					} else if(S * 3 < (2 / 3f))
+					}
+					else if (S * 3 < (2 / 3f))
 					{
 						Sq = 1;
-					} else
+					}
+					else
 					{
 						Sq = 2;
 					}
 
-					if(I * 3 < 85)
+					if (I * 3 < 85)
 					{
 						Iq = 0;
-					} else if(I * 3 < 170)
+					}
+					else if (I * 3 < 170)
 					{
 						Iq = 1;
-					} else
+					}
+					else
 					{
 						Iq = 2;
 					}
@@ -310,33 +353,13 @@ public class MRImage
 		}
 	}
 
-	//RGB Histogramm in Text-Datei speichern
-	private void saveHistogramRGB(float[][][] histogram, String name)
-	{
-		//von ImageName.jpg den .jpg abschneiden und mit -RGB.txt ersetzen
-		String filename = name.substring(0, name.length() - 4) + "-RGB.txt";
-		File file = new File(filename);
-		if(!file.exists())
-		{
-			try
-			{
-				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
-				output.writeObject(histogram);
-				output.close();
-			} catch(IOException ex)
-			{
-				ex.printStackTrace();
-			}
-		}
-	}
-
 	//HSI Histogramm in Text-Datei speichern
 	private void saveHistogramHSI(float[][][] histogram, String name)
 	{
 
 		String filename = name.substring(0, name.length() - 4) + "-HSI.txt";
 		File file = new File(filename);
-		if(!file.exists())
+		if (!file.exists())
 		{
 			try
 			{
@@ -344,7 +367,8 @@ public class MRImage
 				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
 				output.writeObject(histogram);
 				output.close();
-			} catch(IOException ex)
+			}
+			catch (IOException ex)
 			{
 				ex.printStackTrace();
 			}
@@ -372,7 +396,8 @@ public class MRImage
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
 			histGray = (float[]) (input.readObject());
 			input.close();
-		} catch(ClassNotFoundException | IOException ex)
+		}
+		catch (ClassNotFoundException | IOException ex)
 		{
 			ex.printStackTrace();
 		}
@@ -390,7 +415,8 @@ public class MRImage
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
 			histRGB = (float[][][]) (input.readObject());
 			input.close();
-		} catch(ClassNotFoundException | IOException ex)
+		}
+		catch (ClassNotFoundException | IOException ex)
 		{
 			ex.printStackTrace();
 		}
@@ -408,7 +434,8 @@ public class MRImage
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
 			histHSI = (float[][][]) (input.readObject());
 			input.close();
-		} catch(ClassNotFoundException | IOException ex)
+		}
+		catch (ClassNotFoundException | IOException ex)
 		{
 			ex.printStackTrace();
 		}
@@ -426,11 +453,11 @@ public class MRImage
 		//Vector <Float> hsicolor = hsiColorCount;
 		float a = 0;
 
-		for(int i = 0; i < hsiColorCount.size(); i++)
+		for (int i = 0; i < hsiColorCount.size(); i++)
 		{
-			if(hsiColorCount.size() > count)
+			if (hsiColorCount.size() > count)
 			{
-				if(hsiColorCount.get(i).equals(a))
+				if (hsiColorCount.get(i).equals(a))
 				{
 					hsiColorCount.remove(i);
 					i = 0;
@@ -440,12 +467,12 @@ public class MRImage
 		//System.out.println("Size:" + hsicolor.size());
 
         /*for (int i = 0; i < hsicolor.size(); i++) {
-            System.out.println(hsicolor.get(i));
+			System.out.println(hsicolor.get(i));
         }*/
 
-		if(hsiColorCount.size() < count)
+		if (hsiColorCount.size() < count)
 		{
-			for(int i = 0; i < count - hsiColorCount.size(); i++)
+			for (int i = 0; i < count - hsiColorCount.size(); i++)
 			{
 				addcontent[0] = 0;
 				addcontent[1] = 0;
@@ -456,7 +483,7 @@ public class MRImage
 
 		DominantColors[] lidominantColorList = new DominantColors[hsiColorCount.size()];
 
-		for(int i = 0; i < hsiColorCount.size(); i++)
+		for (int i = 0; i < hsiColorCount.size(); i++)
 		{
 			color = colors.get(i);
 			lidominantColorList[i] = new DominantColors(color, hsiColorCount.get(i));
@@ -464,7 +491,7 @@ public class MRImage
 
 		Arrays.sort(lidominantColorList);
 
-		for(int i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
 		{
 			dominantcolor.add(lidominantColorList[(count - 1) - i].getHSIColor());
 		}
@@ -480,10 +507,11 @@ public class MRImage
 
 	public int getWidth()
 	{
-		if(image != null)
+		if (image != null)
 		{
 			return image.getWidth();
-		} else
+		}
+		else
 		{
 			return 0;
 		}
@@ -491,10 +519,11 @@ public class MRImage
 
 	public int getHeight()
 	{
-		if(image != null)
+		if (image != null)
 		{
 			return image.getHeight();
-		} else
+		}
+		else
 		{
 			return 0;
 		}
@@ -507,10 +536,11 @@ public class MRImage
 	 */
 	public float getSimilarity()
 	{
-		if(queryImage != null)
+		if (queryImage != null)
 		{
 			return similarity;
-		} else
+		}
+		else
 		{
 			return -1.0f;
 		}
