@@ -1,6 +1,8 @@
 package com.and1.img;
 
 import com.and1.img.histogram.Histogram;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,6 +13,7 @@ import java.util.Vector;
 
 public class Image
 {
+	private static final Logger logger = LogManager.getLogger(Image.class);
 
 	private static final float MAX_COLOUR_VALUE = 255f;
 
@@ -236,12 +239,12 @@ public class Image
 
 				Color rgb = new Color(image.getRGB(x, y));
 
-				//jeweils Rot, Gr�n und Blau Farbwerte aus rgb erzeugen
+				//jeweils Rot, Grün und Blau Farbwerte aus rgb erzeugen
 				int r = (rgb.getRed()) / 32;
 				int g = (rgb.getGreen()) / 32;
 				int b = (rgb.getBlue()) / 32;
 
-				//Werte in Histogramm eintragen und gleiche Werte hochz�hlen
+				//Werte in Histogramm eintragen und gleiche Werte hochzählen
 				histogramRGB[r][g][b]++;
 			}
 		}
@@ -257,6 +260,9 @@ public class Image
 		//von ImageName.jpg den .jpg abschneiden und mit -RGB.txt ersetzen
 		String filename = name.substring(0, name.length() - 4) + "-RGB.txt";
 		File file = new File(filename);
+
+		logger.info("Save file: " + file.getName());
+
 		if (!file.exists())
 		{
 			try
@@ -267,7 +273,7 @@ public class Image
 			}
 			catch (IOException ex)
 			{
-				ex.printStackTrace();
+				logger.error("Save file: ", ex);
 			}
 		}
 	}
@@ -370,7 +376,7 @@ public class Image
 			}
 			catch (IOException ex)
 			{
-				ex.printStackTrace();
+				logger.error(ex);
 			}
 		}
 	}
@@ -399,7 +405,7 @@ public class Image
 		}
 		catch (ClassNotFoundException | IOException ex)
 		{
-			ex.printStackTrace();
+			logger.error("get histogram gray: ", ex);
 		}
 		return histGray;
 	}
@@ -418,7 +424,7 @@ public class Image
 		}
 		catch (ClassNotFoundException | IOException ex)
 		{
-			ex.printStackTrace();
+			logger.error("get histogram rgb: ", ex);
 		}
 		return histRGB;
 	}
@@ -437,7 +443,7 @@ public class Image
 		}
 		catch (ClassNotFoundException | IOException ex)
 		{
-			ex.printStackTrace();
+			logger.error("get histogram hsi: ", ex);
 		}
 		return histHSI;
 	}
