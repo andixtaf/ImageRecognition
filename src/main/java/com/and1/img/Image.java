@@ -42,6 +42,7 @@ public class Image
 		thumbnail = image.getScaledInstance(-1, 60, java.awt.Image.SCALE_FAST);
 	}
 
+	// TODO should work with a single given number and not power of 2
 	public Vector<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
 	{
 		Vector<BufferedImage> segment = new Vector<>();

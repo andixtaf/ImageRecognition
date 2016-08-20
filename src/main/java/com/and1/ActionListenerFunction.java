@@ -32,11 +32,7 @@ public class ActionListenerFunction
 
 	public void actionSegmentation(JFrame mainFrame, Image selectedImage)
 	{
-		JFrame frame = new JFrame("Input Dialog");
-
-		String segmentation = JOptionPane.showInputDialog(frame, "Geben Sie die Segmentation ein (vielfaches von 2!");
-
-		Integer segmentationStep = Integer.parseInt(segmentation);
+		Integer segmentationStep = chooseSegmentationStepWindow();
 
 		SegmentationView segmentationView = new SegmentationView();
 
@@ -50,5 +46,20 @@ public class ActionListenerFunction
 			                              "Error",
 			                              JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	private int chooseSegmentationStepWindow()
+	{
+		JFrame frame = new JFrame("Input Dialog");
+
+		String segmentation = JOptionPane.showInputDialog(frame, "Geben Sie die Segmentation ein (vielfaches von 2!");
+
+		return Integer.parseInt(segmentation);
+	}
+
+	public void actionExit()
+	{
+		logger.info("system exit...");
+		System.exit(0);
 	}
 }

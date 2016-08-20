@@ -135,7 +135,7 @@ class MainFrame extends JFrame implements ActionListener
 	private Vector<Image> loadTestData(File pathToImage)
 	{
 		Vector<Image> imageVector = null;
-		// load all imgList and create their histograms if the directory exists
+		// load all jpg and create their histograms if the directory exists
 		if(pathToImage != null && pathToImage.exists())
 		{
 			File[] fileList = pathToImage.listFiles();
@@ -254,14 +254,14 @@ class MainFrame extends JFrame implements ActionListener
 	private BufferedImage getBufferedImageFromFile(File file)
 	{
 		BufferedImage img = null;
+
 		try
 		{
 			img = ImageIO.read(file);
 		} catch(IOException e)
 		{
 			statusBarLabel.setText("Could not read files!!!");
-			logger.error("Could not read file: " + file);
-			e.printStackTrace();
+			logger.error("Could not read file: " + file, e);
 		}
 		return img;
 	}
@@ -270,49 +270,74 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		JMenuBar menuBar = new JMenuBar();
 
+		ActionListenerFunction function = new ActionListenerFunction();
+
 		JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		JMenuItem cmdFileChoose = new JMenuItem("Load Testdata");
-		cmdFileChoose.addActionListener(this);
+		cmdFileChoose.addActionListener(e -> refreshGUI());
 
 		menuFile.add(cmdFileChoose);
 
 		JMenuItem cmdExit = new JMenuItem("Exit");
-		cmdExit.addActionListener(this);
+		cmdExit.addActionListener(e -> function.actionExit());
 		menuFile.add(cmdExit);
 
 		JMenu menuAlgorithms = new JMenu("Similarity Algorithms");
 		menuAlgorithms.setMnemonic(KeyEvent.VK_S);
+
 		JMenuItem intersect = new JMenuItem("Intersection");
-		intersect.addActionListener(this);
+		intersect.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				//TODO check if in original code segmentationStep has value != 0
+				logger.info("segmentation step: " + segmentationStep);
+
+				jListFilesSorted.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
+			}
+		});
 		menuAlgorithms.add(intersect);
+
 		JMenuItem l1Distance = new JMenuItem("L1-Distance");
 		l1Distance.addActionListener(this);
 		menuAlgorithms.add(l1Distance);
+
 		JMenuItem hsiintersect = new JMenuItem("HSI-Intersection");
 		hsiintersect.addActionListener(this);
 		menuAlgorithms.add(hsiintersect);
+
 		JMenuItem hsil1dist = new JMenuItem("HSI-L1Distance");
 		hsil1dist.addActionListener(this);
 		menuAlgorithms.add(hsil1dist);
+
 		JMenuItem segintersect = new JMenuItem("Intersection-Segmentation");
 		segintersect.addActionListener(this);
 		menuAlgorithms.add(segintersect);
+
 		JMenuItem segl1dist = new JMenuItem("L1Distance-Segmentation");
 		segl1dist.addActionListener(this);
 		menuAlgorithms.add(segl1dist);
+
 		JMenuItem hsisegintersect = new JMenuItem("HSI-Intersection-Segmentation");
 		hsisegintersect.addActionListener(this);
 		menuAlgorithms.add(hsisegintersect);
+
 		JMenuItem hsisegl1dist = new JMenuItem("HSI-L1Distance-Segmentation");
 		hsisegl1dist.addActionListener(this);
 		menuAlgorithms.add(hsisegl1dist);
+
 		JMenuItem hsieucdist = new JMenuItem("HSI-Euclidean-Distance");
 		hsieucdist.addActionListener(this);
 		menuAlgorithms.add(hsieucdist);
+
 		JMenuItem chisquaresemi = new JMenuItem("HSI-Chi-Square-Semi-Pseudo-Distance");
 		chisquaresemi.addActionListener(this);
 		menuAlgorithms.add(chisquaresemi);
+
 		JMenuItem nra_algo = new JMenuItem("NRA-Algorithm");
 		nra_algo.addActionListener(this);
 		menuAlgorithms.add(nra_algo);
@@ -392,22 +417,8 @@ class MainFrame extends JFrame implements ActionListener
 			jListFilesSorted.setCellRenderer(new ImageCellRendererSorted());
 			jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			rightPanel.getViewport().setView(jListFilesSorted);
-			if(m.getText().equals("Exit"))
-			{
 
-				System.exit(0);
-			} else if(m.getText().equals("Intersection"))
-			{
-
-				Image currentImg = (Image) jListFiles.getSelectedValue();
-				jListFilesSorted.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
-				//Imagepfad ändern und Images laden
-			} else if(m.getText().equals("Load Testdata"))
-			{
-
-				refreshGUI();
-
-			} else if(m.getText().equals("L1-Distance"))
+			if(m.getText().equals("L1-Distance"))
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
