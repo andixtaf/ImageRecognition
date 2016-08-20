@@ -11,6 +11,8 @@ class Main
 
 	public static void main(String[] args)
 	{
+		logger.info("start application");
+
 		ImageSplashScreen ImageSplashScreen = new ImageSplashScreen();
 		ImageSplashScreen.setVisible(true);
 
@@ -20,5 +22,7 @@ class Main
 		MainFrame frame = new MainFrame(ImageSplashScreen, splashThread);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		logger.info("finish!!!");
 	}
 }
