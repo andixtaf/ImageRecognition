@@ -1,8 +1,8 @@
 package com.and1.algorithm;
 
+import com.and1.img.Image;
 import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.sort.SortIntersection;
-import com.and1.img.Image;
 
 import java.util.Arrays;
 import java.util.Vector;
@@ -12,6 +12,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 	private NRA_Algorithm_Sort[] nra_values;
 
+	//TODO replace Vector with List
 	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 
@@ -119,6 +120,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
 		Vector<Image> sortedList = new Vector<>();
+
 		for(SortIntersection aList : list)
 		{
 			float dist = aList.getIntersection();

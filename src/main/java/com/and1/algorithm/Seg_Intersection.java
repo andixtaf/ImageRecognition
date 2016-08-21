@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortIntersection;
 import com.and1.img.Image;
+import com.and1.sort.SortIntersection;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -27,6 +27,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			Vector hist1 = new Vector();
 			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segStep);
+
 			//neues com.and1.img.and1.Image f�r jedes Teilbild erzeugen
 			for (int i = 0; i < segment.size(); i++)
 			{
@@ -35,6 +36,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 				float[] hist1seg = seg.getHistogramGray(segStep + "Seg" + i + "Gray" + name);
 				hist1.add(hist1seg);
 			}
+
 			//Histogramme laden
 
 			//System.out.println("Histogramm1 :" + query.filePath);

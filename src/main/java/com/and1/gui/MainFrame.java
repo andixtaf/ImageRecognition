@@ -2,7 +2,6 @@ package com.and1.gui;
 
 import com.and1.HSI_Euclidean_Distance;
 import com.and1.NRA_Algorithm;
-import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.algorithm.*;
 import com.and1.gui.label.HistogramLabel;
 import com.and1.gui.label.HistogramLabelGray;
@@ -11,6 +10,7 @@ import com.and1.gui.label.HistogramLabelRGB;
 import com.and1.gui.renderer.ImageCellRenderer;
 import com.and1.gui.renderer.ImageCellRendererSorted;
 import com.and1.img.Image;
+import com.and1.sort.NRA_Algorithm_Sort;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,49 +24,32 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
-
-	private JScrollPane leftScrollPanel;
-
-	private JScrollPane rightPanel;
-
-	private JList jListFiles, jListFilesSorted;
-
-	private Vector<Image> imagesList;
-
-	private JFrame frame, frame1;
-
-	private int segmentationStep;
-
-	private JTextField jTextField, jTextField1;
-
-	private Boolean seg, simi, l1dist, intersec, hsidist, hsiintersec, rgb, hsi, gray, eucl, nra;
-
-	private JLabel statusBarLabel;
-
 	private final Intersection intersection = new Intersection();
-
 	private final L1Distance l1distance = new L1Distance();
-
 	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
-
 	private final Seg_L1Distance segmentationL1Distance = new Seg_L1Distance();
-
 	private final HSI_Intersection hsiIntersection = new HSI_Intersection();
-
 	private final HSI_L1Distance hsiL1Distance = new HSI_L1Distance();
-
 	private final HSISeg_L1Distance hsiSegmentationL1Distance = new HSISeg_L1Distance();
-
 	private final HSI_Euclidean_Distance hsiEuclidDistance = new HSI_Euclidean_Distance();
-
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
-
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
+	private JScrollPane leftScrollPanel;
+	private JScrollPane rightPanel;
+	private JList jListFiles, jListFilesRanked;
+	private Vector<Image> imagesList;
+	private JFrame frame, frame1;
+	private int segmentationStep;
+	private JTextField jTextField, jTextField1;
+	private Boolean seg, simi, l1dist, intersec, hsidist, hsiintersec, rgb, hsi, gray, eucl, nra;
+	private JLabel statusBarLabel;
 
 	MainFrame(ImageSplashScreen splash, Thread splashThread) throws HeadlessException
 	{
@@ -219,11 +202,11 @@ class MainFrame extends JFrame implements ActionListener
 		leftSplitter.add(leftScrollPanel);
 
 		// list for displaying the sorted list of imgList
-		jListFilesSorted = new JList();
-		jListFilesSorted.setCellRenderer(new ImageCellRendererSorted());
-		jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		jListFilesRanked = new JList();
+		jListFilesRanked.setCellRenderer(new ImageCellRendererSorted());
+		jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		rightPanel = new JScrollPane(jListFilesSorted);
+		rightPanel = new JScrollPane(jListFilesRanked);
 		rightPanel.setBackground(Color.BLACK);
 		rightPanel.setForeground(Color.WHITE);
 		rightPanel.setPreferredSize(new Dimension(1700, 800));
@@ -297,7 +280,7 @@ class MainFrame extends JFrame implements ActionListener
 				// read number and convert it to a power of 2
 				logger.info("segmentation step: " + segmentationStep);
 
-				jListFilesSorted.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
+				jListFilesRanked.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
 			}
 		});
 		menuAlgorithms.add(intersect);
@@ -354,13 +337,13 @@ class MainFrame extends JFrame implements ActionListener
 		histHSI.addActionListener(this);
 		histogram.add(histHSI);
 		JMenuItem histseggray = new JMenuItem("Segmentation-Gray");
-		histseggray.addActionListener(this);
+		histseggray.addActionListener(e -> checkImage());
 		histogram.add(histseggray);
 		JMenuItem histsegrgb = new JMenuItem("Segmentation-RGB");
-		histsegrgb.addActionListener(this);
+		histsegrgb.addActionListener(e -> checkImage());
 		histogram.add(histsegrgb);
 		JMenuItem histseghsi = new JMenuItem("Segmentation-HSI");
-		histseghsi.addActionListener(this);
+		histseghsi.addActionListener(e -> checkImage());
 		histogram.add(histseghsi);
 
 		menuBar.add(menuFile);
@@ -392,7 +375,7 @@ class MainFrame extends JFrame implements ActionListener
 
 				if(eucl)
 				{
-					jListFilesSorted.setListData(
+					jListFilesRanked.setListData(
 							hsiEuclidDistance.applySimilarity(currentImg, imagesList, snumber, similarity));
 					eucl = false;
 				} else if(nra)
@@ -401,10 +384,10 @@ class MainFrame extends JFrame implements ActionListener
 					NRA_Algorithm_Sort[] euclidean = hsiEuclidDistance.getNRA_Values();
 					chiSquare.apply(currentImg, imagesList, snumber);
 					NRA_Algorithm_Sort[] chisq = chiSquare.getNRA_Values();
-					jListFilesSorted = new JList();
-					jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-					jListFilesSorted.setListData(nraAlgorithm.calculate(euclidean, chisq, snumber));
-					rightPanel.getViewport().setView(jListFilesSorted);
+					jListFilesRanked = new JList();
+					jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+					jListFilesRanked.setListData(nraAlgorithm.calculate(euclidean, chisq, snumber));
+					rightPanel.getViewport().setView(jListFilesRanked);
 					nra = false;
 				}
 			}
@@ -413,16 +396,16 @@ class MainFrame extends JFrame implements ActionListener
 		else if(src instanceof JMenuItem)
 		{
 			JMenuItem m = (JMenuItem) src;
-			jListFilesSorted = new JList();
-			jListFilesSorted.setCellRenderer(new ImageCellRendererSorted());
-			jListFilesSorted.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			rightPanel.getViewport().setView(jListFilesSorted);
+			jListFilesRanked = new JList();
+			jListFilesRanked.setCellRenderer(new ImageCellRendererSorted());
+			jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			rightPanel.getViewport().setView(jListFilesRanked);
 
 			if(m.getText().equals("L1-Distance"))
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
-				jListFilesSorted.setListData(l1distance.apply(currentImg, imagesList, segmentationStep));
+				jListFilesRanked.setListData(l1distance.apply(currentImg, imagesList, segmentationStep));
 			} else if(m.getText().equals("GrayScale"))
 			{
 
@@ -440,11 +423,6 @@ class MainFrame extends JFrame implements ActionListener
 				hsi = true;
 				displayHistogram();
 				//Darstellung der 4 RGB Histogramme des Segmentierten Images
-			} else if(m.getText().equals("Segmentation-RGB"))
-			{
-
-				rgb = true;
-				checkImage();
 			} else if(m.getText().equals("Intersection-Segmentation"))
 			{
 				simi = true;
@@ -475,7 +453,7 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesSorted.setListData(hsiIntersection.apply(currentImg, imagesList, segmentationStep));
+					jListFilesRanked.setListData(hsiIntersection.apply(currentImg, imagesList, segmentationStep));
 				}
 
 			} else if(m.getText().equals("HSI-L1Distance"))
@@ -487,7 +465,7 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesSorted.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep));
+					jListFilesRanked.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep));
 				}
 
 			} else if(m.getText().equals("Segmentation-Gray"))
@@ -520,7 +498,7 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesSorted.setListData(chiSquare.apply(currentImg, imagesList, similarity));
+					jListFilesRanked.setListData(chiSquare.apply(currentImg, imagesList, similarity));
 				}
 			} else if(m.getText().equals("NRA-Algorithm"))
 			{
@@ -621,17 +599,8 @@ class MainFrame extends JFrame implements ActionListener
 		Image currentImg = (Image) jListFiles.getSelectedValue();
 		if(currentImg != null)
 		{
-			if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
-			{
-				segment = currentImg.generateRasterInGivenSteps(segstep);
-				displayHistogramSegment(segment);
-			} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
-			{
-
-				segment = currentImg.generateRasterInGivenSteps(segstep);
-				displayHistogramSegment(segment);
-
-			}
+			segment = currentImg.generateRasterInGivenSteps(segstep);
+			displayHistogramSegment(segment);
 		}
 
 	}
@@ -682,9 +651,9 @@ class MainFrame extends JFrame implements ActionListener
 
 		if(currentImg != null)
 		{
-			int segstep = 4;
+			int segStep = 4;
 			String name = currentImg.toString();
-			Vector hist = new Vector();
+			List histogram = new ArrayList<>();
 			JLabel help = new JLabel();
 			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
 			float[] hseg;
@@ -696,25 +665,36 @@ class MainFrame extends JFrame implements ActionListener
 			for(int i = 0; i < segment.size(); i++)
 			{
 				Image segmentImage = new Image(currentImg.getFilePath(), segment.get(i));
+
+				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
+				{
+
+				} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
+				{
+
+
+				}
+
+				//TODO check if file was already saved before generating + saving
 				if(rgb)
 				{
-					segmentImage.generateHistogramRGB(segstep + "Seg" + i + "RGB" + name);
-					float[][][] hist1seg = segmentImage.getHistogramRGB(segstep + "Seg" + i + "RGB" + name);
-					hist.add(hist1seg);
+					segmentImage.generateHistogramRGB(name + segStep + "Seg" + i + "RGB");
+					float[][][] hist1seg = segmentImage.getHistogramRGB(name + segStep + "Seg" + i + "RGB");
+					histogram.add(hist1seg);
 				} else if(hsi)
 				{
-					segmentImage.generateHistogramHSI(segstep + "Seg" + i + "HSI" + name);
-					float[][][] hist1seg = segmentImage.getHistogramHSI(segstep + "Seg" + i + "HSI" + name);
-					hist.add(hist1seg);
+					segmentImage.generateHistogramHSI(name + segStep + "Seg" + i + "HSI");
+					float[][][] hist1seg = segmentImage.getHistogramHSI(name + segStep + "Seg" + i + "HSI");
+					histogram.add(hist1seg);
 				} else if(gray)
 				{
-					segmentImage.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
-					float[] hist1seg = segmentImage.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
-					hist.add(hist1seg);
+					segmentImage.generateHistogramGray(name + segStep + "Seg" + i + "GRAY");
+					float[] hist1seg = segmentImage.getHistogramGray(name + segStep + "Seg" + i + "GRAY");
+					histogram.add(hist1seg);
 				}
 			}
 
-			for(Object aHist : hist)
+			for(Object aHist : histogram)
 			{
 				if(gray)
 				{
@@ -723,6 +703,7 @@ class MainFrame extends JFrame implements ActionListener
 					h1.setSize(256, 480);
 					h1.setLocation(x, y);
 					d.add(h1);
+
 					if(z == 1)
 					{
 						x = 0;
@@ -733,7 +714,9 @@ class MainFrame extends JFrame implements ActionListener
 						x += 256;
 						z++;
 					}
+
 					d.setSize(512, 980);
+
 				} else if(rgb)
 				{
 					h1seg = (float[][][]) aHist;

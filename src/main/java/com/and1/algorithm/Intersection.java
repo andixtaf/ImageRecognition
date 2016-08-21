@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortIntersection;
 import com.and1.img.Image;
+import com.and1.sort.SortIntersection;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -15,6 +15,7 @@ public class Intersection implements SimilarityAlgorithm
 		float intersection;
 		float minsum = 0;
 		float hist1sum = 0;
+
 		if (query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
 			String name = query.getFilePath().getAbsolutePath();
@@ -22,7 +23,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			float[] hist2;
 
-			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehörige com.and1.algorithm.Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
@@ -65,7 +66,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			float[][][] hist2;
 
-			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehörige com.and1.algorithm.Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
