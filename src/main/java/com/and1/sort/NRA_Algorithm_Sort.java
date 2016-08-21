@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.sort;
 
 public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 {

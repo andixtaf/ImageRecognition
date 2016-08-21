@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.SortIntersection;
+import com.and1.sort.SortIntersection;
 import com.and1.img.Image;
 
 import java.awt.image.BufferedImage;
@@ -10,7 +10,7 @@ import java.util.Vector;
 public class Intersection implements SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 		float intersection;
 		float minsum = 0;

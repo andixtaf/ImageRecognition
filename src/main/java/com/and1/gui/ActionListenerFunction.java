@@ -1,6 +1,5 @@
-package com.and1;
+package com.and1.gui;
 
-import com.and1.gui.SegmentationView;
 import com.and1.img.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

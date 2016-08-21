@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.SortL1Distance;
+import com.and1.sort.SortL1Distance;
 import com.and1.img.Image;
 
 import java.awt.image.BufferedImage;
@@ -11,7 +11,7 @@ import java.util.Vector;
 public class HSISeg_L1Distance implements SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 		float distanceseg1 = 0;
 		float distance = 0;
@@ -20,12 +20,12 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 
 		Vector<BufferedImage> segment;
 		Vector hist1 = new Vector();
-		segment = query.generateRasterInGivenSteps(segstep);
+		segment = query.generateRasterInGivenSteps(segStep);
 		for (int i = 0; i < segment.size(); i++)
 		{
 			Image seg = new Image(query.getFilePath(), segment.get(i));
-			seg.generateHistogramHSI(segstep + "Seg" + i + name);
-			float[][][] hist1seg = seg.getHistogramHSI(segstep + "Seg" + i + name);
+			seg.generateHistogramHSI(segStep + "Seg" + i + name);
+			float[][][] hist1seg = seg.getHistogramHSI(segStep + "Seg" + i + name);
 			hist1.add(hist1seg);
 		}
 		float[][][] hist2seg;
@@ -41,15 +41,15 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 			Vector<BufferedImage> segmenthist2;
 			Vector hist2 = new Vector();
 
-			segmenthist2 = img.generateRasterInGivenSteps(segstep);
+			segmenthist2 = img.generateRasterInGivenSteps(segStep);
 
 			int totalhist2 = img.getHeight() * img.getWidth();
 
 			for (int j = 0; j < segmenthist2.size(); j++)
 			{
 				Image seghist2 = new Image(img.getFilePath(), segmenthist2.get(j));
-				seghist2.generateHistogramHSI(segstep + "Seg" + j + imgname);
-				hist2seg = seghist2.getHistogramHSI(segstep + "Seg" + j + imgname);
+				seghist2.generateHistogramHSI(segStep + "Seg" + j + imgname);
+				hist2seg = seghist2.getHistogramHSI(segStep + "Seg" + j + imgname);
 				hist2.add(hist2seg);
 			}
 
@@ -76,7 +76,7 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 				distance += aDistanceseg;
 			}
 
-			list[i] = new SortL1Distance(img, distance / segstep);
+			list[i] = new SortL1Distance(img, distance / segStep);
 			distance = 0;
 			distanceseg.removeAllElements();
 			hist2.removeAllElements();

@@ -1,5 +1,7 @@
 package com.and1;
 
+import com.and1.sort.NRA_Algorithm_Sort;
+
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -36,12 +38,12 @@ public class NRA_Algorithm
 
 			if (read.size() > 1)
 			{
-				//pr�fen ob momentaner Index der beiden Listen sich in der Liste read befindet
+				//prüfen ob momentaner Index der beiden Listen sich in der Liste read befindet
 				checkl = search(read, euclidean[i].getIndex());
 				checkr = search(read, chisquare[i].getIndex());
 			}
 
-			//Das passiert nur bei ersten lesen und einf�gen der Indexwerte
+			//Das passiert nur bei ersten lesen und einfügen der Indexwerte
 			//von beiden Listen, da die read - Liste noch leer ist
 			else
 			{
@@ -54,7 +56,7 @@ public class NRA_Algorithm
 				remindexr.add(chisquare[i].getIndex());
 			}
 
-			//pr�fen der linken Liste ob Index noch nicht vorhanden
+			//prüfen der linken Liste ob Index noch nicht vorhanden
 			if (checkl == -1.0f)
 			{
 				oleft = euclidean[i].getIndex();

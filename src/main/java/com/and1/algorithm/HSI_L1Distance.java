@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.SortL1Distance;
+import com.and1.sort.SortL1Distance;
 import com.and1.img.Image;
 
 import java.util.Arrays;
@@ -15,7 +15,7 @@ public class HSI_L1Distance implements SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 
 		float distance = 0;

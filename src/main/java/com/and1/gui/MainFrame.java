@@ -1,9 +1,8 @@
 package com.and1.gui;
 
-import com.and1.ActionListenerFunction;
 import com.and1.HSI_Euclidean_Distance;
 import com.and1.NRA_Algorithm;
-import com.and1.NRA_Algorithm_Sort;
+import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.algorithm.*;
 import com.and1.gui.label.HistogramLabel;
 import com.and1.gui.label.HistogramLabelGray;
@@ -295,6 +294,7 @@ class MainFrame extends JFrame implements ActionListener
 				Image currentImg = (Image) jListFiles.getSelectedValue();
 
 				//TODO check if in original code segmentationStep has value != 0
+				// read number and convert it to a power of 2
 				logger.info("segmentation step: " + segmentationStep);
 
 				jListFilesSorted.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
@@ -428,6 +428,7 @@ class MainFrame extends JFrame implements ActionListener
 
 				gray = true;
 				displayHistogram();
+
 			} else if(m.getText().equals("RGB"))
 			{
 
@@ -446,7 +447,6 @@ class MainFrame extends JFrame implements ActionListener
 				checkImage();
 			} else if(m.getText().equals("Intersection-Segmentation"))
 			{
-
 				simi = true;
 				intersec = true;
 				segmentationStep = chooseSegmentationStepWindow();

@@ -1,6 +1,8 @@
 package com.and1;
 
 import com.and1.img.Image;
+import com.and1.sort.NRA_Algorithm_Sort;
+import com.and1.sort.SortL1Distance;
 
 import java.util.Arrays;
 import java.util.Vector;

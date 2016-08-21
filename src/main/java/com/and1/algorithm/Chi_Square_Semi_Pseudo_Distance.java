@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
-import com.and1.NRA_Algorithm_Sort;
-import com.and1.SortIntersection;
+import com.and1.sort.NRA_Algorithm_Sort;
+import com.and1.sort.SortIntersection;
 import com.and1.img.Image;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 	private NRA_Algorithm_Sort[] nra_values;
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int number)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 
 		Float distance;
@@ -21,7 +21,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		float expectedValueHistory2;
 		float sum1 = 0;
 		float sum2 = 0;
-		float sum1sum2 = 0;
+		float totalSum = 0;
 		float sumHistory1 = 0;
 		float sumHistory2 = 0;
 		int x = 0;
@@ -39,9 +39,9 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		{
 			Image img = repository.get(i);
 			//int totalhist2 = com.and1.img.getHeight() * com.and1.img.getWidth();
-			String imgname = img.toString();
-			img.generateHistogramHSI(imgname);
-			hist2 = img.getHistogramHSI(imgname);
+			String imgName = img.toString();
+			img.generateHistogramHSI(imgName);
+			hist2 = img.getHistogramHSI(imgName);
 
 			for (int j = 0; j < 18; j++)
 			{
@@ -50,7 +50,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 					for (int l = 0; l < 3; l++)
 					{
 
-						//Bestimmung der Gesamtsumme und der Einzelsummen beiden Histogramme f�r den erwarteten Wert
+						//Bestimmung der Gesamtsumme und der Einzelsummen beiden Histogramme für den erwarteten Wert
 						if (x == 0)
 						{
 							for (int m = 0; m < 18; m++)
@@ -59,7 +59,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 								{
 									for (int o = 0; o < 3; o++)
 									{
-										sum1sum2 += (hist1[m][n][o] + hist2[m][n][o]);
+										totalSum += (hist1[m][n][o] + hist2[m][n][o]);
 										sum1 += hist1[m][n][o];
 										sum2 += hist2[m][n][o];
 									}
@@ -69,8 +69,8 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 						}
 
 						//erwartete Werte der Histogramme bestimmen
-						expectedValueHistory1 = ((hist1[j][k][l] + hist2[j][k][l]) * sum1) / sum1sum2;
-						expectedValueHistory2 = ((hist1[j][k][l] + hist2[j][k][l]) * sum2) / sum1sum2;
+						expectedValueHistory1 = ((hist1[j][k][l] + hist2[j][k][l]) * sum1) / totalSum;
+						expectedValueHistory2 = ((hist1[j][k][l] + hist2[j][k][l]) * sum2) / totalSum;
 
 						if (expectedValueHistory1 == 0)
 						{
@@ -112,26 +112,26 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 			sumHistory2 = 0;
 			sum1 = 0;
 			sum2 = 0;
-			sum1sum2 = 0;
+			totalSum = 0;
 			x = 0;
 		}
 
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
-		Vector<Image> sortedlist = new Vector<>();
-		for (int i = 0; i < list.length; i++)
+		Vector<Image> sortedList = new Vector<>();
+		for(SortIntersection aList : list)
 		{
-			float dist = list[i].getIntersection();
-			Image image = list[i].getMRImage();
+			float dist = aList.getIntersection();
+			Image image = aList.getMRImage();
 
-			sortedlist.add(image);
+			sortedList.add(image);
 			image.setSimilarity(dist, image);
 		}
 
-		return sortedlist;
+		return sortedList;
 	}
 
-	//Funktion zur Skalierung der �bergro�en Werte der Distanzfunktion um �hnlichkeitswerte zu erhalten
+	//Funktion zur Skalierung der übergroßen Werte der Distanzfunktion um Ähnlichkeitswerte zu erhalten
 	private float scale(float dist)
 	{
 		float s = 2000f;

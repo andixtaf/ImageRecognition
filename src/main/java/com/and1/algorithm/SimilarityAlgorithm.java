@@ -9,7 +9,7 @@ import java.util.Vector;
  *
  * @author David Zellhoefer
  */
-public interface SimilarityAlgorithm
+interface SimilarityAlgorithm
 {
 
 	/**
@@ -19,6 +19,6 @@ public interface SimilarityAlgorithm
 	 * @param repository The repository of all available images
 	 * @return A list excluding the query image ordered descending by their similarity
 	 */
-	Vector<Image> apply(Image query, Vector<Image> repository, int segstep);
+	Vector<Image> apply(Image query, Vector<Image> repository, int segStep);
 
 }

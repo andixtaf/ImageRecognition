@@ -1,4 +1,4 @@
-import com.and1.SortL1Distance;
+import com.and1.sort.SortL1Distance;
 import org.junit.Assert;
 import org.junit.Test;
 

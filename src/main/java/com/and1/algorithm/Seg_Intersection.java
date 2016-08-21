@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.SortIntersection;
+import com.and1.sort.SortIntersection;
 import com.and1.img.Image;
 
 import java.awt.image.BufferedImage;
@@ -11,7 +11,7 @@ import java.util.Vector;
 public class Seg_Intersection implements SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segstep)
+	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
 	{
 		float intersectionSequence1;
 		float intersection = 0;
@@ -26,13 +26,13 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			Vector<BufferedImage> segment;
 			Vector hist1 = new Vector();
 			//image in 4 Teile zerlegen
-			segment = query.generateRasterInGivenSteps(segstep);
+			segment = query.generateRasterInGivenSteps(segStep);
 			//neues com.and1.img.and1.Image f�r jedes Teilbild erzeugen
 			for (int i = 0; i < segment.size(); i++)
 			{
 				Image seg = new Image(query.getFilePath(), segment.get(i));
-				seg.generateHistogramGray(segstep + "Seg" + i + "Gray" + name);
-				float[] hist1seg = seg.getHistogramGray(segstep + "Seg" + i + "Gray" + name);
+				seg.generateHistogramGray(segStep + "Seg" + i + "Gray" + name);
+				float[] hist1seg = seg.getHistogramGray(segStep + "Seg" + i + "Gray" + name);
 				hist1.add(hist1seg);
 			}
 			//Histogramme laden
@@ -50,13 +50,13 @@ public class Seg_Intersection implements SimilarityAlgorithm
 				Vector<BufferedImage> segmenthist2;
 				Vector hist2 = new Vector();
 
-				segmenthist2 = img.generateRasterInGivenSteps(segstep);
+				segmenthist2 = img.generateRasterInGivenSteps(segStep);
 
 				for (int j = 0; j < segmenthist2.size(); j++)
 				{
 					Image seghist2 = new Image(img.getFilePath(), segmenthist2.get(j));
-					seghist2.generateHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
-					hist2seg = seghist2.getHistogramGray(segstep + "Seg" + j + "RGB" + imgname);
+					seghist2.generateHistogramGray(segStep + "Seg" + j + "RGB" + imgname);
+					hist2seg = seghist2.getHistogramGray(segStep + "Seg" + j + "RGB" + imgname);
 					hist2.add(hist2seg);
 				}
 				//Teilhistogramme miteinander vergleichen
@@ -81,7 +81,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 					intersection += anIntersectionseg;
 				}
 
-				list[i] = new SortIntersection(img, intersection / segstep);
+				list[i] = new SortIntersection(img, intersection / segStep);
 
 				intersection = 0;
 				intersectionSequence.removeAllElements();
@@ -108,12 +108,12 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			String name = query.toString();
 			Vector<BufferedImage> segment;
 			Vector hist1 = new Vector();
-			segment = query.generateRasterInGivenSteps(segstep);
+			segment = query.generateRasterInGivenSteps(segStep);
 			for (int i = 0; i < segment.size(); i++)
 			{
 				Image seg = new Image(query.getFilePath(), segment.get(i));
-				seg.generateHistogramRGB(segstep + "Seg" + i + name);
-				float[][][] hist1seg = seg.getHistogramRGB(segstep + "Seg" + i + name);
+				seg.generateHistogramRGB(segStep + "Seg" + i + name);
+				float[][][] hist1seg = seg.getHistogramRGB(segStep + "Seg" + i + name);
 				hist1.add(hist1seg);
 			}
 			//System.out.println("Histogramm1 :" + query.filePath);
@@ -129,13 +129,13 @@ public class Seg_Intersection implements SimilarityAlgorithm
 				Vector<BufferedImage> segmenthist2;
 				Vector hist2 = new Vector();
 
-				segmenthist2 = img.generateRasterInGivenSteps(segstep);
+				segmenthist2 = img.generateRasterInGivenSteps(segStep);
 
 				for (int j = 0; j < segmenthist2.size(); j++)
 				{
 					Image seghist2 = new Image(img.getFilePath(), segmenthist2.get(j));
-					seghist2.generateHistogramRGB(segstep + "Seg" + j + imgname);
-					hist2seg = seghist2.getHistogramRGB(segstep + "Seg" + j + imgname);
+					seghist2.generateHistogramRGB(segStep + "Seg" + j + imgname);
+					hist2seg = seghist2.getHistogramRGB(segStep + "Seg" + j + imgname);
 					hist2.add(hist2seg);
 				}
 
@@ -165,7 +165,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 				{
 					intersection += anIntersectionseg;
 				}
-				list[i] = new SortIntersection(img, intersection / segstep);
+				list[i] = new SortIntersection(img, intersection / segStep);
 
 				intersection = 0;
 				intersectionSequence.removeAllElements();
