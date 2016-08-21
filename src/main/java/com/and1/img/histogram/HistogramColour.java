@@ -1,5 +1,8 @@
 package com.and1.img.histogram;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,6 +12,8 @@ import java.io.ObjectOutputStream;
 
 public class HistogramColour
 {
+	private static final Logger logger = LogManager.getLogger(HistogramColour.class);
+
 	public void generateHistogramRGB(BufferedImage image, String name)
 	{
 		if (image != null)
@@ -48,9 +53,9 @@ public class HistogramColour
 				output.writeObject(histogram);
 				output.close();
 			}
-			catch (IOException ex)
+			catch (IOException e)
 			{
-				ex.printStackTrace();
+				logger.error("save Histogram RGB: " + e);
 			}
 		}
 	}

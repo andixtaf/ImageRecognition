@@ -1,5 +1,8 @@
 package com.and1.img.histogram;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,6 +13,7 @@ import java.io.ObjectOutputStream;
 public class HistogramHSI
 {
 	public static final float MAX_COLOUR_VALUE = 255f;
+	private static final Logger logger = LogManager.getLogger(HistogramColour.class);
 
 	public void generateHistogramHSI(BufferedImage image, String name)
 	{
@@ -103,9 +107,9 @@ public class HistogramHSI
 				output.writeObject(histogram);
 				output.close();
 			}
-			catch (IOException ex)
+			catch (IOException e)
 			{
-				ex.printStackTrace();
+				logger.error("save Histogram HSI : " + e);
 			}
 		}
 	}
