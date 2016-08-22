@@ -1,4 +1,4 @@
-package com.and1.gui;
+package com.and1.view;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.and1.gui.label;
+package com.and1.view.label;
 
 import javax.swing.*;
 

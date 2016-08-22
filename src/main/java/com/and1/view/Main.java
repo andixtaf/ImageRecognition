@@ -1,4 +1,4 @@
-package com.and1.gui;
+package com.and1.view;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

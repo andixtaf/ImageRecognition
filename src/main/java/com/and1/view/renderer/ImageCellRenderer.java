@@ -1,14 +1,14 @@
-package com.and1.gui.renderer;
+package com.and1.view.renderer;
 
 import com.and1.img.Image;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
+public class ImageCellRenderer extends JLabel implements ListCellRenderer
 {
 
-	public ImageCellRendererSorted()
+	public ImageCellRenderer()
 	{
 		setOpaque(true);
 	}
@@ -17,22 +17,20 @@ public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
 												  int index, boolean isSelected, boolean cellHasFocus)
 	{
 
-		float similarity = 1.0f;
-
 		if (value instanceof Image)
 		{
-			Image img = (Image) value;
+			com.and1.img.Image img = (Image) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
-			similarity = img.getSimilarity();
 		}
 
-		setText(value.toString() + " Similarity: " + similarity);
+		setText(value.toString());
 
 		Color background;
 		Color foreground;
 
 		// check if this cell represents the current DnD drop location
 		JList.DropLocation dropLocation = list.getDropLocation();
+
 		if (dropLocation != null && !dropLocation.isInsert() && dropLocation.getIndex() == index)
 		{
 
@@ -50,8 +48,8 @@ public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
 		}
 		else
 		{
-			background = new Color(similarity, similarity, similarity);
-			foreground = new Color(33, 83, 134);
+			background = Color.WHITE;
+			foreground = Color.BLACK;
 		}
 
 		setBackground(background);

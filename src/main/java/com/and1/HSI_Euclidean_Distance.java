@@ -19,8 +19,8 @@ public class HSI_Euclidean_Distance
 		Float scaledDistance;
 		Vector colorHSI;
 
-		Float[] h1;
-		Float[] h2;
+		float[] h1;
+		float[] h2;
 		query.generateHSIColors();
 		colorHSI = query.getColors(number);
 		Vector colorHSI2;
@@ -37,10 +37,10 @@ public class HSI_Euclidean_Distance
 
 			for (int j = 0; j < number; j++)
 			{
-				h1 = (Float[]) colorHSI.get(j);
+				h1 = (float[]) colorHSI.get(j);
 				for (int k = 0; k < number; k++)
 				{
-					h2 = (Float[]) colorHSI2.get(k);
+					h2 = (float[]) colorHSI2.get(k);
 					distance += (float) Math.sqrt((h1[0] - h2[0]) * (h1[0] - h2[0]) +
 														  (h1[1] - h2[1]) * (h1[1] - h2[1]) +
 														  (h1[2] - h2[2]) * (h1[2] - h2[2]));

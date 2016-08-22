@@ -1,4 +1,4 @@
-package com.and1.gui;
+package com.and1.view;
 
 import com.and1.img.Image;
 import org.apache.logging.log4j.LogManager;
@@ -24,7 +24,7 @@ public class ActionListenerFunction
 
 		} else
 		{
-			JOptionPane.showMessageDialog(frame, "Es ist kein Bild ausgewählt");
+			JOptionPane.showMessageDialog(frame, "no selected image");
 			logger.info("no selected image!");
 		}
 	}
