@@ -9,6 +9,7 @@ import java.util.Vector;
  *
  * @author David Zellhoefer
  */
+// TODO make this class abstract and put all equal functions in here
 interface SimilarityAlgorithm
 {
 
