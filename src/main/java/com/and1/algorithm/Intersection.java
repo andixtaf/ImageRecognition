@@ -23,7 +23,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			float[] hist2;
 
-			//Liste in die die das Img und die dazugehörige com.and1.algorithm.Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehörige Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
 
 			for (int i = 0; i < repository.size(); i++)

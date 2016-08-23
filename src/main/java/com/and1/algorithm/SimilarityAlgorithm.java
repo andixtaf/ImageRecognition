@@ -10,7 +10,7 @@ import java.util.Vector;
  * @author David Zellhoefer
  */
 // TODO make this class abstract and put all equal functions in here
-interface SimilarityAlgorithm
+abstract class SimilarityAlgorithm
 {
 
 	/**
@@ -20,6 +20,23 @@ interface SimilarityAlgorithm
 	 * @param repository The repository of all available images
 	 * @return A list excluding the query image ordered descending by their similarity
 	 */
-	Vector<Image> apply(Image query, Vector<Image> repository, int segStep);
+	abstract Vector<Image> apply(Image query, Vector<Image> repository, int segStep);
+
+	public class Pocket<T>
+	{
+		private T value;
+
+		public Pocket() {}
+
+		public Pocket( T value ) { this.value = value; }
+
+		public void set( T value ) { this.value = value; }
+
+		public T get() { return value; }
+
+		public boolean isEmpty() { return value != null; }
+
+		public void empty() { value = null; }
+	}
 
 }
