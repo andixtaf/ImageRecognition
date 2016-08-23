@@ -1,6 +1,6 @@
 package com.and1.view.renderer;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ public class ImageCellRenderer extends JLabel implements ListCellRenderer
 
 		if (value instanceof Image)
 		{
-			com.and1.img.Image img = (Image) value;
+			com.and1.model.img.Image img = (Image) value;
 			this.setIcon(new ImageIcon(img.getThumbnail()));
 		}
 

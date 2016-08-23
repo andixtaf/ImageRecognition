@@ -1,9 +1,9 @@
 package com.and1.view;
 
-import com.and1.HSI_Euclidean_Distance;
-import com.and1.NRA_Algorithm;
+import com.and1.algorithm.HSI_Euclidean_Distance;
+import com.and1.algorithm.NRA_Algorithm;
 import com.and1.algorithm.*;
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.view.label.HistogramLabel;
 import com.and1.view.label.HistogramLabelGray;
@@ -45,15 +45,16 @@ class MainFrame extends JFrame implements ActionListener
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesRanked;
 	private Vector<Image> imagesList;
-	private JFrame frame, frame1;
 	private int segmentationStep;
+
+	private JFrame frame, frame1;
 	private JTextField jTextField, jTextField1;
 	private Boolean rgb, hsi, gray, eucl, nra;
 	private JLabel statusBarLabel;
 
 	MainFrame(ImageSplashScreen splash, Thread splashThread) throws HeadlessException
 	{
-		super("Multimedia image Recognition");
+		super("Image Recognition");
 
 		File pathToImage = openDirectoryChooser();
 
@@ -132,7 +133,10 @@ class MainFrame extends JFrame implements ActionListener
 							if(image.getType() == BufferedImage.TYPE_BYTE_GRAY)
 							{
 								Image mrImage = new Image(file.getAbsoluteFile(), image);
+
+								// TODO create or load histogram if it is necessary
 								mrImage.generateHistogramGray(file.toString());
+
 								imageVector.add(mrImage);
 							} else if(image.getType() == BufferedImage.TYPE_3BYTE_BGR)
 							{

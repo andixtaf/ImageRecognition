@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
 import com.and1.sort.SortIntersection;
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 
 import java.util.Arrays;
 import java.util.Vector;

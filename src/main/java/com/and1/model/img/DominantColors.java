@@ -1,4 +1,4 @@
-package com.and1.img;
+package com.and1.model.img;
 
 import java.util.Arrays;
 

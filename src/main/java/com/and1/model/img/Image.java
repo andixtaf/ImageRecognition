@@ -1,6 +1,6 @@
-package com.and1.img;
+package com.and1.model.img;
 
-import com.and1.img.histogram.Histogram;
+import com.and1.model.img.histogram.Histogram;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

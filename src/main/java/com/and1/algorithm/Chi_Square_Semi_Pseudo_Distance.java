@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.sort.SortIntersection;
 
@@ -39,7 +39,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 		for (int i = 0; i < repository.size(); i++)
 		{
 			Image img = repository.get(i);
-			//int totalhist2 = com.and1.img.getHeight() * com.and1.img.getWidth();
+			//int totalhist2 = com.and1.model.img.getHeight() * com.and1.model.img.getWidth();
 			String imgName = img.toString();
 			img.generateHistogramHSI(imgName);
 			hist2 = img.getHistogramHSI(imgName);

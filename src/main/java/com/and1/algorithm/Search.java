@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.algorithm;
 
 class Search
 {
@@ -9,24 +9,24 @@ class Search
 
 	private final float index;
 
-	public Search(float index, float lb_agg, float ub_agg)
+	Search(float index, float lb_agg, float ub_agg)
 	{
 		this.index = index;
 		this.lb_agg = lb_agg;
 		this.ub_agg = ub_agg;
 	}
 
-	public float getIndex()
+	float getIndex()
 	{
 		return index;
 	}
 
-	public float getLb_agg()
+	float getLb_agg()
 	{
 		return lb_agg;
 	}
 
-	public float getUb_agg()
+	float getUb_agg()
 	{
 		return ub_agg;
 	}

@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
 import com.and1.sort.SortL1Distance;
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(i);
 				hist2 = img.getHistogramGray(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);
-				//System.out.println("Histogramm2 :" + com.and1.img.filePath);
+				//System.out.println("Histogramm2 :" + com.and1.model.img.filePath);
 				for (int j = 0; j < hist1.length; j++)
 				{
 					distance += Math.abs(hist1[j] - hist2[j]);
@@ -77,7 +77,7 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(i);
 				hist2 = img.getHistogramRGB(imgname);
 				//System.out.println("Histogramm1 :" + query.filePath);
-				//System.out.println("Histogramm2 :" + com.and1.img.filePath);
+				//System.out.println("Histogramm2 :" + com.and1.model.img.filePath);
 				for (int j = 0; j < 8; j++)
 				{
 					for (int k = 0; k < 8; k++)

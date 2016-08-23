@@ -1,4 +1,4 @@
-package com.and1.img.histogram;
+package com.and1.model.img.histogram;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

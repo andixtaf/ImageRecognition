@@ -1,4 +1,4 @@
-package com.and1;
+package com.and1.algorithm;
 
 import com.and1.sort.NRA_Algorithm_Sort;
 

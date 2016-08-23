@@ -1,6 +1,6 @@
 package com.and1.sort;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 
 public class SortIntersection implements Comparable<SortIntersection>
 {

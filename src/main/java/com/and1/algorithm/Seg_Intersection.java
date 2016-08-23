@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 import com.and1.sort.SortIntersection;
 
 import java.awt.image.BufferedImage;
@@ -28,7 +28,7 @@ public class Seg_Intersection implements SimilarityAlgorithm
 			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segStep);
 
-			//neues com.and1.img.and1.Image f�r jedes Teilbild erzeugen
+			//neues com.and1.model.img.and1.Image f�r jedes Teilbild erzeugen
 			for (int i = 0; i < segment.size(); i++)
 			{
 				Image seg = new Image(query.getFilePath(), segment.get(i));

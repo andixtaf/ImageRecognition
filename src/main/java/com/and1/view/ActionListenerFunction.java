@@ -1,6 +1,6 @@
 package com.and1.view;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

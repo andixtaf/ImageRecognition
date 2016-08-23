@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 
 import java.util.Vector;
 

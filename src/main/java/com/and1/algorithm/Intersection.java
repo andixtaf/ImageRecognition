@@ -1,6 +1,6 @@
 package com.and1.algorithm;
 
-import com.and1.img.Image;
+import com.and1.model.img.Image;
 import com.and1.sort.SortIntersection;
 
 import java.awt.image.BufferedImage;
@@ -25,6 +25,7 @@ public class Intersection implements SimilarityAlgorithm
 
 			//Liste in die die das Img und die dazugehörige com.and1.algorithm.Intersection als Tupel gespeichert werden
 			SortIntersection[] list = new SortIntersection[repository.size()];
+
 			for (int i = 0; i < repository.size(); i++)
 			{
 				Image img = repository.get(i);
@@ -45,6 +46,7 @@ public class Intersection implements SimilarityAlgorithm
 				hist1sum = 0;
 
 			}
+
 			//Liste absteigend sortieren
 			Arrays.sort(list);
 			Vector<Image> sortedlist = new Vector<>();
