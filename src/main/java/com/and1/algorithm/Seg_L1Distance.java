@@ -1,30 +1,35 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortL1Distance;
+import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 //Klasse zur Berechnung der com.and1.algorithm.Intersection
-public class Seg_L1Distance implements SimilarityAlgorithm
+public class Seg_L1Distance extends SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
 		float distanceseg1 = 0;
 		float distance = 0;
 		//Falls image ein Graustufenbild ist
-		Vector<Float> distanceseg = new Vector<>();
+		List<Float> distanceseg = new ArrayList<>();
+		SortL1Distance[] list;
+
 		//Falls image ein Graustufenbild ist
 		if (query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
 			String name = query.toString();
-			Vector<BufferedImage> segment;
-			Vector hist1 = new Vector();
+			List<BufferedImage> segment;
+			List hist1 = new ArrayList<>();
 			//image in 4 Teile zerlegen
 			segment = query.generateRasterInGivenSteps(segStep);
+
+			//TODO avoid code duplication
 			//neues com.and1.model.img.and1.Image f�r jedes Teilbild erzeugen
 			for (int i = 0; i < segment.size(); i++)
 			{
@@ -40,13 +45,13 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[] h1seg;
 			float[] h2seg;
 			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
-			SortL1Distance[] list = new SortL1Distance[repository.size()];
+			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
 				Image img = repository.get(i);
 				String imageName = img.toString();
-				Vector<BufferedImage> segmentHistory2;
-				Vector hist2 = new Vector();
+				List<BufferedImage> segmentHistory2;
+				List hist2 = new ArrayList<>();
 
 				segmentHistory2 = img.generateRasterInGivenSteps(segStep);
 
@@ -80,31 +85,19 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 
 				//distanceseg1 = 0;
 				distance = 0;
-				distanceseg.removeAllElements();
-				hist2.removeAllElements();
-				segmentHistory2.removeAllElements();
-			}
-			//Liste absteigend sortieren
-			Arrays.sort(list);
-			Vector<Image> sortedlist = new Vector<>();
-			for (SortL1Distance aList : list)
-			{
-				float dist = aList.getDistance();
-				Image image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enth�lt
-				sortedlist.add(image);
-				image.setSimilarity(dist, image);
+				distanceseg.clear();
+				hist2.clear();
+				segmentHistory2.clear();
 			}
 
-			return sortedlist;
 		}
 		//Falls image RGB Bild ist
 		else
 		{
 			String name = query.toString();
 			int totalhist1 = query.getHeight() * query.getWidth();
-			Vector<BufferedImage> segment;
-			Vector hist1 = new Vector();
+			List<BufferedImage> segment;
+			List hist1 = new ArrayList<>();
 			segment = query.generateRasterInGivenSteps(segStep);
 			for (int i = 0; i < segment.size(); i++)
 			{
@@ -119,13 +112,13 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 			float[][][] h2seg;
 
 			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
-			SortL1Distance[] list = new SortL1Distance[repository.size()];
+			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
 				Image img = repository.get(i);
 				String imgname = img.toString();
-				Vector<BufferedImage> segmenthist2;
-				Vector hist2 = new Vector();
+				List<BufferedImage> segmenthist2;
+				List hist2 = new ArrayList<>();
 
 				segmenthist2 = img.generateRasterInGivenSteps(segStep);
 
@@ -164,24 +157,16 @@ public class Seg_L1Distance implements SimilarityAlgorithm
 
 				list[i] = new SortL1Distance(img, distance / segStep);
 				distance = 0;
-				distanceseg.removeAllElements();
-				hist2.removeAllElements();
-				segmenthist2.removeAllElements();
+				distanceseg.clear();
+				hist2.clear();
+				segmenthist2.clear();
 
 			}
-			//Liste absteigend sortieren
-			Arrays.sort(list);
-			Vector<Image> sortedlist = new Vector<>();
-			for (SortL1Distance aList : list)
-			{
-				float dist = aList.getDistance();
-				Image image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enth�lt
-				sortedlist.add(image);
-				image.setSimilarity(dist, image);
-			}
 
-			return sortedlist;
 		}
+		//Liste absteigend sortieren
+		Arrays.sort(list);
+
+		return getSortL1DistanceList(list);
 	}
 }    

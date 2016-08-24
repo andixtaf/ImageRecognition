@@ -1,13 +1,13 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortL1Distance;
+import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
 
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 //Klasse zur Berechnung der Distance
-public class HSI_L1Distance implements SimilarityAlgorithm
+public class HSI_L1Distance extends SimilarityAlgorithm
 {
 
 	/**
@@ -15,7 +15,7 @@ public class HSI_L1Distance implements SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
 
 		float distance = 0;
@@ -54,16 +54,7 @@ public class HSI_L1Distance implements SimilarityAlgorithm
 		}
 		//Liste aufsteigend sortieren
 		Arrays.sort(list);
-		Vector<Image> sortedlist = new Vector<>();
-		for (SortL1Distance aList : list)
-		{
-			float dist = aList.getDistance();
-			Image image = aList.getMRImage();
-			//neues Repository erstellt welches sortierte Elemente enth�lt
-			sortedlist.add(image);
-			image.setSimilarity(dist, image);
-		}
 
-		return sortedlist;
+		return getSortL1DistanceList(list);
 	}
 }

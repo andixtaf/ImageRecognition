@@ -4,7 +4,8 @@ import com.and1.model.img.Image;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Andreas on 20.08.2016 for ImageRecognition.
@@ -20,7 +21,7 @@ public class SegmentationView
 			double imageSize;
 			String bit = Integer.toBinaryString(segmentationStep);
 			int len = bit.length();
-			Vector<BufferedImage> segment;
+			List<BufferedImage> segment;
 			JDialog d = new JDialog(mainFrame, selectedImage.toString());
 			JLabel help = new JLabel();
 
@@ -38,7 +39,7 @@ public class SegmentationView
 			int y = 0;
 			int z = 0;
 
-			Vector<JLabel> jLabelDynamic = new Vector<>();
+			List<JLabel> jLabelDynamic = new ArrayList<>();
 
 			for(int i = 0; i < segmentationStep; i++)
 			{

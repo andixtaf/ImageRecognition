@@ -39,12 +39,9 @@ public class Histogram
 
 	private void normalize(float[] histogram, int countOfTotalPixel)
 	{
-		//TODO why sum in original code??
-		float sum = 0;
 		for (int i = 0; i < INT_8_BIT; i++)
 		{
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
-			//sum += histogram[i];
 		}
 	}
 

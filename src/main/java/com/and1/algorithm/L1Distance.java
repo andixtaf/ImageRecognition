@@ -1,14 +1,14 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortL1Distance;
+import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 //Klasse zur Berechnung der Distance
-public class L1Distance implements SimilarityAlgorithm
+public class L1Distance extends SimilarityAlgorithm
 {
 
 	/**
@@ -16,8 +16,9 @@ public class L1Distance implements SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
+		SortL1Distance[] list;
 
 		float distance = 0;
 		int totalhist1 = query.getHeight() * query.getWidth();
@@ -28,7 +29,7 @@ public class L1Distance implements SimilarityAlgorithm
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[] hist2;
 			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
-			SortL1Distance[] list = new SortL1Distance[repository.size()];
+			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
 				Image img = repository.get(i);
@@ -47,19 +48,6 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(distance);
 				distance = 0;
 			}
-			//Liste aufsteigend sortieren
-			Arrays.sort(list);
-			Vector<Image> sortedlist = new Vector<>();
-			for (SortL1Distance aList : list)
-			{
-				float dist = aList.getDistance();
-				Image image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enth�lt
-				sortedlist.add(image);
-				image.setSimilarity(dist, image);
-			}
-
-			return sortedlist;
 		}
 		else
 		{
@@ -68,7 +56,7 @@ public class L1Distance implements SimilarityAlgorithm
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[][][] hist2;
 			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
-			SortL1Distance[] list = new SortL1Distance[repository.size()];
+			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
 				Image img = repository.get(i);
@@ -94,19 +82,11 @@ public class L1Distance implements SimilarityAlgorithm
 				//System.out.println(distance);
 				distance = 0;
 			}
-			//Liste aufsteigend sortieren
-			Arrays.sort(list);
-			Vector<Image> sortedlist = new Vector<>();
-			for (SortL1Distance aList : list)
-			{
-				float dist = aList.getDistance();
-				Image image = aList.getMRImage();
-				//neues Repository erstellt welches sortierte Elemente enth�lt
-				sortedlist.add(image);
-				image.setSimilarity(dist, image);
-			}
-
-			return sortedlist;
 		}
+
+		//Liste aufsteigend sortieren
+		Arrays.sort(list);
+
+		return getSortL1DistanceList(list);
 	}
 }

@@ -1,29 +1,35 @@
 package com.and1.algorithm;
 
+import com.and1.algorithm.sort.NRA_Algorithm_Sort;
+import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
-import com.and1.sort.NRA_Algorithm_Sort;
-import com.and1.sort.SortL1Distance;
 
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
-public class HSI_Euclidean_Distance
+public class HSI_Euclidean_Distance extends SimilarityAlgorithm
 {
 
 	private NRA_Algorithm_Sort[] nra_values;
 
-	public Vector<Image> applySimilarity(Image query, Vector<Image> repository, int number, int similarity)
+	@Override
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	{
+		return null;
+	}
+
+	public List<Image> applySimilarity(Image query, List<Image> repository, int number, int similarity)
 	{
 
 		Float distance = 0F;
 		Float scaledDistance;
-		Vector colorHSI;
+		List colorHSI;
 
 		float[] h1;
 		float[] h2;
 		query.generateHSIColors();
 		colorHSI = query.getColors(number);
-		Vector colorHSI2;
+		List colorHSI2;
 
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		nra_values = new NRA_Algorithm_Sort[repository.size()];
@@ -55,17 +61,8 @@ public class HSI_Euclidean_Distance
 		}
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
-		Vector<Image> sortedlist = new Vector<>();
 
-		for (SortL1Distance aList : list)
-		{
-			Float dist = aList.getDistance();
-			Image image = aList.getMRImage();
-			sortedlist.add(image);
-			image.setSimilarity(dist, image);
-		}
-
-		return sortedlist;
+		return getSortL1DistanceList(list);
 	}
 
 	private Float scale(Float dist)

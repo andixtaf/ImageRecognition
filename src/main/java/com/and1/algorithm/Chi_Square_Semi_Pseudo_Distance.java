@@ -1,19 +1,20 @@
 package com.and1.algorithm;
 
+import com.and1.algorithm.sort.NRA_Algorithm_Sort;
+import com.and1.algorithm.sort.SortIntersection;
 import com.and1.model.img.Image;
-import com.and1.sort.NRA_Algorithm_Sort;
-import com.and1.sort.SortIntersection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
-public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
+public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 {
 
 	private NRA_Algorithm_Sort[] nra_values;
 
-	//TODO replace Vector with List
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	@Override
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
 
 		Float distance;
@@ -107,6 +108,7 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 			scaledDistance = scale(distance);
 
 			list[i] = new SortIntersection(img, scaledDistance);
+
 			nra_values[i] = new NRA_Algorithm_Sort(i, scaledDistance);
 
 			sumHistory1 = 0;
@@ -119,18 +121,12 @@ public class Chi_Square_Semi_Pseudo_Distance implements SimilarityAlgorithm
 
 		Arrays.sort(list);
 		Arrays.sort(nra_values);
-		Vector<Image> sortedList = new Vector<>();
 
-		for(SortIntersection aList : list)
-		{
-			float dist = aList.getIntersection();
-			Image image = aList.getMRImage();
+		List<Image> sortedList = new ArrayList<>();
 
-			sortedList.add(image);
-			image.setSimilarity(dist, image);
-		}
+		Arrays.sort(list);
 
-		return sortedList;
+		return getSortIntersectionList(list);
 	}
 
 	//Funktion zur Skalierung der übergroßen Werte der Distanzfunktion um Ähnlichkeitswerte zu erhalten

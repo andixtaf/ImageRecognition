@@ -1,9 +1,10 @@
 package com.and1.algorithm;
 
-import com.and1.sort.NRA_Algorithm_Sort;
+import com.and1.algorithm.sort.NRA_Algorithm_Sort;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 public class NRA_Algorithm
 {
@@ -11,11 +12,11 @@ public class NRA_Algorithm
 	{
 
 		NRA_Algorithm_Sort[] nra = new NRA_Algorithm_Sort[euclidean.length];
-		Vector<Float> ub_agg_list = new Vector<>();
+		List<Float> ub_agg_list = new ArrayList<>();
 
-		Vector<Search> read = new Vector<>();
-		Vector<Integer> remindexl = new Vector<>();
-		Vector<Integer> remindexr = new Vector<>();
+		List<Search> read = new ArrayList<>();
+		List<Integer> remindexl = new ArrayList<>();
+		List<Integer> remindexr = new ArrayList<>();
 
 		float tau;
 		float ol;
@@ -248,7 +249,7 @@ public class NRA_Algorithm
 			{
 				condition2 = 0;
 				condition1 = 0;
-				ub_agg_list.removeAllElements();
+				ub_agg_list.clear();
 			}
 		}
 		//aus irgendeinen Grund wollte der Compiler mit dem urpr�nglichen Array
@@ -267,7 +268,7 @@ public class NRA_Algorithm
 		return nrasort;
 	}
 
-	private float search(Vector<Search> read, float value)
+	private float search(List<Search> read, float value)
 	{
 
 		for (Search aRead : read)
@@ -280,7 +281,7 @@ public class NRA_Algorithm
 		return -1.0f;
 	}
 
-	private int getIndex(Vector<Search> read, float search)
+	private int getIndex(List<Search> read, float search)
 	{
 
 		for (int i = 0; i < read.size(); i++)
@@ -293,7 +294,7 @@ public class NRA_Algorithm
 		return 0;
 	}
 
-	private int removeIndex(Vector<Integer> list, float index)
+	private int removeIndex(List<Integer> list, float index)
 	{
 		for (int i = 0; i < list.size(); i++)
 		{

@@ -1,4 +1,4 @@
-package com.and1.sort;
+package com.and1.algorithm.sort;
 
 import com.and1.model.img.Image;
 

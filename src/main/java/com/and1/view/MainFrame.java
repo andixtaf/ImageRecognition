@@ -1,10 +1,8 @@
 package com.and1.view;
 
-import com.and1.algorithm.HSI_Euclidean_Distance;
-import com.and1.algorithm.NRA_Algorithm;
 import com.and1.algorithm.*;
+import com.and1.algorithm.sort.NRA_Algorithm_Sort;
 import com.and1.model.img.Image;
-import com.and1.sort.NRA_Algorithm_Sort;
 import com.and1.view.label.HistogramLabel;
 import com.and1.view.label.HistogramLabelGray;
 import com.and1.view.label.HistogramLabelHSI;
@@ -26,11 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
+
+	//TODO strategy pattern
 	private final Intersection intersection = new Intersection();
 	private final L1Distance l1distance = new L1Distance();
 	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
@@ -41,15 +40,14 @@ class MainFrame extends JFrame implements ActionListener
 	private final HSI_Euclidean_Distance hsiEuclidDistance = new HSI_Euclidean_Distance();
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
+
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesRanked;
-	private Vector<Image> imagesList;
+	private List<Image> imagesList;
 	private int segmentationStep;
 
-	private JFrame frame, frame1;
-	private JTextField jTextField, jTextField1;
-	private Boolean rgb, hsi, gray, eucl, nra;
+	private Boolean rgb, hsi, gray;
 	private JLabel statusBarLabel;
 
 	MainFrame(ImageSplashScreen splash, Thread splashThread) throws HeadlessException
@@ -65,8 +63,7 @@ class MainFrame extends JFrame implements ActionListener
 			rgb = false;
 			hsi = false;
 			gray = false;
-			eucl = false;
-			nra = false;
+
 
 			splash.setMessage("Initializing GUI...");
 
@@ -109,9 +106,9 @@ class MainFrame extends JFrame implements ActionListener
 		return file;
 	}
 
-	private Vector<Image> loadTestData(File pathToImage)
+	private List<Image> loadTestData(File pathToImage)
 	{
-		Vector<Image> imageVector = null;
+		List<Image> imageList = null;
 		// load all jpg and create their histograms if the directory exists
 		if(pathToImage != null && pathToImage.exists())
 		{
@@ -119,7 +116,7 @@ class MainFrame extends JFrame implements ActionListener
 
 			if(fileList != null)
 			{
-				imageVector = new Vector<>();
+				imageList = new ArrayList<>();
 				BufferedImage image;
 
 				for(File file : fileList)
@@ -137,12 +134,12 @@ class MainFrame extends JFrame implements ActionListener
 								// TODO create or load histogram if it is necessary
 								mrImage.generateHistogramGray(file.toString());
 
-								imageVector.add(mrImage);
+								imageList.add(mrImage);
 							} else if(image.getType() == BufferedImage.TYPE_3BYTE_BGR)
 							{
 								Image mrImage = new Image(file.getAbsoluteFile(), image);
 								mrImage.generateHistogramRGB(file.toString());
-								imageVector.add(mrImage);
+								imageList.add(mrImage);
 							} else
 							{
 								logger.info("Failed for " + file + "; image is no 8-Bit grayscale image");
@@ -151,7 +148,7 @@ class MainFrame extends JFrame implements ActionListener
 					}
 				}
 
-				logger.info("Total number of loaded imagesList: " + imageVector.size());
+				logger.info("Total number of loaded imagesList: " + imageList.size());
 
 			} else
 			{
@@ -160,7 +157,7 @@ class MainFrame extends JFrame implements ActionListener
 			}
 		}
 
-		return imageVector;
+		return imageList;
 	}
 
 	private void createGUI()
@@ -178,20 +175,20 @@ class MainFrame extends JFrame implements ActionListener
 
 		ActionListenerFunction function = new ActionListenerFunction();
 
-		btnPreview.addActionListener(e -> function.actionPreview((Image) jListFiles.getSelectedValue(), frame));
+		btnPreview.addActionListener(e -> function.actionPreview((Image) jListFiles.getSelectedValue(), this));
 
 		btnPreview.setToolTipText("Displays a full-sized preview of the currently selected image");
 		btnPreview.setMnemonic(KeyEvent.VK_P);
 
 		JButton segmentButton = new JButton("Segmentation");
-		segmentButton.addActionListener(e -> function.actionSegmentation(frame, (Image) jListFiles.getSelectedValue()));
+		segmentButton.addActionListener(e -> function.actionSegmentation(this, (Image) jListFiles.getSelectedValue()));
 		segmentButton.setMnemonic(KeyEvent.VK_P);
 
 		leftCmdPanel.add(btnPreview);
 		leftCmdPanel.add(segmentButton);
 
 		// list for displaying the test data imgList
-		jListFiles = new JList(imagesList);
+		jListFiles = new JList(imagesList.toArray());
 		jListFiles.setCellRenderer(new ImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -278,7 +275,7 @@ class MainFrame extends JFrame implements ActionListener
 				// read number and convert it to a power of 2
 				logger.info("segmentation step: " + segmentationStep);
 
-				jListFilesRanked.setListData(intersection.apply(currentImg, imagesList, segmentationStep));
+				jListFilesRanked.setListData(intersection.apply(currentImg, imagesList, segmentationStep).toArray());
 			}
 		});
 		menuAlgorithms.add(intersect);
@@ -373,7 +370,7 @@ class MainFrame extends JFrame implements ActionListener
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
-				jListFilesRanked.setListData(l1distance.apply(currentImg, imagesList, segmentationStep));
+				jListFilesRanked.setListData(l1distance.apply(currentImg, imagesList, segmentationStep).toArray());
 			} else if(m.getText().equals("GrayScale"))
 			{
 
@@ -415,7 +412,8 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesRanked.setListData(hsiIntersection.apply(currentImg, imagesList, segmentationStep));
+					jListFilesRanked.setListData(
+							hsiIntersection.apply(currentImg, imagesList, segmentationStep).toArray());
 				}
 
 			} else if(m.getText().equals("HSI-L1Distance"))
@@ -427,7 +425,8 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesRanked.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep));
+					jListFilesRanked
+							.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep).toArray());
 				}
 
 			} else if(m.getText().equals("Segmentation-Gray"))
@@ -451,7 +450,8 @@ class MainFrame extends JFrame implements ActionListener
 					Integer dominantColours = chooseInputWindow("Choose Number of dominant Colors");
 
 					jListFilesRanked.setListData(
-							hsiEuclidDistance.applySimilarity(currentImg, imagesList, dominantColours, similarity));
+							hsiEuclidDistance.applySimilarity(currentImg, imagesList, dominantColours, similarity)
+									.toArray());
 				}
 
 			} else if(m.getText().equals("HSI-Chi-Square-Semi-Pseudo-Distance"))
@@ -463,7 +463,7 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesRanked.setListData(chiSquare.apply(currentImg, imagesList, similarity));
+					jListFilesRanked.setListData(chiSquare.apply(currentImg, imagesList, similarity).toArray());
 				}
 			} else if(m.getText().equals("NRA-Algorithm"))
 			{
@@ -474,7 +474,7 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					nra = true;
+
 					Integer numberK = chooseInputWindow("Choose K");
 
 					hsiEuclidDistance.applySimilarity(currentImg, imagesList, numberK, similarity);
@@ -506,7 +506,7 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		imagesList = loadTestData(openDirectoryChooser());
 
-		jListFiles = new JList(imagesList);
+		jListFiles = new JList(imagesList.toArray());
 		jListFiles.setCellRenderer(new ImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -567,7 +567,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	private void checkImage()
 	{
-		Vector<BufferedImage> segment;
+		List<BufferedImage> segment;
 		int segstep = 4;
 
 		Image currentImg = (Image) jListFiles.getSelectedValue();
@@ -591,7 +591,7 @@ class MainFrame extends JFrame implements ActionListener
 
 	}
 
-	private void displayHistogramSegment(Vector<BufferedImage> segment)
+	private void displayHistogramSegment(List<BufferedImage> segment)
 	{
 		Image currentImg = (Image) jListFiles.getSelectedValue();
 

@@ -1,15 +1,15 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortIntersection;
+import com.and1.algorithm.sort.SortIntersection;
 import com.and1.model.img.Image;
 
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
-public class HSI_Intersection implements SimilarityAlgorithm
+public class HSI_Intersection extends SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
 		float intersection;
 		float minsum = 0;
@@ -47,17 +47,8 @@ public class HSI_Intersection implements SimilarityAlgorithm
 		}
 		//Liste absteigend sortieren
 		Arrays.sort(list);
-		Vector<Image> sortedlist = new Vector<>();
-		for (SortIntersection aList : list)
-		{
-			float intersect = aList.getIntersection();
-			Image image = aList.getMRImage();
-			//neues Repository erstellt welches sortierte Elemente enth�lt
-			sortedlist.add(image);
-			image.setSimilarity(intersect, image);
-		}
 
-		return sortedlist;
+		return getSortIntersectionList(list);
 	}
 
 }

@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 public class Image
 {
@@ -22,16 +22,11 @@ public class Image
 	private final BufferedImage image;
 
 	private final java.awt.Image thumbnail;
-
-	private java.util.List<float[]> colors;
-
-	private java.util.List<Float> hsiColorCount;
-
-	private float similarity;
-
-	private Image queryImage;
-
 	private final Histogram histogram = new Histogram();
+	private List<float[]> colors;
+	private List<Float> hsiColorCount;
+	private float similarity;
+	private Image queryImage;
 
 	public Image(File file, BufferedImage img)
 	{
@@ -43,9 +38,9 @@ public class Image
 	}
 
 	// TODO should work with a single given number and not power of 2
-	public Vector<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
+	public List<BufferedImage> generateRasterInGivenSteps(int segmentationStep)
 	{
-		Vector<BufferedImage> segment = new Vector<>();
+		List<BufferedImage> segment = new ArrayList<>();
 
 		String bit = Integer.toBinaryString(segmentationStep);
 		Integer bitLength = bit.length();
@@ -111,7 +106,7 @@ public class Image
 
 		colors = new ArrayList<>();
 
-		hsiColorCount = new Vector<>();
+		hsiColorCount = new ArrayList<>();
 
 		for (int i = 0; i < image.getWidth(); i++)
 		{
@@ -449,15 +444,15 @@ public class Image
 		return histHSI;
 	}
 
-	public Vector getColors(int count)
+	public List getColors(int count)
 	{
 
 		//System.out.println(hsiColorCount.size());
 
 		float[] color;
 		float[] addcontent = new float[3];
-		Vector dominantcolor = new Vector();
-		//Vector <Float> hsicolor = hsiColorCount;
+		List dominantcolor = new ArrayList<>();
+		//List <Float> hsicolor = hsiColorCount;
 		float a = 0;
 
 		for (int i = 0; i < hsiColorCount.size(); i++)

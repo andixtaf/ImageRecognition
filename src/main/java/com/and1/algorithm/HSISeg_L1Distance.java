@@ -1,25 +1,26 @@
 package com.and1.algorithm;
 
-import com.and1.sort.SortL1Distance;
+import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 //Klasse zur Berechnung der com.and1.algorithm.Intersection
-public class HSISeg_L1Distance implements SimilarityAlgorithm
+public class HSISeg_L1Distance extends SimilarityAlgorithm
 {
 
-	public Vector<Image> apply(Image query, Vector<Image> repository, int segStep)
+	public List<Image> apply(Image query, List<Image> repository, int segStep)
 	{
 		float distanceseg1 = 0;
 		float distance = 0;
-		Vector<Float> distanceseg = new Vector<>();
+		List<Float> distanceseg = new ArrayList<>();
 		String name = query.toString();
 
-		Vector<BufferedImage> segment;
-		Vector hist1 = new Vector();
+		List<BufferedImage> segment;
+		List hist1 = new ArrayList<>();
 		segment = query.generateRasterInGivenSteps(segStep);
 		for (int i = 0; i < segment.size(); i++)
 		{
@@ -38,8 +39,8 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 		{
 			Image img = repository.get(i);
 			String imgname = img.toString();
-			Vector<BufferedImage> segmenthist2;
-			Vector hist2 = new Vector();
+			List<BufferedImage> segmenthist2;
+			List hist2 = new ArrayList<>();
 
 			segmenthist2 = img.generateRasterInGivenSteps(segStep);
 
@@ -78,22 +79,14 @@ public class HSISeg_L1Distance implements SimilarityAlgorithm
 
 			list[i] = new SortL1Distance(img, distance / segStep);
 			distance = 0;
-			distanceseg.removeAllElements();
-			hist2.removeAllElements();
-			segmenthist2.removeAllElements();
+			distanceseg.clear();
+			hist2.clear();
+			segmenthist2.clear();
 		}
 		//Liste absteigend sortieren
 		Arrays.sort(list);
-		Vector<Image> sortedlist = new Vector<>();
-		for (SortL1Distance aList : list)
-		{
-			float dist = aList.getDistance();
-			Image image = aList.getMRImage();
-			//neues Repository erstellt welches sortierte Elemente enth�lt
-			sortedlist.add(image);
-			image.setSimilarity(dist, image);
-		}
 
-		return sortedlist;
+		return getSortL1DistanceList(list);
 	}
+
 }
