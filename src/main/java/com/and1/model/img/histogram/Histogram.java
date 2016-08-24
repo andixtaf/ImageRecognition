@@ -45,6 +45,7 @@ public class Histogram
 		}
 	}
 
+	// TODO save histogram files in a single dir - maybe delete old files
 	private void saveHistogramGray(float[] histogram, String name)
 	{
 		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
