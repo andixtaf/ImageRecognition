@@ -1,6 +1,8 @@
 package com.and1.algorithm;
 
 import com.and1.algorithm.sort.NRA_Algorithm_Sort;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +10,8 @@ import java.util.List;
 
 public class NRA_Algorithm
 {
+	private static final Logger logger = LogManager.getLogger(NRA_Algorithm.class);
+
 	public NRA_Algorithm_Sort[] calculate(NRA_Algorithm_Sort[] euclidean, NRA_Algorithm_Sort[] chisquare, int k)
 	{
 
@@ -63,7 +67,7 @@ public class NRA_Algorithm
 				oleft = euclidean[i].getIndex();
 
 				read.add(new Search(euclidean[i].getIndex(), ol / 2, (ol + or) / 2));
-				//System.out.println(oleft);
+				//logger.info(oleft);
 				//Index ebenfalls in seperate Liste einf�gen
 				//dient zur sp�teren Aktualisierung der ub_agg - Werte
 				remindexl.add(euclidean[i].getIndex());
@@ -72,7 +76,7 @@ public class NRA_Algorithm
 			//falls Index bereits vorhanden ist
 			else if (checkl == 1.0f)
 			{
-				//System.out.println("Index schon vorhanden");
+				//logger.info("Index schon vorhanden");
 				oleft = euclidean[i].getIndex();
 				oleft2 = 1;
 			}
@@ -81,10 +85,10 @@ public class NRA_Algorithm
 			if (checkr == -1.0f)
 			{
 				oright = chisquare[i].getIndex();
-				//System.out.println("Neu right");
-				//System.out.println("Index chi");
+				//logger.info("Neu right");
+				//logger.info("Index chi");
 				read.add(new Search(chisquare[i].getIndex(), or / 2, (ol + or) / 2));
-				//System.out.println(oright);
+				//logger.info(oright);
 				//Index ebenfalls in seperate Liste einf�gen
 				//dient zur sp�teren Aktualisierung der ub_agg - Werte
 				remindexr.add(chisquare[i].getIndex());
@@ -93,7 +97,7 @@ public class NRA_Algorithm
 			//falls Index bereits vorhanden ist
 			else if (checkr == 1.0f)
 			{
-				//System.out.println("Index schon vorhanden");
+				//logger.info("Index schon vorhanden");
 				oright = chisquare[i].getIndex();
 				oright2 = 1;
 			}
@@ -103,12 +107,12 @@ public class NRA_Algorithm
 				//wenn Index bereits in beiden Listen aufgetaucht ist
 				if (oleft2 == 1)
 				{
-					//System.out.println("gleicher Index oleft");
-					//System.out.println("Indexsuchen");
+					//logger.info("gleicher Index oleft");
+					//logger.info("Indexsuchen");
 					//bestimmen an welcher Position sich der Index Wert in der
 					//read Liste befindet
 					int newindex = getIndex(read, oleft);
-					//System.out.println(newindex);
+					//logger.info(newindex);
 					//lb_agg und ub_agg bestimmen
 					float lb_agg = read.get(newindex).getLb_agg() + (ol / 2);
 					float ub_agg = read.get(newindex).getUb_agg();
@@ -119,8 +123,8 @@ public class NRA_Algorithm
 					remindexr.remove(removeindexr);
 					//Index + lb_agg in nra eintragen (steht hier f�r die top-k Liste)
 					nra[x] = new NRA_Algorithm_Sort((int) oleft, lb_agg);
-					//System.out.println("Current nra-size");
-					//System.out.println(nra.length);
+					//logger.info("Current nra-size");
+					//logger.info(nra.length);
 					//x erh�hen um n�chste Position in der Liste zu setzen
 					x++;
 					check = true;
@@ -129,7 +133,7 @@ public class NRA_Algorithm
 				}
 				else
 				{
-					//System.out.println("Werte anpassen left");
+					//logger.info("Werte anpassen left");
 					//Falls Index noch nicht in beiden Listen gefunden
 					//den Aktualisierungspart der ub_agg Werte fand ich
 					//recht knifflig
@@ -151,18 +155,18 @@ public class NRA_Algorithm
 			{
 				if (oright2 == 1)
 				{
-					//System.out.println("gleicher Index oright");
-					//System.out.println("Indexsuchen");
+					//logger.info("gleicher Index oright");
+					//logger.info("Indexsuchen");
 					int newindex = getIndex(read, oright);
-					//System.out.println(newindex);
+					//logger.info(newindex);
 					float lb_agg = read.get(newindex).getLb_agg() + (or / 2);
 					float ub_agg = read.get(newindex).getUb_agg();
 					read.set(newindex, new Search(oright, lb_agg, ub_agg));
 					int removeindexl = removeIndex(remindexl, oright);
 					remindexl.remove(removeindexl);
 					nra[x] = new NRA_Algorithm_Sort((int) oright, lb_agg);
-					//System.out.println("Current nra-size");
-					//System.out.println(nra.length);
+					//logger.info("Current nra-size");
+					//logger.info(nra.length);
 					check = true;
 					x++;
 					oright = 0;
@@ -170,7 +174,7 @@ public class NRA_Algorithm
 				}
 				else
 				{
-					//System.out.println("Werte anpassen right");
+					//logger.info("Werte anpassen right");
 					for (Integer aRemindexr : remindexr)
 					{
 						int newindexr = getIndex(read, aRemindexr);
@@ -183,7 +187,7 @@ public class NRA_Algorithm
 			}
 
 			tau = (ol + or) / 2;
-			//System.out.println(nra.length);
+			//logger.info(nra.length);
 
 			//Abfragen der ersten Bedingung ob lb_agg Werte von top-k >= tau sind
 			//wenn condition1 = k dann ist 1. Abbruchbedingung erf�llt
@@ -193,8 +197,8 @@ public class NRA_Algorithm
 				{
 					if (condition1 < k)
 					{
-						//System.out.println("lb_agg");
-						//System.out.println(nra[j].getDistance());
+						//logger.info("lb_agg");
+						//logger.info(nra[j].getDistance());
 						if (nra[j].getDistance() >= tau)
 						{
 							condition1++;
@@ -238,8 +242,8 @@ public class NRA_Algorithm
 			//Falls beide Abbruchbedingungen erf�llt sind wird Schleife verlassen
 			if (condition1 == k && condition2 == k)
 			{
-				//System.out.println("Abbruch");
-				//System.out.println(x);
+				//logger.info("Abbruch");
+				//logger.info(x);
 				break;
 			}
 
@@ -252,7 +256,7 @@ public class NRA_Algorithm
 				ub_agg_list.clear();
 			}
 		}
-		//aus irgendeinen Grund wollte der Compiler mit dem urpr�nglichen Array
+		//aus irgendeinen Grund wollte der Compiler mit dem urprünglichen Array
 		//nra nicht arbeiten also hab ich den Inahlt von nra in ein zweites
 		//Array gespeichert
 		NRA_Algorithm_Sort[] nrasort = new NRA_Algorithm_Sort[x];
@@ -261,8 +265,8 @@ public class NRA_Algorithm
 		Arrays.sort(nrasort);
 		for (NRA_Algorithm_Sort aNrasort : nrasort)
 		{
-			System.out.println(aNrasort.getIndex());
-			System.out.println(aNrasort.getDistance());
+			logger.info(aNrasort.getIndex());
+			logger.info(aNrasort.getDistance());
 			//setValues((int)nrasort[i].getIndex(), nrasort[i].getDistance());
 		}
 		return nrasort;

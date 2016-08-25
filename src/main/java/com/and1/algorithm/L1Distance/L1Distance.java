@@ -1,6 +1,6 @@
-package com.and1.algorithm;
+package com.and1.algorithm.L1Distance;
 
-import com.and1.algorithm.sort.SortL1Distance;
+import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
@@ -16,19 +16,19 @@ public class L1Distance extends SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		SortL1Distance[] list;
 
 		float distance = 0;
-		int totalhist1 = query.getHeight() * query.getWidth();
-		if (query.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
+		int totalhist1 = basicImage.getHeight() * basicImage.getWidth();
+		if(basicImage.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
-			String name = query.getFilePath().getAbsolutePath();
-			float[] hist1 = query.getHistogramGray(name);
+			String name = basicImage.getFilePath().getAbsolutePath();
+			float[] hist1 = basicImage.getHistogramGray(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[] hist2;
-			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugehörige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
 			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{
@@ -51,11 +51,11 @@ public class L1Distance extends SimilarityAlgorithm
 		}
 		else
 		{
-			String name = query.getFilePath().getAbsolutePath();
-			float[][][] hist1 = query.getHistogramRGB(name);
+			String name = basicImage.getFilePath().getAbsolutePath();
+			float[][][] hist1 = basicImage.getHistogramRGB(name);
 			//System.out.println("Histogramm1 :" + query.filePath);
 			float[][][] hist2;
-			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+			//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
 			list = new SortL1Distance[repository.size()];
 			for (int i = 0; i < repository.size(); i++)
 			{

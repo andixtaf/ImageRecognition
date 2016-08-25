@@ -1,19 +1,19 @@
 package com.and1.algorithm;
 
+import com.and1.algorithm.L1Distance.SortL1Distance;
 import com.and1.algorithm.sort.NRA_Algorithm_Sort;
-import com.and1.algorithm.sort.SortL1Distance;
 import com.and1.model.img.Image;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class HSI_Euclidean_Distance extends SimilarityAlgorithm
+public class Euclidean_Distance_HSI extends SimilarityAlgorithm
 {
 
 	private NRA_Algorithm_Sort[] nra_values;
 
 	@Override
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		return null;
 	}

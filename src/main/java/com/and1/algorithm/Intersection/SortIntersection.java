@@ -1,6 +1,7 @@
-package com.and1.algorithm.sort;
+package com.and1.algorithm.Intersection;
 
 import com.and1.model.img.Image;
+import org.jetbrains.annotations.NotNull;
 
 public class SortIntersection implements Comparable<SortIntersection>
 {
@@ -14,7 +15,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 		this.intersection = intersection;
 	}
 
-	public int compareTo(SortIntersection value)
+	public int compareTo(@NotNull SortIntersection value)
 	{
 		if (intersection > value.intersection)
 		{
@@ -31,7 +32,7 @@ public class SortIntersection implements Comparable<SortIntersection>
 	@Override
 	public String toString()
 	{
-		return img + "  Intersection:  " + intersection;
+		return img + "  IntersectionRGB:  " + intersection;
 	}
 
 	public float getIntersection()

@@ -1,7 +1,7 @@
 package com.and1.algorithm;
 
+import com.and1.algorithm.Intersection.SortIntersection;
 import com.and1.algorithm.sort.NRA_Algorithm_Sort;
-import com.and1.algorithm.sort.SortIntersection;
 import com.and1.model.img.Image;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 	private NRA_Algorithm_Sort[] nra_values;
 
 	@Override
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 
 		Float distance;
@@ -28,10 +28,10 @@ public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 		float sumHistory2 = 0;
 		int x = 0;
 
-		String name = query.toString();
-		query.generateHistogramHSI(name);
+		String name = basicImage.toString();
+		basicImage.generateHistogramHSI(name);
 
-		float[][][] hist1 = query.getHistogramHSI(name);
+		float[][][] hist1 = basicImage.getHistogramHSI(name);
 		float[][][] hist2;
 
 		SortIntersection[] list = new SortIntersection[repository.size()];

@@ -1,13 +1,13 @@
-package com.and1.algorithm;
+package com.and1.algorithm.L1Distance;
 
-import com.and1.algorithm.sort.SortL1Distance;
+import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
 
 import java.util.Arrays;
 import java.util.List;
 
 //Klasse zur Berechnung der Distance
-public class HSI_L1Distance extends SimilarityAlgorithm
+public class L1DistanceHSI extends SimilarityAlgorithm
 {
 
 	/**
@@ -15,19 +15,19 @@ public class HSI_L1Distance extends SimilarityAlgorithm
 	 *
 	 * @return The unprocessed repository
 	 */
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 
 		float distance = 0;
-		String name = query.toString();
+		String name = basicImage.toString();
 		//HSI Histogramm generieren
-		query.generateHistogramHSI(name);
+		basicImage.generateHistogramHSI(name);
 		//Histogramm laden
-		float[][][] hist1 = query.getHistogramHSI(name);
+		float[][][] hist1 = basicImage.getHistogramHSI(name);
 		float[][][] hist2;
 
-		int totalhist1 = query.getHeight() * query.getWidth();
-		//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+		int totalhist1 = basicImage.getHeight() * basicImage.getWidth();
+		//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for (int i = 0; i < repository.size(); i++)
 		{

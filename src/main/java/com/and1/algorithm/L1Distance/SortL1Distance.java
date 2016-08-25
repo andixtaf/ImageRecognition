@@ -1,4 +1,4 @@
-package com.and1.algorithm.sort;
+package com.and1.algorithm.L1Distance;
 
 import com.and1.model.img.Image;
 

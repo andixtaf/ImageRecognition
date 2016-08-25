@@ -1,25 +1,25 @@
-package com.and1.algorithm;
+package com.and1.algorithm.Intersection;
 
-import com.and1.algorithm.sort.SortIntersection;
+import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class HSI_Intersection extends SimilarityAlgorithm
+public class IntersectionHSI extends SimilarityAlgorithm
 {
 
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		float intersection;
 		float minsum = 0;
 		float hist1sum = 0;
 
-		String name = query.toString();
-		query.generateHistogramHSI(name);
-		float[][][] hist1 = query.getHistogramHSI(name);
+		String name = basicImage.toString();
+		basicImage.generateHistogramHSI(name);
+		float[][][] hist1 = basicImage.getHistogramHSI(name);
 		float[][][] hist2;
-		//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugehörige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
 		SortIntersection[] list = new SortIntersection[repository.size()];
 		for (int i = 0; i < repository.size(); i++)
 		{

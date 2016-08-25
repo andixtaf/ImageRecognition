@@ -1,6 +1,17 @@
 package com.and1.view;
 
-import com.and1.algorithm.*;
+import com.and1.algorithm.Chi_Square_Semi_Pseudo_Distance;
+import com.and1.algorithm.Euclidean_Distance_HSI;
+import com.and1.algorithm.Intersection.IntersectionGRAY;
+import com.and1.algorithm.Intersection.IntersectionHSI;
+import com.and1.algorithm.Intersection.IntersectionRGB;
+import com.and1.algorithm.Intersection.IntersectionSeg;
+import com.and1.algorithm.L1Distance.L1Distance;
+import com.and1.algorithm.L1Distance.L1DistanceHSI;
+import com.and1.algorithm.L1Distance.L1DistanceSeg;
+import com.and1.algorithm.L1Distance.L1DistanceSegHSI;
+import com.and1.algorithm.NRA_Algorithm;
+import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.algorithm.sort.NRA_Algorithm_Sort;
 import com.and1.model.img.Image;
 import com.and1.view.label.HistogramLabel;
@@ -28,19 +39,18 @@ import java.util.List;
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
-
-	//TODO strategy pattern
-	private final Intersection intersection = new Intersection();
+	private final IntersectionRGB intersectionRGB = new IntersectionRGB();
 	private final L1Distance l1distance = new L1Distance();
-	private final Seg_Intersection segmentationIntersection = new Seg_Intersection();
-	private final Seg_L1Distance segmentationL1Distance = new Seg_L1Distance();
-	private final HSI_Intersection hsiIntersection = new HSI_Intersection();
-	private final HSI_L1Distance hsiL1Distance = new HSI_L1Distance();
-	private final HSISeg_L1Distance hsiSegmentationL1Distance = new HSISeg_L1Distance();
-	private final HSI_Euclidean_Distance hsiEuclidDistance = new HSI_Euclidean_Distance();
+	private final IntersectionSeg segmentationIntersection = new IntersectionSeg();
+	private final L1DistanceSeg segmentationL1Distance = new L1DistanceSeg();
+	private final IntersectionHSI hsiIntersection = new IntersectionHSI();
+	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
+	private final L1DistanceSegHSI hsiSegmentationL1Distance = new L1DistanceSegHSI();
+	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
-
+	//TODO strategy pattern
+	private SimilarityAlgorithm similarityAlgorithm;
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
 	private JList jListFiles, jListFilesRanked;
@@ -63,7 +73,6 @@ class MainFrame extends JFrame implements ActionListener
 			rgb = false;
 			hsi = false;
 			gray = false;
-
 
 			splash.setMessage("Initializing GUI...");
 
@@ -263,7 +272,7 @@ class MainFrame extends JFrame implements ActionListener
 		JMenu menuAlgorithms = new JMenu("Similarity Algorithms");
 		menuAlgorithms.setMnemonic(KeyEvent.VK_S);
 
-		JMenuItem intersect = new JMenuItem("Intersection");
+		JMenuItem intersect = new JMenuItem("Intersection - RGB");
 		intersect.addActionListener(new ActionListener()
 		{
 			@Override
@@ -275,24 +284,63 @@ class MainFrame extends JFrame implements ActionListener
 				// read number and convert it to a power of 2
 				logger.info("segmentation step: " + segmentationStep);
 
-				jListFilesRanked.setListData(intersection.apply(currentImg, imagesList, segmentationStep).toArray());
+				similarityAlgorithm = new IntersectionRGB();
+
+				jListFilesRanked
+						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
+								             .toArray());
 			}
 		});
 		menuAlgorithms.add(intersect);
+
+		JMenuItem intersectGray = new JMenuItem("Intersection - Gray");
+		intersect.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				//TODO check if in original code segmentationStep has value != 0
+				// read number and convert it to a power of 2
+				logger.info("segmentation step: " + segmentationStep);
+
+				similarityAlgorithm = new IntersectionGRAY();
+
+				jListFilesRanked
+						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
+								             .toArray());
+			}
+		});
+		menuAlgorithms.add(intersectGray);
+
+		JMenuItem hsiintersect = new JMenuItem("Intersection - HSI");
+		hsiintersect.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				similarityAlgorithm = new IntersectionHSI();
+
+				jListFilesRanked
+						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
+								             .toArray());
+
+			}
+		});
+		menuAlgorithms.add(hsiintersect);
 
 		JMenuItem l1Distance = new JMenuItem("L1-Distance");
 		l1Distance.addActionListener(this);
 		menuAlgorithms.add(l1Distance);
 
-		JMenuItem hsiintersect = new JMenuItem("HSI-Intersection");
-		hsiintersect.addActionListener(this);
-		menuAlgorithms.add(hsiintersect);
-
 		JMenuItem hsil1dist = new JMenuItem("HSI-L1Distance");
 		hsil1dist.addActionListener(this);
 		menuAlgorithms.add(hsil1dist);
 
-		JMenuItem segintersect = new JMenuItem("Intersection-Segmentation");
+		JMenuItem segintersect = new JMenuItem("IntersectionRGB-Segmentation");
 		segintersect.addActionListener(this);
 		menuAlgorithms.add(segintersect);
 
@@ -300,7 +348,7 @@ class MainFrame extends JFrame implements ActionListener
 		segl1dist.addActionListener(this);
 		menuAlgorithms.add(segl1dist);
 
-		JMenuItem hsisegintersect = new JMenuItem("HSI-Intersection-Segmentation");
+		JMenuItem hsisegintersect = new JMenuItem("HSI-IntersectionRGB-Segmentation");
 		hsisegintersect.addActionListener(this);
 		menuAlgorithms.add(hsisegintersect);
 
@@ -370,7 +418,8 @@ class MainFrame extends JFrame implements ActionListener
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
-				jListFilesRanked.setListData(l1distance.apply(currentImg, imagesList, segmentationStep).toArray());
+				jListFilesRanked.setListData(
+						l1distance.calculateSimilarity(currentImg, imagesList, segmentationStep).toArray());
 			} else if(m.getText().equals("GrayScale"))
 			{
 
@@ -388,7 +437,7 @@ class MainFrame extends JFrame implements ActionListener
 				hsi = true;
 				displayHistogram();
 				//Darstellung der 4 RGB Histogramme des Segmentierten Images
-			} else if(m.getText().equals("Intersection-Segmentation"))
+			} else if(m.getText().equals("IntersectionRGB-Segmentation"))
 			{
 				segmentationStep = chooseInputWindow("enter a intger greater than 1");
 
@@ -397,24 +446,11 @@ class MainFrame extends JFrame implements ActionListener
 
 				segmentationStep = chooseInputWindow("enter a intger greater than 1");
 
-			} else if(m.getText().equals("HSI-Intersection-Segmentation") ||
+			} else if(m.getText().equals("HSI-IntersectionRGB-Segmentation") ||
 					m.getText().equals("HSI-L1Distance-Segmentation"))
 			{
 
 				check((Image) jListFiles.getSelectedValue());
-
-			} else if(m.getText().equals("HSI-algorithm.Intersection"))
-			{
-
-				Image currentImg = (Image) jListFiles.getSelectedValue();
-				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
-				{
-					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
-				} else
-				{
-					jListFilesRanked.setListData(
-							hsiIntersection.apply(currentImg, imagesList, segmentationStep).toArray());
-				}
 
 			} else if(m.getText().equals("HSI-L1Distance"))
 			{
@@ -426,7 +462,8 @@ class MainFrame extends JFrame implements ActionListener
 				} else
 				{
 					jListFilesRanked
-							.setListData(hsiL1Distance.apply(currentImg, imagesList, segmentationStep).toArray());
+							.setListData(hsiL1Distance.calculateSimilarity(currentImg, imagesList, segmentationStep)
+									             .toArray());
 				}
 
 			} else if(m.getText().equals("Segmentation-Gray"))
@@ -463,7 +500,8 @@ class MainFrame extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
 				} else
 				{
-					jListFilesRanked.setListData(chiSquare.apply(currentImg, imagesList, similarity).toArray());
+					jListFilesRanked
+							.setListData(chiSquare.calculateSimilarity(currentImg, imagesList, similarity).toArray());
 				}
 			} else if(m.getText().equals("NRA-Algorithm"))
 			{
@@ -479,7 +517,7 @@ class MainFrame extends JFrame implements ActionListener
 
 					hsiEuclidDistance.applySimilarity(currentImg, imagesList, numberK, similarity);
 					NRA_Algorithm_Sort[] euclidean = hsiEuclidDistance.getNRA_Values();
-					chiSquare.apply(currentImg, imagesList, numberK);
+					chiSquare.calculateSimilarity(currentImg, imagesList, numberK);
 					NRA_Algorithm_Sort[] chisq = chiSquare.getNRA_Values();
 					jListFilesRanked = new JList();
 					jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -617,7 +655,6 @@ class MainFrame extends JFrame implements ActionListener
 
 				} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
 				{
-
 
 				}
 

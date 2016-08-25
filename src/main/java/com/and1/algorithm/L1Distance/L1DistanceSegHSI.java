@@ -1,6 +1,6 @@
-package com.and1.algorithm;
+package com.and1.algorithm.L1Distance;
 
-import com.and1.algorithm.sort.SortL1Distance;
+import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
 
 import java.awt.image.BufferedImage;
@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//Klasse zur Berechnung der com.and1.algorithm.Intersection
-public class HSISeg_L1Distance extends SimilarityAlgorithm
+//Klasse zur Berechnung der com.and1.algorithm.IntersectionRGB
+public class L1DistanceSegHSI extends SimilarityAlgorithm
 {
 
-	public List<Image> apply(Image query, List<Image> repository, int segStep)
+	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		float distanceseg1 = 0;
 		float distance = 0;
 		List<Float> distanceseg = new ArrayList<>();
-		String name = query.toString();
+		String name = basicImage.toString();
 
 		List<BufferedImage> segment;
 		List hist1 = new ArrayList<>();
-		segment = query.generateRasterInGivenSteps(segStep);
+		segment = basicImage.generateRasterInGivenSteps(segStep);
 		for (int i = 0; i < segment.size(); i++)
 		{
-			Image seg = new Image(query.getFilePath(), segment.get(i));
+			Image seg = new Image(basicImage.getFilePath(), segment.get(i));
 			seg.generateHistogramHSI(segStep + "Seg" + i + name);
 			float[][][] hist1seg = seg.getHistogramHSI(segStep + "Seg" + i + name);
 			hist1.add(hist1seg);
@@ -33,7 +33,7 @@ public class HSISeg_L1Distance extends SimilarityAlgorithm
 		float[][][] h1seg;
 		float[][][] h2seg;
 
-		//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.Intersection als Tupel gespeichert werden
+		//Liste in die die das Img und die dazugeh�rige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
 		SortL1Distance[] list = new SortL1Distance[repository.size()];
 		for (int i = 0; i < repository.size(); i++)
 		{
