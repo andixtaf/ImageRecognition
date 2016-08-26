@@ -2,6 +2,8 @@ package com.and1.algorithm.Intersection;
 
 import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  */
 public class IntersectionGRAY extends SimilarityAlgorithm
 {
+	private static final Logger logger = LogManager.getLogger(IntersectionGRAY.class);
+
 	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		float intersection;
@@ -53,6 +57,8 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 		{
 			minSum += Math.min(histogramBasic[j], histogramToCompare[j]);
 		}
+
+		logger.info("minSum: " + minSum);
 		return minSum;
 	}
 

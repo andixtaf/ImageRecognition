@@ -50,12 +50,18 @@ public class Histogram
 	{
 		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
 
-		if (!file.exists())
+		String pathToSave = "F:/Programmierung/JAVA/ImageRecognition/SavedHistogramms/";
+
+		pathToSave += file.getName();
+
+		File fileToSave = new File(pathToSave);
+
+		if(!fileToSave.exists())
 		{
 			try
 			{
 				//von ImageName.jpg den .jpg abschneiden und mit -Gray.txt ersetzen
-				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath()));
+				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(fileToSave.getAbsolutePath()));
 				output.writeObject(histogram);
 				output.close();
 			}

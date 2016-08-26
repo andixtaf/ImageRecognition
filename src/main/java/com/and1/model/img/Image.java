@@ -25,9 +25,10 @@ public class Image
 	private final Histogram histogram = new Histogram();
 	private List<float[]> colors;
 	private List<Float> hsiColorCount;
-	private float similarity;
+	private Float similarity;
 	private Image queryImage;
 
+	//TODO refactor logic in new class
 	public Image(File file, BufferedImage img)
 	{
 		filePath = file;
@@ -451,7 +452,7 @@ public class Image
 
 		float[] color;
 		float[] addcontent = new float[3];
-		List dominantcolor = new ArrayList<>();
+		List<Object> dominantcolor = new ArrayList<>();
 		//List <Float> hsicolor = hsiColorCount;
 		float a = 0;
 

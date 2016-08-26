@@ -5,11 +5,8 @@ import com.and1.algorithm.Euclidean_Distance_HSI;
 import com.and1.algorithm.Intersection.IntersectionGRAY;
 import com.and1.algorithm.Intersection.IntersectionHSI;
 import com.and1.algorithm.Intersection.IntersectionRGB;
-import com.and1.algorithm.Intersection.IntersectionSeg;
 import com.and1.algorithm.L1Distance.L1Distance;
 import com.and1.algorithm.L1Distance.L1DistanceHSI;
-import com.and1.algorithm.L1Distance.L1DistanceSeg;
-import com.and1.algorithm.L1Distance.L1DistanceSegHSI;
 import com.and1.algorithm.NRA_Algorithm;
 import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.algorithm.sort.NRA_Algorithm_Sort;
@@ -39,21 +36,16 @@ import java.util.List;
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
-	private final IntersectionRGB intersectionRGB = new IntersectionRGB();
 	private final L1Distance l1distance = new L1Distance();
-	private final IntersectionSeg segmentationIntersection = new IntersectionSeg();
-	private final L1DistanceSeg segmentationL1Distance = new L1DistanceSeg();
-	private final IntersectionHSI hsiIntersection = new IntersectionHSI();
+
 	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
-	private final L1DistanceSegHSI hsiSegmentationL1Distance = new L1DistanceSegHSI();
 	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
-	//TODO strategy pattern
-	private SimilarityAlgorithm similarityAlgorithm;
 	private JScrollPane leftScrollPanel;
 	private JScrollPane rightPanel;
-	private JList jListFiles, jListFilesRanked;
+	private JList jListFiles;
+	private JList<Object> jListFilesRanked;
 	private List<Image> imagesList;
 	private int segmentationStep;
 
@@ -64,7 +56,9 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		super("Image Recognition");
 
-		File pathToImage = openDirectoryChooser();
+//		File pathToImage = openDirectoryChooser();
+
+		File pathToImage = new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray");
 
 		imagesList = loadTestData(pathToImage);
 
@@ -100,6 +94,8 @@ class MainFrame extends JFrame implements ActionListener
 		fileChooser.setDialogTitle("Choose Folder");
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setVisible(true);
+
+		fileChooser.setCurrentDirectory(new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray"));
 
 		int returnVal = fileChooser.showDialog(this, "Select Path");
 
@@ -197,7 +193,7 @@ class MainFrame extends JFrame implements ActionListener
 		leftCmdPanel.add(segmentButton);
 
 		// list for displaying the test data imgList
-		jListFiles = new JList(imagesList.toArray());
+		jListFiles = new JList<>(imagesList.toArray());
 		jListFiles.setCellRenderer(new ImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -206,7 +202,7 @@ class MainFrame extends JFrame implements ActionListener
 		leftSplitter.add(leftScrollPanel);
 
 		// list for displaying the sorted list of imgList
-		jListFilesRanked = new JList();
+		jListFilesRanked = new JList<>();
 		jListFilesRanked.setCellRenderer(new ImageCellRendererSorted());
 		jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -273,63 +269,15 @@ class MainFrame extends JFrame implements ActionListener
 		menuAlgorithms.setMnemonic(KeyEvent.VK_S);
 
 		JMenuItem intersect = new JMenuItem("Intersection - RGB");
-		intersect.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Image currentImg = (Image) jListFiles.getSelectedValue();
-
-				//TODO check if in original code segmentationStep has value != 0
-				// read number and convert it to a power of 2
-				logger.info("segmentation step: " + segmentationStep);
-
-				similarityAlgorithm = new IntersectionRGB();
-
-				jListFilesRanked
-						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
-								             .toArray());
-			}
-		});
+		intersect.addActionListener(this);
 		menuAlgorithms.add(intersect);
 
 		JMenuItem intersectGray = new JMenuItem("Intersection - Gray");
-		intersect.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Image currentImg = (Image) jListFiles.getSelectedValue();
-
-				//TODO check if in original code segmentationStep has value != 0
-				// read number and convert it to a power of 2
-				logger.info("segmentation step: " + segmentationStep);
-
-				similarityAlgorithm = new IntersectionGRAY();
-
-				jListFilesRanked
-						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
-								             .toArray());
-			}
-		});
+		intersectGray.addActionListener(this);
 		menuAlgorithms.add(intersectGray);
 
 		JMenuItem hsiintersect = new JMenuItem("Intersection - HSI");
-		hsiintersect.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Image currentImg = (Image) jListFiles.getSelectedValue();
-
-				similarityAlgorithm = new IntersectionHSI();
-
-				jListFilesRanked
-						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
-								             .toArray());
-
-			}
-		});
+		hsiintersect.addActionListener(this);
 		menuAlgorithms.add(hsiintersect);
 
 		JMenuItem l1Distance = new JMenuItem("L1-Distance");
@@ -409,12 +357,49 @@ class MainFrame extends JFrame implements ActionListener
 		if(src instanceof JMenuItem)
 		{
 			JMenuItem m = (JMenuItem) src;
-			jListFilesRanked = new JList();
+			jListFilesRanked = new JList<>();
 			jListFilesRanked.setCellRenderer(new ImageCellRendererSorted());
 			jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			rightPanel.getViewport().setView(jListFilesRanked);
 
-			if(m.getText().equals("L1-Distance"))
+			SimilarityAlgorithm similarityAlgorithm;
+			if(m.getText().equals("Intersection - RGB"))
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				//TODO check if in original code segmentationStep has value != 0
+				// read number and convert it to a power of 2
+				logger.info("segmentation step: " + segmentationStep);
+
+				similarityAlgorithm = new IntersectionRGB();
+
+				jListFilesRanked
+						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
+								             .toArray());
+			} else if(m.getText().equals("Intersection - Gray"))
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				//TODO check if in original code segmentationStep has value != 0
+				// read number and convert it to a power of 2
+				logger.info("segmentation step: " + segmentationStep);
+
+				similarityAlgorithm = new IntersectionGRAY();
+
+				List<Image> imageList =
+						similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep);
+
+				jListFilesRanked.setListData(imageList.toArray());
+			} else if(m.getText().equals("Intersection - HSI"))
+			{
+				Image currentImg = (Image) jListFiles.getSelectedValue();
+
+				similarityAlgorithm = new IntersectionHSI();
+
+				jListFilesRanked
+						.setListData(similarityAlgorithm.calculateSimilarity(currentImg, imagesList, segmentationStep)
+								             .toArray());
+			} else if(m.getText().equals("L1-Distance"))
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
@@ -519,7 +504,7 @@ class MainFrame extends JFrame implements ActionListener
 					NRA_Algorithm_Sort[] euclidean = hsiEuclidDistance.getNRA_Values();
 					chiSquare.calculateSimilarity(currentImg, imagesList, numberK);
 					NRA_Algorithm_Sort[] chisq = chiSquare.getNRA_Values();
-					jListFilesRanked = new JList();
+					jListFilesRanked = new JList<>();
 					jListFilesRanked.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 					jListFilesRanked.setListData(nraAlgorithm.calculate(euclidean, chisq, numberK));
 					rightPanel.getViewport().setView(jListFilesRanked);
@@ -544,7 +529,7 @@ class MainFrame extends JFrame implements ActionListener
 	{
 		imagesList = loadTestData(openDirectoryChooser());
 
-		jListFiles = new JList(imagesList.toArray());
+		jListFiles = new JList<>(imagesList.toArray());
 		jListFiles.setCellRenderer(new ImageCellRenderer());
 		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -637,7 +622,7 @@ class MainFrame extends JFrame implements ActionListener
 		{
 			int segStep = 4;
 			String name = currentImg.toString();
-			List histogram = new ArrayList<>();
+			List<Object> histogram = new ArrayList<>();
 			JLabel help = new JLabel();
 			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
 			float[] hseg;
@@ -649,14 +634,6 @@ class MainFrame extends JFrame implements ActionListener
 			for(int i = 0; i < segment.size(); i++)
 			{
 				Image segmentImage = new Image(currentImg.getFilePath(), segment.get(i));
-
-				if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
-				{
-
-				} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
-				{
-
-				}
 
 				//TODO check if file was already saved before generating + saving
 				if(rgb)

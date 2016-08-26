@@ -1,12 +1,15 @@
 package com.and1.view.renderer;
 
 import com.and1.model.img.Image;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
 {
+	private static final Logger logger = LogManager.getLogger(ImageCellRendererSorted.class);
 
 	public ImageCellRendererSorted()
 	{
@@ -50,7 +53,9 @@ public class ImageCellRendererSorted extends JLabel implements ListCellRenderer
 		}
 		else
 		{
-			background = new Color(similarity, similarity, similarity);
+			Integer colorNumber = Math.round(similarity) % 255;
+
+			background = new Color(colorNumber, colorNumber, colorNumber);
 			foreground = new Color(33, 83, 134);
 		}
 
