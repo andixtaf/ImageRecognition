@@ -84,7 +84,6 @@ public class L1DistanceSeg extends SimilarityAlgorithm
 
 				list[i] = new SortL1Distance(img, distance / segStep);
 
-				//distanceseg1 = 0;
 				distance = 0;
 				distanceseg.clear();
 				hist2.clear();

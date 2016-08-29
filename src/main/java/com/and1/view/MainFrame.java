@@ -36,21 +36,34 @@ import java.util.List;
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
-	private final L1Distance l1distance = new L1Distance();
 
-	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
-	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
-	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
-	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
 	private JScrollPane leftScrollPanel;
+
 	private JScrollPane rightPanel;
+
 	private JList jListFiles;
+
 	private JList<Object> jListFilesRanked;
+
 	private List<Image> imagesList;
+
 	private int segmentationStep;
 
 	private Boolean rgb, hsi, gray;
+
 	private JLabel statusBarLabel;
+
+	private final IntersectionRGB intersectionRGB = new IntersectionRGB();
+
+	private final L1Distance l1distance = new L1Distance();
+
+	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
+
+	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
+
+	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
+
+	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
 
 	MainFrame(ImageSplashScreen splash, Thread splashThread) throws HeadlessException
 	{
@@ -86,29 +99,6 @@ class MainFrame extends JFrame implements ActionListener
 			System.exit(1);
 		}
 
-	}
-
-	private File openDirectoryChooser()
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Choose Folder");
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fileChooser.setVisible(true);
-
-		fileChooser.setCurrentDirectory(new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray"));
-
-		int returnVal = fileChooser.showDialog(this, "Select Path");
-
-		File file = null;
-
-		if(returnVal == JFileChooser.APPROVE_OPTION)
-		{
-			file = fileChooser.getSelectedFile();
-
-			logger.info("Selected Path: " + file.getAbsolutePath());
-		}
-
-		return file;
 	}
 
 	private List<Image> loadTestData(File pathToImage)
@@ -344,6 +334,171 @@ class MainFrame extends JFrame implements ActionListener
 	}
 
 	/**
+	 * Refreshes the GUI after new test data has been loaded
+	 */
+	private void refreshGUI()
+	{
+		imagesList = loadTestData(openDirectoryChooser());
+
+		jListFiles = new JList<>(imagesList.toArray());
+		jListFiles.setCellRenderer(new ImageCellRenderer());
+		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		leftScrollPanel.getViewport().setView(jListFiles);
+
+		logger.info("refreshGUI ---------");
+	}
+
+	private void checkImage()
+	{
+		List<BufferedImage> segment;
+		int segstep = 4;
+
+		Image currentImg = (Image) jListFiles.getSelectedValue();
+		if(currentImg != null)
+		{
+			segment = currentImg.generateRasterInGivenSteps(segstep);
+			displayHistogramSegment(segment);
+		}
+
+	}
+
+	private File openDirectoryChooser()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Choose Folder");
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setVisible(true);
+
+		fileChooser.setCurrentDirectory(new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray"));
+
+		int returnVal = fileChooser.showDialog(this, "Select Path");
+
+		File file = null;
+
+		if(returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			file = fileChooser.getSelectedFile();
+
+			logger.info("Selected Path: " + file.getAbsolutePath());
+		}
+
+		return file;
+	}
+
+	private void displayHistogramSegment(List<BufferedImage> segment)
+	{
+		Image currentImg = (Image) jListFiles.getSelectedValue();
+
+		if(currentImg != null)
+		{
+			int segStep = 4;
+			String name = currentImg.toString();
+			List<Object> histogram = new ArrayList<>();
+			JLabel help = new JLabel();
+			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
+			float[] hseg;
+			float[][][] h1seg;
+			int x = 0;
+			int y = 0;
+			int z = 0;
+
+			for(int i = 0; i < segment.size(); i++)
+			{
+				Image segmentImage = new Image(currentImg.getFilePath(), segment.get(i));
+
+				//TODO check if file was already saved before generating + saving
+				if(rgb)
+				{
+					segmentImage.generateHistogramRGB(name + segStep + "Seg" + i + "RGB");
+					float[][][] hist1seg = segmentImage.getHistogramRGB(name + segStep + "Seg" + i + "RGB");
+					histogram.add(hist1seg);
+				} else if(hsi)
+				{
+					segmentImage.generateHistogramHSI(name + segStep + "Seg" + i + "HSI");
+					float[][][] hist1seg = segmentImage.getHistogramHSI(name + segStep + "Seg" + i + "HSI");
+					histogram.add(hist1seg);
+				} else if(gray)
+				{
+					segmentImage.generateHistogramGray(name + segStep + "Seg" + i + "GRAY");
+					float[] hist1seg = segmentImage.getHistogramGray(name + segStep + "Seg" + i + "GRAY");
+					histogram.add(hist1seg);
+				}
+			}
+
+			for(Object aHist : histogram)
+			{
+				if(gray)
+				{
+					hseg = (float[]) aHist;
+					HistogramLabel h1 = new HistogramLabelGray(hseg);
+					h1.setSize(256, 480);
+					h1.setLocation(x, y);
+					d.add(h1);
+
+					if(z == 1)
+					{
+						x = 0;
+						y += 480;
+						z = 0;
+					} else
+					{
+						x += 256;
+						z++;
+					}
+
+					d.setSize(512, 980);
+
+				} else if(rgb)
+				{
+					h1seg = (float[][][]) aHist;
+					HistogramLabel h1 = new HistogramLabelRGB(h1seg);
+					h1.setSize(512, 480);
+					h1.setLocation(x, y);
+					d.add(h1);
+					if(z == 1)
+					{
+						x = 0;
+						y += 480;
+						z = 0;
+					} else
+					{
+						x += 512;
+						z++;
+					}
+					d.setSize(1024, 980);
+
+				} else if(hsi)
+				{
+					h1seg = (float[][][]) aHist;
+					HistogramLabel h1 = new HistogramLabelHSI(h1seg);
+					h1.setSize(162, 480);
+					h1.setLocation(x, y);
+					d.add(h1);
+					if(z == 1)
+					{
+						x = 0;
+						y += 480;
+						z = 0;
+					} else
+					{
+						x += 162;
+						z++;
+					}
+					d.setSize(324, 980);
+				}
+
+				d.add(help);
+				d.setResizable(false);
+				d.setVisible(true);
+			}
+			rgb = false;
+			hsi = false;
+			gray = false;
+		}
+	}
+
+	/**
 	 * Action handling
 	 *
 	 * @see ActionListener#actionPerformed(ActionEvent)
@@ -513,31 +668,6 @@ class MainFrame extends JFrame implements ActionListener
 		}
 	}
 
-	private Integer chooseInputWindow(String text)
-	{
-		JFrame frame = new JFrame("Input Dialog");
-
-		String segmentation = JOptionPane.showInputDialog(frame, text);
-
-		return Integer.parseInt(segmentation);
-	}
-
-	/**
-	 * Refreshes the GUI after new test data has been loaded
-	 */
-	private void refreshGUI()
-	{
-		imagesList = loadTestData(openDirectoryChooser());
-
-		jListFiles = new JList<>(imagesList.toArray());
-		jListFiles.setCellRenderer(new ImageCellRenderer());
-		jListFiles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		leftScrollPanel.getViewport().setView(jListFiles);
-
-		logger.info("refreshGUI ---------");
-	}
-
 	private void displayHistogram()
 	{
 		Image currentImg = (Image) jListFiles.getSelectedValue();
@@ -588,18 +718,13 @@ class MainFrame extends JFrame implements ActionListener
 		}
 	}
 
-	private void checkImage()
+	private Integer chooseInputWindow(String text)
 	{
-		List<BufferedImage> segment;
-		int segstep = 4;
+		JFrame frame = new JFrame("Input Dialog");
 
-		Image currentImg = (Image) jListFiles.getSelectedValue();
-		if(currentImg != null)
-		{
-			segment = currentImg.generateRasterInGivenSteps(segstep);
-			displayHistogramSegment(segment);
-		}
+		String segmentation = JOptionPane.showInputDialog(frame, text);
 
+		return Integer.parseInt(segmentation);
 	}
 
 	private void check(Image image)
@@ -612,117 +737,5 @@ class MainFrame extends JFrame implements ActionListener
 			segmentationStep = chooseInputWindow("enter a intger greater than 1");
 		}
 
-	}
-
-	private void displayHistogramSegment(List<BufferedImage> segment)
-	{
-		Image currentImg = (Image) jListFiles.getSelectedValue();
-
-		if(currentImg != null)
-		{
-			int segStep = 4;
-			String name = currentImg.toString();
-			List<Object> histogram = new ArrayList<>();
-			JLabel help = new JLabel();
-			JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
-			float[] hseg;
-			float[][][] h1seg;
-			int x = 0;
-			int y = 0;
-			int z = 0;
-
-			for(int i = 0; i < segment.size(); i++)
-			{
-				Image segmentImage = new Image(currentImg.getFilePath(), segment.get(i));
-
-				//TODO check if file was already saved before generating + saving
-				if(rgb)
-				{
-					segmentImage.generateHistogramRGB(name + segStep + "Seg" + i + "RGB");
-					float[][][] hist1seg = segmentImage.getHistogramRGB(name + segStep + "Seg" + i + "RGB");
-					histogram.add(hist1seg);
-				} else if(hsi)
-				{
-					segmentImage.generateHistogramHSI(name + segStep + "Seg" + i + "HSI");
-					float[][][] hist1seg = segmentImage.getHistogramHSI(name + segStep + "Seg" + i + "HSI");
-					histogram.add(hist1seg);
-				} else if(gray)
-				{
-					segmentImage.generateHistogramGray(name + segStep + "Seg" + i + "GRAY");
-					float[] hist1seg = segmentImage.getHistogramGray(name + segStep + "Seg" + i + "GRAY");
-					histogram.add(hist1seg);
-				}
-			}
-
-			for(Object aHist : histogram)
-			{
-				if(gray)
-				{
-					hseg = (float[]) aHist;
-					HistogramLabel h1 = new HistogramLabelGray(hseg);
-					h1.setSize(256, 480);
-					h1.setLocation(x, y);
-					d.add(h1);
-
-					if(z == 1)
-					{
-						x = 0;
-						y += 480;
-						z = 0;
-					} else
-					{
-						x += 256;
-						z++;
-					}
-
-					d.setSize(512, 980);
-
-				} else if(rgb)
-				{
-					h1seg = (float[][][]) aHist;
-					HistogramLabel h1 = new HistogramLabelRGB(h1seg);
-					h1.setSize(512, 480);
-					h1.setLocation(x, y);
-					d.add(h1);
-					if(z == 1)
-					{
-						x = 0;
-						y += 480;
-						z = 0;
-					} else
-					{
-						x += 512;
-						z++;
-					}
-					d.setSize(1024, 980);
-
-				} else if(hsi)
-				{
-					h1seg = (float[][][]) aHist;
-					HistogramLabel h1 = new HistogramLabelHSI(h1seg);
-					h1.setSize(162, 480);
-					h1.setLocation(x, y);
-					d.add(h1);
-					if(z == 1)
-					{
-						x = 0;
-						y += 480;
-						z = 0;
-					} else
-					{
-						x += 162;
-						z++;
-					}
-					d.setSize(324, 980);
-				}
-
-				d.add(help);
-				d.setResizable(false);
-				d.setVisible(true);
-			}
-			rgb = false;
-			hsi = false;
-			gray = false;
-		}
 	}
 }
