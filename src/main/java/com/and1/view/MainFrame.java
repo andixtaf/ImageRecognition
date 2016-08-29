@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 class MainFrame extends JFrame implements ActionListener
 {
@@ -65,13 +66,27 @@ class MainFrame extends JFrame implements ActionListener
 
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
 
-	MainFrame(ImageSplashScreen splash, Thread splashThread) throws HeadlessException
+	Properties properties;
+
+	MainFrame(ImageSplashScreen splash, Thread splashThread, Properties properties) throws HeadlessException
 	{
 		super("Image Recognition");
 
-//		File pathToImage = openDirectoryChooser();
+		this.properties = properties;
 
-		File pathToImage = new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray");
+		File pathToImage;
+
+		if(Boolean.parseBoolean(properties.getProperty("SelectImagePath")) == true)
+		{
+			pathToImage = openDirectoryChooser();
+		} else {
+
+			String pathToImageString = properties.getProperty("PathToSavedHistograms");
+
+			pathToImage = new File(pathToImageString);
+		}
+
+
 
 		imagesList = loadTestData(pathToImage);
 
@@ -99,6 +114,29 @@ class MainFrame extends JFrame implements ActionListener
 			System.exit(1);
 		}
 
+	}
+
+	private File openDirectoryChooser()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Choose Folder");
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setVisible(true);
+
+		fileChooser.setCurrentDirectory(new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray"));
+
+		int returnVal = fileChooser.showDialog(this, "Select Path");
+
+		File file = null;
+
+		if(returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			file = fileChooser.getSelectedFile();
+
+			logger.info("Selected Path: " + file.getAbsolutePath());
+		}
+
+		return file;
 	}
 
 	private List<Image> loadTestData(File pathToImage)
@@ -361,29 +399,6 @@ class MainFrame extends JFrame implements ActionListener
 			displayHistogramSegment(segment);
 		}
 
-	}
-
-	private File openDirectoryChooser()
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Choose Folder");
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fileChooser.setVisible(true);
-
-		fileChooser.setCurrentDirectory(new File("F:/Programmierung/JAVA/ImageRecognition/ImagesGray"));
-
-		int returnVal = fileChooser.showDialog(this, "Select Path");
-
-		File file = null;
-
-		if(returnVal == JFileChooser.APPROVE_OPTION)
-		{
-			file = fileChooser.getSelectedFile();
-
-			logger.info("Selected Path: " + file.getAbsolutePath());
-		}
-
-		return file;
 	}
 
 	private void displayHistogramSegment(List<BufferedImage> segment)

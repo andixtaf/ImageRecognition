@@ -5,6 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 class Main
 {
@@ -14,8 +18,7 @@ class Main
 	{
 		logger.info("start application");
 
-		logger.info("JarPath: " + generateJarPath());
-		System.out.println("JarPath: " + generateJarPath());
+		Properties properties = loadConfig();
 
 		ImageSplashScreen ImageSplashScreen = new ImageSplashScreen();
 		ImageSplashScreen.setVisible(true);
@@ -23,11 +26,40 @@ class Main
 		Thread splashThread = new Thread(ImageSplashScreen);
 		splashThread.start();
 
-		MainFrame frame = new MainFrame(ImageSplashScreen, splashThread);
+		MainFrame frame = new MainFrame(ImageSplashScreen, splashThread, properties);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		logger.info("finish!!!");
+	}
+
+	public static Properties loadConfig()
+	{
+		String configFile = "Main.properties";
+
+		Properties properties = new Properties();
+
+		InputStream inputStream = null;
+
+		try {
+
+			inputStream = new FileInputStream(configFile);
+
+			properties.load(inputStream);
+
+		} catch (IOException ex) {
+			logger.error("loading Config: " + ex);
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					logger.error("closing Input Stream: " + e);
+				}
+			}
+		}
+
+		return properties;
 	}
 
 	public static String generateJarPath()
@@ -37,4 +69,6 @@ class Main
 
 		return dir.toString() + "/";
 	}
+
+
 }
