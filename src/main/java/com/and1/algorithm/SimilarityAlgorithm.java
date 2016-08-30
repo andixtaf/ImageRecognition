@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO make this class abstract and put all equal functions in here
+//TODO check calculation in threads
 public abstract class SimilarityAlgorithm
 {
 	public abstract List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep);

@@ -34,39 +34,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static com.and1.view.HistogramView.*;
+
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
-
-	private JScrollPane leftScrollPanel;
-
-	private JScrollPane rightPanel;
-
-	private JList jListFiles;
-
-	private JList<Object> jListFilesRanked;
-
-	private List<Image> imagesList;
-
-	private int segmentationStep;
-
-	private Boolean rgb, hsi, gray;
-
-	private JLabel statusBarLabel;
-
 	private final IntersectionRGB intersectionRGB = new IntersectionRGB();
-
 	private final L1Distance l1distance = new L1Distance();
-
 	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
-
 	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
-
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
-
 	private final NRA_Algorithm nraAlgorithm = new NRA_Algorithm();
-
 	Properties properties;
+	private JScrollPane leftScrollPanel;
+	private JScrollPane rightPanel;
+	private JList jListFiles;
+	private JList<Object> jListFilesRanked;
+	private List<Image> imagesList;
+	private int segmentationStep;
+	private Boolean rgb, hsi, gray;
+	private JLabel statusBarLabel;
 
 	MainFrame(ImageSplashScreen splash, Thread splashThread, Properties properties) throws HeadlessException
 	{
@@ -577,21 +564,14 @@ class MainFrame extends JFrame implements ActionListener
 						l1distance.calculateSimilarity(currentImg, imagesList, segmentationStep).toArray());
 			} else if(m.getText().equals("GrayScale"))
 			{
-
-				gray = true;
-				displayHistogram();
+				displayHistogramGRAY(this, (Image) jListFiles.getSelectedValue());
 
 			} else if(m.getText().equals("RGB"))
 			{
-
-				rgb = true;
-				displayHistogram();
+				displayHistogramRGB(this, (Image) jListFiles.getSelectedValue());
 			} else if(m.getText().equals("HSI"))
 			{
-
-				hsi = true;
-				displayHistogram();
-				//Darstellung der 4 RGB Histogramme des Segmentierten Images
+				displayHistogramHSI(this, (Image) jListFiles.getSelectedValue());
 			} else if(m.getText().equals("IntersectionRGB-Segmentation"))
 			{
 				segmentationStep = chooseInputWindow("enter a intger greater than 1");
@@ -679,56 +659,6 @@ class MainFrame extends JFrame implements ActionListener
 					jListFilesRanked.setListData(nraAlgorithm.calculate(euclidean, chisq, numberK));
 					rightPanel.getViewport().setView(jListFilesRanked);
 				}
-			}
-		}
-	}
-
-	private void displayHistogram()
-	{
-		Image currentImg = (Image) jListFiles.getSelectedValue();
-
-		JDialog d = new JDialog(this, "Histogram: " + currentImg.toString());
-
-		if(currentImg.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
-		{
-			if(rgb || hsi)
-			{
-				JOptionPane.showMessageDialog(null, "no RGB image ", "Error", JOptionPane.ERROR_MESSAGE);
-				rgb = false;
-			} else
-			{
-				HistogramLabel h =
-						new HistogramLabelGray(currentImg.getHistogramGray("/" + currentImg.toString()));
-				d.add(h);
-				d.setSize(256, 480);
-				d.setResizable(false);
-				d.setVisible(true);
-			}
-		} else if(currentImg.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
-		{
-			if(rgb)
-			{
-				HistogramLabel h =
-						new HistogramLabelRGB(currentImg.getHistogramRGB("/" + currentImg.toString()));
-				d.add(h);
-				d.setSize(512, 480);
-				d.setResizable(false);
-				d.setVisible(true);
-				rgb = false;
-			} else if(hsi)
-			{
-				String name = currentImg.toString();
-				currentImg.generateHistogramHSI(name);
-				HistogramLabel h = new HistogramLabelHSI(currentImg.getHistogramHSI(name));
-				d.add(h);
-				d.setSize(162, 480);
-				d.setResizable(false);
-				d.setVisible(true);
-				hsi = false;
-			} else if(gray)
-			{
-				JOptionPane.showMessageDialog(null, "no GrayScale image ", "Error", JOptionPane.ERROR_MESSAGE);
-				gray = false;
 			}
 		}
 	}
