@@ -2,14 +2,17 @@ package com.and1.algorithm.L1Distance;
 
 import com.and1.algorithm.SimilarityAlgorithm;
 import com.and1.model.img.Image;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
 //Klasse zur Berechnung der Distance
-public class L1Distance extends SimilarityAlgorithm
+public class L1DistanceRGB extends SimilarityAlgorithm
 {
+	private static final Logger logger = LogManager.getLogger(L1DistanceRGB.class);
 
 	/**
 	 * Generates random similarity values for all images relative to the query image
@@ -34,18 +37,15 @@ public class L1Distance extends SimilarityAlgorithm
 			{
 				Image img = repository.get(i);
 				String imgname = img.getFilePath().getAbsolutePath();
-				//System.out.println(i);
 				hist2 = img.getHistogramGray(imgname);
-				//System.out.println("Histogramm1 :" + query.filePath);
-				//System.out.println("Histogramm2 :" + com.and1.model.img.filePath);
+
 				for (int j = 0; j < hist1.length; j++)
 				{
 					distance += Math.abs(hist1[j] - hist2[j]);
 				}
 
 				list[i] = new SortL1Distance(img, distance);
-				//System.out.println("Distance");
-				//System.out.println(distance);
+
 				distance = 0;
 			}
 		}

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 
-public class SortL1DistanceTest
+public class SortL1DistanceRGBTest
 {
 
 	@Test
