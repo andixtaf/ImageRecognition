@@ -1,6 +1,9 @@
 package com.and1.model.img;
 
+import com.and1.Persistance;
 import com.and1.model.img.histogram.Histogram;
+import com.and1.model.img.histogram.HistogramGray;
+import com.and1.model.img.histogram.HistogramInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +30,10 @@ public class Image
 	private List<Float> hsiColorCount;
 	private Float similarity;
 	private Image queryImage;
+
+	private Persistance persistance;
+
+	private HistogramInterface histogramInterface;
 
 	//TODO refactor logic in new class
 	public Image(File file, BufferedImage img)
@@ -221,12 +228,17 @@ public class Image
 
 	public void generateHistogramGray(String name)
 	{
-		histogram.generateHistogramGray(image, name);
+		histogramInterface = new HistogramGray();
+		histogramInterface.generateHistogram(image, name);
 	}
 
 	//RGB Histogramm erzeugen
 	public void generateHistogramRGB(String name)
 	{
+
+//		histogramInterface = new HistogramColour();
+//		histogramInterface.generateHistogram(img, name);
+
 		float[][][] histogramRGB = new float[8][8][8];
 
 		for (int x = 0; x < image.getWidth(); x++)

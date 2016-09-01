@@ -32,7 +32,7 @@ public class IntersectionSegGray extends SimilarityAlgorithm
 		//image in 4 Teile zerlegen
 		segment = basicImage.generateRasterInGivenSteps(segStep);
 
-		//neues com.and1.model.img.and1.Image f�r jedes Teilbild erzeugen
+		//neues Image für jedes Teilbild erzeugen
 		for(int i = 0; i < segment.size(); i++)
 		{
 			Image seg = new Image(basicImage.getFilePath(), segment.get(i));

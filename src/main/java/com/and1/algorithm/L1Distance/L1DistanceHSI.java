@@ -6,15 +6,9 @@ import com.and1.model.img.Image;
 import java.util.Arrays;
 import java.util.List;
 
-//Klasse zur Berechnung der Distance
 public class L1DistanceHSI extends SimilarityAlgorithm
 {
 
-	/**
-	 * Generates random similarity values for all images relative to the query image
-	 *
-	 * @return The unprocessed repository
-	 */
 	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 

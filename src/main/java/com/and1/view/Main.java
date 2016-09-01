@@ -14,6 +14,8 @@ class Main
 {
 	private static final Logger logger = LogManager.getLogger(Main.class);
 
+	private static final Properties properties = new Properties();
+
 	public static void main(String[] args)
 	{
 		logger.info("start application");
@@ -33,7 +35,7 @@ class Main
 		logger.info("finish!!!");
 	}
 
-	public static Properties loadConfig()
+	private static Properties loadConfig()
 	{
 		String configFile = "Main.properties";
 
@@ -70,5 +72,8 @@ class Main
 		return dir.toString() + "/";
 	}
 
-
+	public static Properties getProperties()
+	{
+		return properties;
+	}
 }

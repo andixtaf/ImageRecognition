@@ -5,7 +5,6 @@ import com.and1.algorithm.Euclidean_Distance_HSI;
 import com.and1.algorithm.Intersection.IntersectionGRAY;
 import com.and1.algorithm.Intersection.IntersectionHSI;
 import com.and1.algorithm.Intersection.IntersectionRGB;
-import com.and1.algorithm.L1Distance.L1Distance;
 import com.and1.algorithm.L1Distance.L1DistanceHSI;
 import com.and1.algorithm.NRA_Algorithm;
 import com.and1.algorithm.SimilarityAlgorithm;
@@ -36,11 +35,13 @@ import java.util.Properties;
 
 import static com.and1.view.HistogramView.*;
 
+//import com.and1.algorithm.L1Distance.L1Distance;
+
 class MainFrame extends JFrame implements ActionListener
 {
 	private static final Logger logger = LogManager.getLogger(MainFrame.class);
 	private final IntersectionRGB intersectionRGB = new IntersectionRGB();
-	private final L1Distance l1distance = new L1Distance();
+	//	private final L1Distance l1distance = new L1Distance();
 	private final L1DistanceHSI hsiL1Distance = new L1DistanceHSI();
 	private final Euclidean_Distance_HSI hsiEuclidDistance = new Euclidean_Distance_HSI();
 	private final Chi_Square_Semi_Pseudo_Distance chiSquare = new Chi_Square_Semi_Pseudo_Distance();
@@ -158,7 +159,7 @@ class MainFrame extends JFrame implements ActionListener
 							} else if(image.getType() == BufferedImage.TYPE_3BYTE_BGR)
 							{
 								Image mrImage = new Image(file.getAbsoluteFile(), image);
-								mrImage.generateHistogramRGB(file.toString());
+//								mrImage.generateHistogramRGB(file.toString());
 								imageList.add(mrImage);
 							} else
 							{
@@ -560,8 +561,8 @@ class MainFrame extends JFrame implements ActionListener
 			{
 
 				Image currentImg = (Image) jListFiles.getSelectedValue();
-				jListFilesRanked.setListData(
-						l1distance.calculateSimilarity(currentImg, imagesList, segmentationStep).toArray());
+//				jListFilesRanked.setListData(
+//						l1distance.calculateSimilarity(currentImg, imagesList, segmentationStep).toArray());
 			} else if(m.getText().equals("GrayScale"))
 			{
 				displayHistogramGRAY(this, (Image) jListFiles.getSelectedValue());

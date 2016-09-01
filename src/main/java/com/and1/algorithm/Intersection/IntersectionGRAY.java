@@ -25,6 +25,8 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 
 		String name = basicImage.getFilePath().getAbsolutePath();
 
+		//TODO get histo from persistence
+
 		float[] histogramBasic = basicImage.getHistogramGray(name);
 		float[] histogramToCompare;
 

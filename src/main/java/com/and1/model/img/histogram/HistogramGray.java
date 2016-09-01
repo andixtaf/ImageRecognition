@@ -9,12 +9,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class HistogramGray
+public class HistogramGray implements HistogramInterface
 {
 	public static final int INT_8_BIT = 256;
 	private static final Logger logger = LogManager.getLogger(HistogramColour.class);
 
-	public void generateHistogramGray(BufferedImage image, String name)
+	public void generateHistogram(BufferedImage image, String name)
 	{
 		float[] histogramGray = new float[INT_8_BIT];
 		int[] pixel = null;
@@ -34,23 +34,19 @@ public class HistogramGray
 
 		normalize(histogramGray, countOfTotalPixel);
 
-		saveHistogramGray(histogramGray, name);
+		saveHistogram(histogramGray, name);
 	}
 
-	private void normalize(float[] histogram, int countOfTotalPixel)
+	public void normalize(float[] histogram, int countOfTotalPixel)
 	{
 		float sum = 0;
 		for (int i = 0; i < INT_8_BIT; i++)
 		{
-
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
-
 		}
-
-		//System.out.println(sum);
 	}
 
-	private void saveHistogramGray(float[] histogram, String name)
+	public void saveHistogram(float[] histogram, String name)
 	{
 
 		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");

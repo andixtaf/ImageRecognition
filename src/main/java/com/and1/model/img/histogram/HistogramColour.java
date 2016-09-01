@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class HistogramColour
+public class HistogramColour implements HistogramInterface
 {
 	private static final Logger logger = LogManager.getLogger(HistogramColour.class);
 
