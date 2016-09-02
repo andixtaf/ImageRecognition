@@ -14,16 +14,17 @@ public class NRA_Algorithm_Sort implements Comparable<NRA_Algorithm_Sort>
 
 	public int compareTo(NRA_Algorithm_Sort value)
 	{
+		int similar = 0;
 		if (distance > value.distance)
 		{
-			return -1;
+			similar = -1;
 		}
 		if (distance < value.distance)
 		{
-			return 1;
+			similar = 1;
 		}
 
-		return 0;
+		return similar;
 	}
 
 	@Override

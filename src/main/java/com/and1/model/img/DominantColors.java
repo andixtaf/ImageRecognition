@@ -17,16 +17,17 @@ public class DominantColors implements Comparable<DominantColors>
 
 	public int compareTo(DominantColors value)
 	{
+		int similar = 0;
 		if (count > value.count)
 		{
-			return -1;
+			similar =  -1;
 		}
 		if (count < value.count)
 		{
-			return 1;
+			similar =  1;
 		}
 
-		return 0;
+		return similar;
 	}
 
 	@Override

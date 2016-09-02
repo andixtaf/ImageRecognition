@@ -5,7 +5,7 @@ import com.and1.model.img.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,40 +15,34 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 {
 	private static final Logger logger = LogManager.getLogger(IntersectionGRAY.class);
 
+
 	public List<Image> calculateSimilarity(Image basicImage, List<Image> repository, int segStep)
 	{
 		float intersection;
 		float minSum;
 		float histogramBasicSum;
 
-		SortIntersection[] list = new SortIntersection[repository.size()];
+		List<SortIntersection> intersectionList = new ArrayList<>();
 
-		String name = basicImage.getFilePath().getAbsolutePath();
-
-		//TODO get histo from persistence
-
-		float[] histogramBasic = basicImage.getHistogramGray(name);
+		float[] histogramBasic = basicImage.getHistogramGray(basicImage);
 		float[] histogramToCompare;
 
 		histogramBasicSum = getMinSumForGrayHistogram(histogramBasic, histogramBasic);
 
-		for(int i = 0; i < repository.size(); i++)
-		{
-			Image img = repository.get(i);
-			String imageName = img.getFilePath().getAbsolutePath();
 
-			histogramToCompare = img.getHistogramGray(imageName);
+		int i = 0;
+		for(Image img : repository)
+		{
+			histogramToCompare = img.getHistogramGray(img);
 
 			minSum = getMinSumForGrayHistogram(histogramBasic, histogramToCompare);
 
 			intersection = minSum / histogramBasicSum;
 
-			list[i] = new SortIntersection(img, intersection);
+			intersectionList.add(new SortIntersection(img, intersection));
 		}
 
-		Arrays.sort(list);
-
-		return getSortIntersectionList(list);
+		return getSortIntersectionList(intersectionList);
 	}
 
 	private float getMinSumForGrayHistogram(float[] histogramBasic, float[] histogramToCompare)

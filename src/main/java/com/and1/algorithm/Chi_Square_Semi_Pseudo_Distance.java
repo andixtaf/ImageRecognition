@@ -29,21 +29,18 @@ public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 		int x = 0;
 
 		String name = basicImage.toString();
-		basicImage.generateHistogramHSI(name);
 
-		float[][][] hist1 = basicImage.getHistogramHSI(name);
+		float[][][] hist1 = basicImage.getHistogramHSI(basicImage);
 		float[][][] hist2;
 
-		SortIntersection[] list = new SortIntersection[repository.size()];
+		List<SortIntersection> intersectionList = new ArrayList<>();
 		nra_values = new NRA_Algorithm_Sort[repository.size()];
 
 		for (int i = 0; i < repository.size(); i++)
 		{
 			Image img = repository.get(i);
-			//int totalhist2 = com.and1.model.img.getHeight() * com.and1.model.img.getWidth();
-			String imgName = img.toString();
-			img.generateHistogramHSI(imgName);
-			hist2 = img.getHistogramHSI(imgName);
+
+			hist2 = img.getHistogramHSI(img);
 
 			for (int j = 0; j < 18; j++)
 			{
@@ -107,7 +104,7 @@ public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 
 			scaledDistance = scale(distance);
 
-			list[i] = new SortIntersection(img, scaledDistance);
+			intersectionList.add(new SortIntersection(img, scaledDistance));
 
 			nra_values[i] = new NRA_Algorithm_Sort(i, scaledDistance);
 
@@ -119,14 +116,9 @@ public class Chi_Square_Semi_Pseudo_Distance extends SimilarityAlgorithm
 			x = 0;
 		}
 
-		Arrays.sort(list);
 		Arrays.sort(nra_values);
 
-		List<Image> sortedList = new ArrayList<>();
-
-		Arrays.sort(list);
-
-		return getSortIntersectionList(list);
+		return getSortIntersectionList(intersectionList);
 	}
 
 	//Funktion zur Skalierung der übergroßen Werte der Distanzfunktion um Ähnlichkeitswerte zu erhalten

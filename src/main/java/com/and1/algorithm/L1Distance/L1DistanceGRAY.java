@@ -24,8 +24,7 @@ public class L1DistanceGRAY extends SimilarityAlgorithm
 		float distance = 0;
 		int totalHistogramBase = basicImage.getHeight() * basicImage.getWidth();
 
-		String name = basicImage.getFilePath().getAbsolutePath();
-		float[] hist1 = basicImage.getHistogramGray(name);
+		float[] hist1 = basicImage.getHistogramGray(basicImage);
 		//System.out.println("Histogramm1 :" + query.filePath);
 		float[] hist2;
 		//Liste in die die das Img und die dazugehörige com.and1.algorithm.IntersectionRGB als Tupel gespeichert werden
@@ -33,8 +32,7 @@ public class L1DistanceGRAY extends SimilarityAlgorithm
 		for (int i = 0; i < repository.size(); i++)
 		{
 			Image img = repository.get(i);
-			String imgname = img.getFilePath().getAbsolutePath();
-			hist2 = img.getHistogramGray(imgname);
+			hist2 = img.getHistogramGray(img);
 
 			for (int j = 0; j < hist1.length; j++)
 			{

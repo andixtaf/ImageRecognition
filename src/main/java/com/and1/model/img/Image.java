@@ -1,15 +1,14 @@
 package com.and1.model.img;
 
-import com.and1.Persistance;
-import com.and1.model.img.histogram.Histogram;
 import com.and1.model.img.histogram.HistogramGray;
-import com.and1.model.img.histogram.HistogramInterface;
+import com.and1.model.img.histogram.HistogramHSI;
+import com.and1.model.img.histogram.HistogramRGB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,20 +19,23 @@ public class Image
 
 	private static final float MAX_COLOUR_VALUE = 255f;
 
+	private List<float[]> colors;
+
+	private List<Float> hsiColorCount;
+
+	private Float similarity;
+
+	private Image queryImage;
+
 	private final File filePath;
 
 	private final BufferedImage image;
 
 	private final java.awt.Image thumbnail;
-	private final Histogram histogram = new Histogram();
-	private List<float[]> colors;
-	private List<Float> hsiColorCount;
-	private Float similarity;
-	private Image queryImage;
 
-	private Persistance persistance;
-
-	private HistogramInterface histogramInterface;
+	private final HistogramGray histogramGray = new HistogramGray();
+	private final HistogramRGB histogramRGB = new HistogramRGB();
+	private final HistogramHSI histogramHSI = new HistogramHSI();
 
 	//TODO refactor logic in new class
 	public Image(File file, BufferedImage img)
@@ -223,171 +225,6 @@ public class Image
 				}
 			}
 		}
-
-	}
-
-	public void generateHistogramGray(String name)
-	{
-		histogramInterface = new HistogramGray();
-		histogramInterface.generateHistogram(image, name);
-	}
-
-	//RGB Histogramm erzeugen
-	public void generateHistogramRGB(String name)
-	{
-
-//		histogramInterface = new HistogramColour();
-//		histogramInterface.generateHistogram(img, name);
-
-		float[][][] histogramRGB = new float[8][8][8];
-
-		for (int x = 0; x < image.getWidth(); x++)
-		{
-			for (int y = 0; y < image.getHeight(); y++)
-			{
-
-				Color rgb = new Color(image.getRGB(x, y));
-
-				//jeweils Rot, Grün und Blau Farbwerte aus rgb erzeugen
-				int r = (rgb.getRed()) / 32;
-				int g = (rgb.getGreen()) / 32;
-				int b = (rgb.getBlue()) / 32;
-
-				//Werte in Histogramm eintragen und gleiche Werte hochzählen
-				histogramRGB[r][g][b]++;
-			}
-		}
-
-		//Histogramm in Text-Datei speichern
-		saveHistogramRGB(histogramRGB, name);
-
-	}
-
-	//RGB Histogramm in Text-Datei speichern
-	private void saveHistogramRGB(float[][][] histogram, String name)
-	{
-		//von ImageName.jpg den .jpg abschneiden und mit -RGB.txt ersetzen
-		String filename = name.substring(0, name.length() - 4) + "-RGB.txt";
-		File file = new File(filename);
-
-		logger.info("Save file: " + file.getName());
-
-		if (!file.exists())
-		{
-			try
-			{
-				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
-				output.writeObject(histogram);
-				output.close();
-			}
-			catch (IOException ex)
-			{
-				logger.error("Save file: ", ex);
-			}
-		}
-	}
-
-	//HSI Histogramm generieren
-	public void generateHistogramHSI(String name)
-	{
-
-		float[][][] histogramHSI = new float[18][3][3];
-
-		if (image != null)
-		{
-
-			for (int i = 0; i < image.getWidth(); i++)
-			{
-				for (int j = 0; j < image.getHeight(); j++)
-				{
-					int Sq;
-					int Iq;
-					Color RGB = new Color(image.getRGB(i, j));
-
-					float R = RGB.getRed() / MAX_COLOUR_VALUE;
-					float G = RGB.getBlue() / MAX_COLOUR_VALUE;
-					float B = RGB.getGreen() / MAX_COLOUR_VALUE;
-
-					//Berechnung Hue
-					float x = ((R - G) + (R - B)) / 2;
-					float y = (float) (Math.sqrt(((R - G) * (R - G)) + ((R - B) * (G - B))));
-
-					float H = 0;
-
-					if (B <= G)
-					{
-						H = (float) ((Math.acos(x / y)));
-					}
-					else if (B > G)
-					{
-						H = 360f - ((float) ((Math.acos(x / y))));
-					}
-
-					//Berechnung Saturation
-					float minRGB = Math.min(Math.min(R, G), B);
-
-					float S = 1 - ((3 * minRGB) / (R + G + B));
-
-					//Berechnung Intensity
-					float I = ((R + G + B) / 3);
-
-					int Hq = (int) ((H) / 20f);
-
-					if (S * 3 < (1 / 3f))
-					{
-						Sq = 0;
-					}
-					else if (S * 3 < (2 / 3f))
-					{
-						Sq = 1;
-					}
-					else
-					{
-						Sq = 2;
-					}
-
-					if (I * 3 < 85)
-					{
-						Iq = 0;
-					}
-					else if (I * 3 < 170)
-					{
-						Iq = 1;
-					}
-					else
-					{
-						Iq = 2;
-					}
-
-					histogramHSI[Hq][Sq][Iq]++;
-
-				}
-			}
-			saveHistogramHSI(histogramHSI, name);
-
-		}
-	}
-
-	//HSI Histogramm in Text-Datei speichern
-	private void saveHistogramHSI(float[][][] histogram, String name)
-	{
-
-		String filename = name.substring(0, name.length() - 4) + "-HSI.txt";
-		File file = new File(filename);
-		if (!file.exists())
-		{
-			try
-			{
-				//von ImageName.jpg den .jpg abschneiden und mit -HSI.txt ersetzen
-				ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));
-				output.writeObject(histogram);
-				output.close();
-			}
-			catch (IOException ex)
-			{
-				logger.error(ex);
-			}
-		}
 	}
 
 	public BufferedImage getImage()
@@ -400,61 +237,20 @@ public class Image
 		return this.thumbnail;
 	}
 
-	//Graustufen Histogramm aus Text-Datei laden und in ein float[] Array speichern
-	public float[] getHistogramGray(String name)
+
+	public float[] getHistogramGray(Image givenImage)
 	{
-		String filename = (name.substring(0, name.length() - 4) + "-Gray.txt");
-		float[] histGray;
-		histGray = new float[256];
-		try
-		{
-			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-			histGray = (float[]) (input.readObject());
-			input.close();
-		}
-		catch (ClassNotFoundException | IOException ex)
-		{
-			logger.error("get histogram gray: ", ex);
-		}
-		return histGray;
+		return histogramGray.getHistogram(givenImage);
 	}
 
-	//RGB Histogramm aus Text-Datei laden und in ein float[][][] Array speichern
-	public float[][][] getHistogramRGB(String name)
+	public float[][][] getHistogramRGB(Image givenImage)
 	{
-		String filename = (name.substring(0, name.length() - 4) + "-RGB.txt");
-		float[][][] histRGB;
-		histRGB = new float[8][8][8];
-		try
-		{
-			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-			histRGB = (float[][][]) (input.readObject());
-			input.close();
-		}
-		catch (ClassNotFoundException | IOException ex)
-		{
-			logger.error("get histogram rgb: ", ex);
-		}
-		return histRGB;
+		return histogramRGB.getHistogram(givenImage);
 	}
 
-	//HSI Histogramm aus Text-Datei laden und in ein float[][][] Array speichern
-	public float[][][] getHistogramHSI(String name)
+	public float[][][] getHistogramHSI(Image givenImage)
 	{
-		String filename = (name.substring(0, name.length() - 4) + "-HSI.txt");
-		float[][][] histHSI;
-		histHSI = new float[18][3][3];
-		try
-		{
-			ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename));
-			histHSI = (float[][][]) (input.readObject());
-			input.close();
-		}
-		catch (ClassNotFoundException | IOException ex)
-		{
-			logger.error("get histogram hsi: ", ex);
-		}
-		return histHSI;
+		return histogramHSI.getHistogram(givenImage);
 	}
 
 	public List getColors(int count)
@@ -571,6 +367,11 @@ public class Image
 	{
 		this.similarity = similarity;
 		queryImage = q;
+	}
+
+	public String getImageName()
+	{
+		return filePath.getName();
 	}
 
 	public File getFilePath()

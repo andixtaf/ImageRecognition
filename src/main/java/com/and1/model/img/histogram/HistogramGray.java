@@ -1,20 +1,45 @@
 package com.and1.model.img.histogram;
 
+import com.and1.Persistance;
+import com.and1.model.img.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
-public class HistogramGray implements HistogramInterface
+public class HistogramGray
 {
-	public static final int INT_8_BIT = 256;
-	private static final Logger logger = LogManager.getLogger(HistogramColour.class);
+	private static final int INT_8_BIT = 256;
+	private static final Logger logger = LogManager.getLogger(HistogramRGB.class);
 
-	public void generateHistogram(BufferedImage image, String name)
+	private float[] histogram = null;
+
+	//TODO path should be read from property file
+	private final Persistance persistance = new Persistance("PersistedHistograms");
+
+	public float[] getHistogram(Image image)
+	{
+		if(histogram == null)
+		{
+			if(persistance.existsPersistedFile(image.getImageName(), "-Gray.txt"))
+			{
+				logger.info("load File: " + image.getImageName());
+				histogram = persistance.getHistogramGray(image.getFilePath().getName());
+			} else {
+
+				histogram = generateHistogram(image.getImage());
+
+				persistance.saveHistogramGray(histogram, image.getImageName());
+
+				logger.info("created and saved file: " + image.getImageName());
+			}
+		}
+
+		return histogram;
+	}
+
+
+	private float[] generateHistogram(BufferedImage image)
 	{
 		float[] histogramGray = new float[INT_8_BIT];
 		int[] pixel = null;
@@ -27,43 +52,25 @@ public class HistogramGray implements HistogramInterface
 				pixel = image.getRaster().getPixel(x, y, pixel);
 
 				histogramGray[pixel[0]]++;
-				//Anzahl der Pixel des gesamten Bildes
 				countOfTotalPixel++;
 			}
 		}
 
 		normalize(histogramGray, countOfTotalPixel);
 
-		saveHistogram(histogramGray, name);
+		return histogramGray;
+
 	}
 
-	public void normalize(float[] histogram, int countOfTotalPixel)
+
+	private float[] normalize(float[] histogram, int countOfTotalPixel)
 	{
-		float sum = 0;
 		for (int i = 0; i < INT_8_BIT; i++)
 		{
 			histogram[i] = (histogram[i] / countOfTotalPixel) * 100;
 		}
+
+		return histogram;
 	}
 
-	public void saveHistogram(float[] histogram, String name)
-	{
-
-		File file = new File(name.substring(0, name.length() - 4) + "-Gray.txt");
-		if (!file.exists())
-		{
-			try
-			{
-				//von ImageName.jpg den .jpg abschneiden und mit -Gray.txt ersetzen
-				ObjectOutputStream output = new ObjectOutputStream(
-						new FileOutputStream(name.substring(0, name.length() - 4) + "-Gray.txt"));
-				output.writeObject(histogram);
-				output.close();
-			}
-			catch (IOException e)
-			{
-				logger.error("save Histogram Gray: " + e);
-			}
-		}
-	}
 }

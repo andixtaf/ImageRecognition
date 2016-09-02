@@ -5,7 +5,7 @@ import com.and1.model.img.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntersectionRGB extends SimilarityAlgorithm
@@ -18,11 +18,9 @@ public class IntersectionRGB extends SimilarityAlgorithm
 		float minSum;
 		float histogramBasicSum;
 
-		SortIntersection[] list = new SortIntersection[repository.size()];
+		List<SortIntersection> intersectionList = new ArrayList<>();
 
-		String name = basicImage.getFilePath().getAbsolutePath();
-
-		float[][][] histogramBasic = basicImage.getHistogramRGB(name);
+		float[][][] histogramBasic = basicImage.getHistogramRGB(basicImage);
 
 		float[][][] histogramToCompare;
 
@@ -31,11 +29,8 @@ public class IntersectionRGB extends SimilarityAlgorithm
 		for(int i = 0; i < repository.size(); i++)
 		{
 			Image img = repository.get(i);
-			String imageName = img.getFilePath().getAbsolutePath();
 
-			logger.info(imageName);
-
-			histogramToCompare = img.getHistogramRGB(imageName);
+			histogramToCompare = img.getHistogramRGB(img);
 
 			minSum = getMinSumForHistogramRGB(histogramBasic, histogramToCompare);
 
@@ -45,12 +40,10 @@ public class IntersectionRGB extends SimilarityAlgorithm
 			logger.info("histogram1Sum: " + histogramBasicSum);
 			logger.info("intersection: " + intersection);
 
-			list[i] = new SortIntersection(img, intersection);
+			intersectionList.add(new SortIntersection(img, intersection));
 		}
 
-		Arrays.sort(list);
-
-		return getSortIntersectionList(list);
+		return getSortIntersectionList(intersectionList);
 	}
 
 	private float getMinSumForHistogramRGB(float[][][] histogramBasic, float[][][] histogramToCompare)

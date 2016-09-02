@@ -21,8 +21,7 @@ public class HistogramView
 
 		if(image.getImage().getType() == BufferedImage.TYPE_BYTE_GRAY)
 		{
-			HistogramLabel h =
-					new HistogramLabelGray(image.getHistogramGray("/" + image.toString()));
+			HistogramLabel h = new HistogramLabelGray(image.getHistogramGray(image));
 			d.add(h);
 			d.setSize(256, 480);
 			d.setResizable(false);
@@ -40,8 +39,7 @@ public class HistogramView
 
 		if(image.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
 		{
-			HistogramLabel h =
-					new HistogramLabelRGB(image.getHistogramRGB("/" + image.toString()));
+			HistogramLabel h = new HistogramLabelRGB(image.getHistogramRGB(image));
 			d.add(h);
 			d.setSize(256, 480);
 			d.setResizable(false);
@@ -59,7 +57,7 @@ public class HistogramView
 
 		if(image.getImage().getType() == BufferedImage.TYPE_3BYTE_BGR)
 		{
-			HistogramLabel h = new HistogramLabelHSI(image.getHistogramRGB("/" + image.toString()));
+			HistogramLabel h = new HistogramLabelHSI(image.getHistogramRGB(image));
 			d.add(h);
 			d.setSize(256, 480);
 			d.setResizable(false);

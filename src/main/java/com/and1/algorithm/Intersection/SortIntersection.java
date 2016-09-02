@@ -16,16 +16,17 @@ public class SortIntersection implements Comparable<SortIntersection>
 
 	public int compareTo(SortIntersection value)
 	{
+		int similar = 0;
 		if (intersection > value.intersection)
 		{
-			return -1;
+			similar = -1;
 		}
 		if (intersection < value.intersection)
 		{
-			return 1;
+			similar = 1;
 		}
 
-		return 0;
+		return similar;
 	}
 
 	@Override
