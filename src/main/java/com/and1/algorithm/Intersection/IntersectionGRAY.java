@@ -22,25 +22,25 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 		float minSum;
 		float histogramBasicSum;
 
-		List<SortIntersection> intersectionList = new ArrayList<>();
-
 		float[] histogramBasic = basicImage.getHistogramGray(basicImage);
 		float[] histogramToCompare;
 
+		long start = System.currentTimeMillis();
+
 		histogramBasicSum = getMinSumForGrayHistogram(histogramBasic, histogramBasic);
 
+		List<SortIntersection> intersectionList = new ArrayList<>();
 
-		int i = 0;
+		//TODO test wich way is performanter
+
+//		repository.parallelStream().forEach(image -> compareImage(histogramBasicSum, histogramBasic, intersectionList, image));
+
 		for(Image img : repository)
 		{
-			histogramToCompare = img.getHistogramGray(img);
-
-			minSum = getMinSumForGrayHistogram(histogramBasic, histogramToCompare);
-
-			intersection = minSum / histogramBasicSum;
-
-			intersectionList.add(new SortIntersection(img, intersection));
+			compareImage(histogramBasicSum, histogramBasic, intersectionList, img);
 		}
+
+	logger.info("Time requiered: " + (System.currentTimeMillis() - start));
 
 		return getSortIntersectionList(intersectionList);
 	}
@@ -56,6 +56,20 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 
 		logger.info("minSum: " + minSum);
 		return minSum;
+	}
+
+	private void compareImage(float histogramBasicSum, float[] histogramBasic, List<SortIntersection> intersectionList, Image img)
+	{
+		float[] histogramToCompare;
+		float minSum;
+		float intersection;
+		histogramToCompare = img.getHistogramGray(img);
+
+		minSum = getMinSumForGrayHistogram(histogramBasic, histogramToCompare);
+
+		intersection = minSum / histogramBasicSum;
+
+		intersectionList.add(new SortIntersection(img, intersection));
 	}
 
 }
