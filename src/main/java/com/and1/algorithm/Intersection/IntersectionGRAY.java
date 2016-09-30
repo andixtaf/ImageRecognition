@@ -45,7 +45,7 @@ public class IntersectionGRAY extends SimilarityAlgorithm
 		return getSortIntersectionList(intersectionList);
 	}
 
-	private float getMinSumForGrayHistogram(float[] histogramBasic, float[] histogramToCompare)
+	protected float getMinSumForGrayHistogram(float[] histogramBasic, float[] histogramToCompare)
 	{
 		float minSum = 0;
 
