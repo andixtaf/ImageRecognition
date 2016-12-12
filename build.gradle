@@ -7,6 +7,8 @@ apply plugin: 'java'
 // code coverage
 apply plugin: 'jacoco'
 
+apply plugin: "info.solidsoft.pitest"
+
 repositories {
     mavenCentral()
 }
@@ -49,3 +51,28 @@ tasks.withType(Test) {
 }
 
 test.testLogging.showStandardStreams = true
+
+buildscript {
+    repositories {
+        mavenCentral()
+        //Needed only for SNAPSHOT versions
+        //maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
+    }
+}
+
+
+pitest {
+    targetClasses = ['com.and1.algorithm.Intersection.IntersectionGRAY',
+                     'com.and1.SortL1DistanceRGB'
+    ]
+
+    targetTests = ['com.and1.*']
+    pitestVersion = "1.1.0" //not needed when a default PIT version should be used
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    excludedMethods = ['hasCode', 'equals', 'info']
+
+}

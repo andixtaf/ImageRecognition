@@ -114,7 +114,6 @@ class MainFrame extends JFrame implements ActionListener
 			splash.dispose();
 			splashThread.interrupt();
 			logger.info("system exit...");
-			System.exit(1);
 		}
 
 	}
